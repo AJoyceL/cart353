@@ -22,8 +22,8 @@ const numStars = 200;
 // calls the stars array with random star objects
 for (let i = 0; i < numStars; i++) {
     stars.push({
-        x: Math.random() * starfield.width,
-        y: Math.random() * starfield.height,
+        x: Math.random() * starfieldCanvas.width,
+        y: Math.random() * starfieldCanvas.height,
         radius: Math.random() * 2,
     });
 }
@@ -31,7 +31,7 @@ for (let i = 0; i < numStars; i++) {
 // draw the stars on the star field
 function drawStars() {
     // clear the star field
-    starfieldContext.clearRect(0, 0, starfield.width, starfield.height); 
+    starfieldContext.clearRect(0, 0, starfieldCanvas.width, starfieldCanvas.height); 
 
     // draw each star as a white circle
     for (let star of stars) {
