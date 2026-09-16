@@ -23,7 +23,7 @@ const numStars = 200;
 const light = {
     x: Math.random() * starfieldCanvas.width,
     y: Math.random() * starfieldCanvas.height,
-    intensity: 200
+    intensity: 1.2
 }
 
 // draw a light source as a yellow circle
@@ -38,7 +38,7 @@ const drawLight = () => {
             const dx = x - light.x;
             const dy = y - light.y;
             const d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-            const density = light.intensity * d;
+            const density = light.intensity / d;
             const index = (y * starfieldCanvas.width + x) * 4;
             pixels[index] = 255; // red
             pixels[index + 1] = 255; // green
