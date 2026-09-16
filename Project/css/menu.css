@@ -1,6 +1,6 @@
 /*  HTML    */
 html{
-    background: linear-gradient(90deg, #281d2b, #292e40);
+    background: linear-gradient(180deg, rgb(22, 6, 40), #4171af);
 }
 
 /*  BODY    */
@@ -28,5 +28,5 @@ header{
 
 h1{
     font-size: 5em;
-    color: #ffebeb;
+    color: #fbfafb;
 }
