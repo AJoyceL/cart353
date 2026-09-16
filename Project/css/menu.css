@@ -1,3 +1,11 @@
+/*  FONTS*/
+.bagel-fat-one-regular {
+  font-family: "Bagel Fat One";
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 /*  HTML    */
 html{
     background: linear-gradient(180deg, rgb(62, 14, 118), #48d1dd);
@@ -29,4 +37,5 @@ header{
 h1{
     font-size: 5em;
     color: #fbfafb;
+    /* font-family: "Bagel Fat One", system-ui; */
 }
