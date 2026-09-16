@@ -6,12 +6,12 @@
 }
 
 
-/*  HTML    */
+/*  HTML  */
 html{
     background: linear-gradient(180deg, rgb(62, 14, 118), #549ae4);
 }
 
-/*  BODY    */
+/*  BODY  */
 body{
   position: relative;
     width: 100%;
@@ -23,7 +23,8 @@ body{
     font-size: calc(1em + 0.390625vw);
 }
 
-/*  Header  */
+
+/*  HEADER  */
 header{
     display: flex;
     justify-content: center;
@@ -39,22 +40,31 @@ h1{
   left: 50%;
   margin: 0;
   transform: translate(-50%, -50%);
+
   font-size: 5em;
   color: #fbfafb;
   opacity: 0.8;
   font-family: "Cherry Bomb One", system-ui;
+  word-wrap: break-word;
+  text-align: center;
+
   -webkit-animation: glow 5s ease-in infinite alternate;
   -moz-animation: glow 5s ease-in infinite alternate;
   animation: glow 5s ease-in infinite alternate;
   
 }
 
+
+/*  CANVAS  */
 canvas {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
 }
+
+
+/*  ANIMATION  */
 
 /* Make the title "Dewdrop Heaven" glow  */
 /* ref: https://www.w3schools.com/howto/howto_css_glowing_text.asp */
