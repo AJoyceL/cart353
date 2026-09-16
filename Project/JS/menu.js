@@ -23,7 +23,7 @@ const numStars = 200;
 const light = {
     x: Math.random() * starfieldCanvas.width,
     y: Math.random() * starfieldCanvas.height,
-    intensity: 100
+    intensity: 200
 }
 
 // draw a light source as a yellow circle
@@ -69,7 +69,7 @@ function drawStars() {
         starfieldContext.beginPath();
         starfieldContext.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         starfieldContext.fillStyle = "white";
-        starfieldContext.shadowColor = "#FEE37F";
+        starfieldContext.shadowColor = "#e27ab7";
         starfieldContext.shadowBlur = 8;
         starfieldContext.fill();
     }

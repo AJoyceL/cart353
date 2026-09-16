@@ -8,7 +8,7 @@
 
 /*  HTML  */
 html{
-    background: linear-gradient(180deg, rgb(62, 14, 118), #549ae4);
+    background: linear-gradient(180deg, #530570, #2096cd);
 }
 
 /*  BODY  */
@@ -71,10 +71,10 @@ canvas {
 
 @-webkit-keyframes glow {
   from {
-    text-shadow: 0 0 5px #fff, 0 0 30px #FEE37F, 0 0 40px #FEE37F, 0 0 50px #FEE37F, 0 0 60px #FEE37F, 0 0 70px #FEE37F;
+    text-shadow: 0 0 10px #fff, 0 0 80px #e27ab7, 0 0 80px #e27ab7, 0 0 90px #e27ab7, 0 0 100px #e27ab7, 0 0 100px #e27ab7;
   }
   to {
-    text-shadow:  0 0 30px #FEE37F, 0 0 40px #FEE37F, 0 0 50px #FEE37F, 0 0 60px #FEE37F, 0 0 70px #FEE37F, 0 0 80px #FEE37F;
+    text-shadow:  0 0 70px #e27ab7, 0 0 80px #e27ab7, 0 0 90px #e27ab7, 0 0 100px #e27ab7, 0 0 110px #e27ab7, 0 0 120px #e27ab7;
   }
 }
 
