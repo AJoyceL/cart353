@@ -1,6 +1,6 @@
 /*  FONTS*/
-.bagel-fat-one-regular {
-  font-family: "Bagel Fat One";
+.cherry-bomb-one-regular {
+  font-family: "Cherry Bomb One", system-ui;
   font-weight: 400;
   font-style: normal;
 }
@@ -37,5 +37,5 @@ header{
 h1{
     font-size: 5em;
     color: #fbfafb;
-    /* font-family: "Bagel Fat One", system-ui; */
+    font-family: "Cherry Bomb One", system-ui;
 }
