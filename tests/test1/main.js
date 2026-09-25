@@ -1,0 +1,26 @@
+import TitleScreen from "./scenes/TitleScreen.js";
+import Game from "./scenes/Game.js"
+
+const config = {
+    width: 800,
+    height: 400,
+    type: Phaser.AUTO,
+
+    physics:
+    {
+        default: "arcade",
+        arcade: 
+        {
+            gravity:{y: 0},
+            debug: true
+        }
+    }
+};
+
+const game = new Phaser.Game(config);
+
+game.scene.add("titlescreen", TitleScreen);
+game.scene.add("game", Game);
+
+game.scene.start("game");
+
