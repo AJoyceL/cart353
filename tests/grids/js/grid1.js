@@ -22,7 +22,7 @@ class Crop
     constructor (scene, x, y)
     {
         this.scene = scene;
-        this.circle = scene.add.circle(x, y, 25, 0xffffff)
+        this.circle = scene.add.circle(x, y, 25, 0x70a9ba)
         this.circle.setInteractive()
 
         makeDraggable(this.circle)
@@ -101,6 +101,7 @@ function makeDraggable(gameObject , enableLogs = false)
     function onDrag(pointer) 
     {
         log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`)
+
         gameObject.x = pointer.x
         gameObject.y = pointer.y
     }
@@ -108,20 +109,22 @@ function makeDraggable(gameObject , enableLogs = false)
     function stopDrag(pointer) 
     {
         log(`[makeDraggable:stopDrag] invoked for game object: ${gameObject.name}`)
+
         gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
         gameObject.off(Phaser.Input.Events.POINTER_MOVE, onDrag);
+
+
     }
 
     function startDrag(pointer) 
     {
         log(`[makeDraggable:startDrag] invoked for game object: ${gameObject.name}`)
+
         gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.on(Phaser.Input.Events.POINTER_UP, stopDrag);
         gameObject.on(Phaser.Input.Events.POINTER_MOVE, onDrag);
     }
-
-
 
     gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
 }
