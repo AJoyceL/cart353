@@ -25,6 +25,7 @@ class Crop
         this.circle = scene.add.circle(x, y, 25, 0xffffff)
         this.circle.setInteractive()
 
+        makeDraggable(this.circle)
     }
 }
 
@@ -82,4 +83,45 @@ function create()
 function update()
 {
 
+}
+
+//ref: https://youtu.be/jWglIBp4usY?si=ewJsWkuTyCx2tdrG
+function makeDraggable(gameObject , enableLogs = false) 
+{
+    gameObject.setInteractive();
+
+    function log(message)
+    {
+        if (enableLogs)
+        {
+            console.log(message)
+        }
+    }
+
+    function onDrag(pointer) 
+    {
+        log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`)
+        gameObject.x = pointer.x
+        gameObject.y = pointer.y
+    }
+
+    function stopDrag(pointer) 
+    {
+        log(`[makeDraggable:stopDrag] invoked for game object: ${gameObject.name}`)
+        gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
+        gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
+        gameObject.off(Phaser.Input.Events.POINTER_MOVE, onDrag);
+    }
+
+    function startDrag(pointer) 
+    {
+        log(`[makeDraggable:startDrag] invoked for game object: ${gameObject.name}`)
+        gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
+        gameObject.on(Phaser.Input.Events.POINTER_UP, stopDrag);
+        gameObject.on(Phaser.Input.Events.POINTER_MOVE, onDrag);
+    }
+
+
+
+    gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
 }
