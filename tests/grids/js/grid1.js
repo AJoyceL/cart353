@@ -78,6 +78,8 @@ function create()
     this.crop1 = new Crop(this, 50, 100)
     this.crop2 = new Crop(this, 50, 200)
     this.crop3 = new Crop(this, 50, 300)
+
+    
 }
 
 function update()
