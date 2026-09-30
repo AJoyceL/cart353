@@ -4,17 +4,30 @@ class Plot
     constructor(scene, x, y)
     {
         this.scene = scene;
-        this.rectangle = scene.add.rectangle(x, y, 100, 100, 0x7d7482)
-        this.rectangle.setInteractive()
+        this.x = x;
+        this.y = y;
+
+        this.rectangle = scene.add.rectangle(x, y, 100, 100, 0x7d7482);
+        this.rectangle.setInteractive();
 
         //MOUSE EVENTS
-        this.rectangle.on("pointerover", (e) => {
+        this.rectangle.on("pointerover", () => {
             this.rectangle.setFillStyle(0x574f5c);
         });
-        this.rectangle.on("pointerout", (e) => {
+        this.rectangle.on("pointerout", () => {
             this.rectangle.setFillStyle(0x7d7482);
-        })
-    }
+        });
+    };
+
+    contains(x, y)
+    {
+        return (
+            x >= this.x - 50 &&
+            x <= this.x + 50 &&
+            y >= this.y - 50 &&
+            y <= this.y + 50
+        );
+    };
 }
 
 class Crop
@@ -22,11 +35,12 @@ class Crop
     constructor (scene, x, y)
     {
         this.scene = scene;
-        this.circle = scene.add.circle(x, y, 25, 0x70a9ba)
-        this.circle.setInteractive()
-
-        makeDraggable(this.circle)
-    }
+        this.circle = scene.add.circle(x, y, 25, 0x70a9ba);
+        this.circle.setInteractive();
+        this.circle.setDepth(3);
+        
+        makeDraggable(this.circle, scene);
+    };
 }
 
 const config = {
@@ -60,26 +74,37 @@ function preload()
 function create()
 {
     //GRID
-    this.grid = this.add.grid(400, 200, 300, 300, 100, 100, 0x543f13, 0, 0x574f5c, 1)
-    this.grid.setDepth(2) //z-index
+    this.grid = this.add.grid(400, 200, 300, 300, 100, 100, 0x543f13, 0, 0x574f5c, 1);
+    this.grid.setDepth(2); //z-index
 
     //PLOT
-    this.plot1 = new Plot(this, 300, 200)
-    this.plot2 = new Plot(this, 400, 200)
-    this.plot3 = new Plot(this, 500, 200)
-    this.plot4 = new Plot(this, 300, 100)
-    this.plot5 = new Plot(this, 400, 100)
-    this.plot6 = new Plot(this, 500, 100)
-    this.plot7 = new Plot(this, 300, 300)
-    this.plot8 = new Plot(this, 400, 300)
-    this.plot9 = new Plot(this, 500, 300)
+    this.plot1 = new Plot(this, 300, 200);
+    this.plot2 = new Plot(this, 400, 200);
+    this.plot3 = new Plot(this, 500, 200);
+    this.plot4 = new Plot(this, 300, 100);
+    this.plot5 = new Plot(this, 400, 100);
+    this.plot6 = new Plot(this, 500, 100);
+    this.plot7 = new Plot(this, 300, 300);
+    this.plot8 = new Plot(this, 400, 300);
+    this.plot9 = new Plot(this, 500, 300);
+
+    this.plots = [
+        this.plot1,
+        this.plot2,
+        this.plot3,
+        this.plot4,
+        this.plot5,
+        this.plot6,
+        this.plot7,
+        this.plot8,
+        this.plot9
+    ];
 
     //CROPS
-    this.crop1 = new Crop(this, 50, 100)
-    this.crop2 = new Crop(this, 50, 200)
-    this.crop3 = new Crop(this, 50, 300)
+    this.crop1 = new Crop(this, 50, 100);
+    this.crop2 = new Crop(this, 50, 200);
+    this.crop3 = new Crop(this, 50, 300);
 
-    
 }
 
 function update()
@@ -88,40 +113,71 @@ function update()
 }
 
 //ref: https://youtu.be/jWglIBp4usY?si=ewJsWkuTyCx2tdrG
-function makeDraggable(gameObject , enableLogs = false) 
+function makeDraggable(gameObject, scene, enableLogs = false) 
 {
+    let planted = false;
+    let fullyGrown = false;
+
     gameObject.setInteractive();
 
     function log(message)
     {
         if (enableLogs)
         {
-            console.log(message)
+            console.log(message);
         }
-    }
+    };
 
     function onDrag(pointer) 
     {
-        log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`)
+        log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`);
 
-        gameObject.x = pointer.x
-        gameObject.y = pointer.y
+        if(planted)
+            {
+                return;
+            };
+        gameObject.x = pointer.x;
+        gameObject.y = pointer.y;
     }
 
     function stopDrag(pointer) 
     {
-        log(`[makeDraggable:stopDrag] invoked for game object: ${gameObject.name}`)
+        log(`[makeDraggable:stopDrag] invoked for game object: ${gameObject.name}`);
+
+        scene.plots.forEach(plot => {
+            if (plot.contains(gameObject.x, gameObject.y))
+            {
+
+                scene.tweens.add({
+                    targets: gameObject,
+                    scale: 1.5,
+                    duration: 5000,
+                    ease: "Sine.easeInOut",
+                });
+
+                gameObject.x = plot.x;
+                gameObject.y = plot.y;
+
+                planted = true;
+
+                // if (gameObject.setScale(1.5)) 
+                // {
+                //     planted = false;
+                // }
+
+                console.log("crop in");
+            };
+        });
 
         gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
         gameObject.off(Phaser.Input.Events.POINTER_MOVE, onDrag);
 
-
     }
 
     function startDrag(pointer) 
     {
-        log(`[makeDraggable:startDrag] invoked for game object: ${gameObject.name}`)
+        log(`[makeDraggable:startDrag] invoked for game object: ${gameObject.name}`);
 
         gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.on(Phaser.Input.Events.POINTER_UP, stopDrag);
