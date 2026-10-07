@@ -1,5 +1,5 @@
 //CLASSES
-class Plot
+class Plot //draws plots
 {
     constructor(scene, x, y)
     {
@@ -30,7 +30,7 @@ class Plot
     };
 }
 
-class Crop
+class Crop //draws crops
 {
     constructor (scene, x, y)
     {
@@ -88,6 +88,7 @@ function create()
     this.plot8 = new Plot(this, 400, 300);
     this.plot9 = new Plot(this, 500, 300);
 
+    //plot arrays
     this.plots = [
         this.plot1,
         this.plot2,
@@ -105,6 +106,11 @@ function create()
     this.crop2 = new Crop(this, 50, 200);
     this.crop3 = new Crop(this, 50, 300);
 
+    this.crops = [
+        this.crop1,
+        this.crop2,
+        this.crop3
+    ];
 }
 
 function update()
@@ -115,8 +121,8 @@ function update()
 //ref: https://youtu.be/jWglIBp4usY?si=ewJsWkuTyCx2tdrG
 function makeDraggable(gameObject, scene, enableLogs = false) 
 {
-    let planted = false;
-    let fullyGrown = false;
+        let planted = false;
+        let fullyGrown = false;
 
     gameObject.setInteractive();
 
@@ -132,10 +138,15 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     {
         log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`);
 
-        if(planted)
+        if(planted && !fullyGrown)
             {
                 return;
             };
+        // if (gameObject.scale < 1.5)
+        //     {
+        //         return;
+        //     }
+
         gameObject.x = pointer.x;
         gameObject.y = pointer.y;
     }
@@ -147,7 +158,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         scene.plots.forEach(plot => {
             if (plot.contains(gameObject.x, gameObject.y))
             {
-
                 scene.tweens.add({
                     targets: gameObject,
                     scale: 1.5,
@@ -160,10 +170,26 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
                 planted = true;
 
-                // if (gameObject.setScale(1.5)) 
-                // {
-                //     planted = false;
-                // }
+                //makes the crop movable after fully grwon
+                if (gameObject.scale >= 1.5) 
+                {
+                    fullyGrown = true;
+                }
+
+                //moves crops to a single location when clicked
+                if (gameObject.scale >= 1.5)
+                {
+                    gameObject.on("pointerdown", () => {
+                        gameObject.x = 700;
+                        gameObject.y = 200;
+                        planted = true;
+                        //make fullyGrown crops unmovable
+                        gameObject.disableInteractive();
+                        // gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
+                        // gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
+                        // gameObject.off(Phaser.Input.Events.POINTER_MOVE, onDrag);
+                    })
+                }
 
                 console.log("crop in");
             };
