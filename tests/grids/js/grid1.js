@@ -56,6 +56,19 @@ class Orange //draws crops
     };
 }
 
+class Berry //draw berries
+{
+    constructor (scene, x, y)
+    {
+        this.scene = scene;
+        this.circle = scene.add.circle(x, y, 25, 0x914359);
+        this.circle.setInteractive();
+        this.circle.setDepth(3);
+        
+        makeDraggable(this.circle, scene);
+    };
+}
+
 class text
 {
     constructor(scene, x, y, text)
@@ -99,6 +112,7 @@ function init()
 {
     this.appleCount = 0;
     this.orangeCount = 0;
+    this.berryCount = 0;
 }
 
 function create()
@@ -153,15 +167,45 @@ function create()
         this.orange3
     ];
 
+    this.berry1 = new Berry(this, 50, 300);
+    this.berry2 = new Berry(this, 50, 300);
+    this.berry3 = new Berry(this, 50, 300);
+
+    this.berries = [
+        this.berry1,
+        this.berry2,
+        this.berry3
+    ];
+
     //TEXT
     this.applesText = new text(this, 700, 150, "0");
     this.orangesText = new text(this, 700, 250, "0");
+    this.berriesText = new text(this, 700, 350, "0");
 
+    //KEYBOARD INPUT
+    this.arrows = this.input.keyboard.createCursorKeys();
 }
 
 function update()
 {
+    //when pressed, create a new fruit and add it to the scene
+    if (Phaser.Input.Keyboard.JustDown(this.arrows.up))
+    {
+        this.apple = new Apple(this, 50, 100);
+        console.log("buy apple")
+    }
 
+    if (Phaser.Input.Keyboard.JustDown(this.arrows.down))
+    {
+        this.orange = new Orange(this, 50, 200);
+        console.log("buy orange")
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.arrows.left))
+    {
+        this.berry = new Berry(this, 50, 300);
+        console.log("buy berry")
+    }
 }
 
 //ref: https://youtu.be/jWglIBp4usY?si=ewJsWkuTyCx2tdrG
@@ -213,34 +257,49 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                         if(gameObject.fillColor === 0x70a9ba)
                         {
                             gameObject.on("pointerdown", () => {
-                            gameObject.x = 700;
-                            gameObject.y = 100;
-                            gameObject.setScale(1);
+                                gameObject.x = 700;
+                                gameObject.y = 100;
+                                gameObject.setScale(1);
 
-                            gameObject.disableInteractive();
+                                gameObject.disableInteractive();
 
-                            // increase text
-                            scene.appleCount += 1;
-                            scene.applesText.text.text = scene.appleCount;
-                        });
+                                // increase text
+                                scene.appleCount += 1;
+                                scene.applesText.text.text = scene.appleCount;
+                            });
                         }
 
                         //for oranges
                         if(gameObject.fillColor === 0x78f6638)
                         {
                             gameObject.on("pointerdown", () => {
-                            gameObject.x = 700;
-                            gameObject.y = 200;
-                            gameObject.setScale(1);
+                                gameObject.x = 700;
+                                gameObject.y = 200;
+                                gameObject.setScale(1);
 
-                            gameObject.disableInteractive();
+                                gameObject.disableInteractive();
 
-                            // increase text
-                            scene.orangeCount += 1;
-                            scene.orangesText.text.text = scene.orangeCount;
-                        });
+                                // increase text
+                                scene.orangeCount += 1;
+                                scene.orangesText.text.text = scene.orangeCount;
+                            });
                         }
                         
+                        //for berries
+                        if(gameObject.fillColor === 0x914359)
+                        {
+                            gameObject.on("pointerdown", () => {
+                                gameObject.x = 700;
+                                gameObject.y = 300;
+                                gameObject.setScale(1);
+
+                                gameObject.disableInteractive();
+
+                                // increase text
+                                scene.berryCount += 1;
+                                scene.berriesText.text.text = scene.berryCount;
+                            });
+                        }
                     }
                 });
 
