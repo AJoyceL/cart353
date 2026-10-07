@@ -30,7 +30,7 @@ class Plot //draws plots
     };
 }
 
-class Apple //draws crops
+class Apple //apples class
 {
     constructor (scene, x, y)
     {
@@ -43,7 +43,7 @@ class Apple //draws crops
     };
 }
 
-class Orange //draws crops
+class Orange //oranges class
 {
     constructor (scene, x, y)
     {
@@ -56,7 +56,7 @@ class Orange //draws crops
     };
 }
 
-class Berry //draw berries
+class Berry //berries class
 {
     constructor (scene, x, y)
     {
@@ -69,7 +69,7 @@ class Berry //draw berries
     };
 }
 
-class text
+class text //text class
 {
     constructor(scene, x, y, text)
     {
@@ -110,6 +110,7 @@ function preload()
 
 function init()
 {
+    //initilise fruit counts
     this.appleCount = 0;
     this.orangeCount = 0;
     this.berryCount = 0;
@@ -145,37 +146,41 @@ function create()
         this.plot9
     ];
 
+    
+    // FRUITS WILL BE CREATED WHEN ARROW UP, DOWN AND LEFT ARE PRESSED. 
+    // THIS WORKS DESPITE THE FACT THAT THE FRUITS ARE NOT CREATED IN THE CREATE FUNCTION.
+
     //APPLES
-    this.apple1 = new Apple(this, 50, 100);
-    this.apple2 = new Apple(this, 50, 100);
-    this.apple3 = new Apple(this, 50, 100);
+    // this.apple1 = new Apple(this, 50, 100);
+    // this.apple2 = new Apple(this, 50, 100);
+    // this.apple3 = new Apple(this, 50, 100);
 
-    this.apples = [
-        this.apple1,
-        this.apple2,
-        this.apple3
-    ];
+    // this.apples = [
+    //     this.apple1,
+    //     this.apple2,
+    //     this.apple3
+    // ];
 
-    //ORANGES
-    this.orange1 = new Orange(this, 50, 200);
-    this.orange2 = new Orange(this, 50, 200);
-    this.orange3 = new Orange(this, 50, 200);
+    // //ORANGES
+    // this.orange1 = new Orange(this, 50, 200);
+    // this.orange2 = new Orange(this, 50, 200);
+    // this.orange3 = new Orange(this, 50, 200);
 
-    this.oranges = [
-        this.orange1,
-        this.orange2,
-        this.orange3
-    ];
+    // this.oranges = [
+    //     this.orange1,
+    //     this.orange2,
+    //     this.orange3
+    // ];
 
-    this.berry1 = new Berry(this, 50, 300);
-    this.berry2 = new Berry(this, 50, 300);
-    this.berry3 = new Berry(this, 50, 300);
+    // this.berry1 = new Berry(this, 50, 300);
+    // this.berry2 = new Berry(this, 50, 300);
+    // this.berry3 = new Berry(this, 50, 300);
 
-    this.berries = [
-        this.berry1,
-        this.berry2,
-        this.berry3
-    ];
+    // this.berries = [
+    //     this.berry1,
+    //     this.berry2,
+    //     this.berry3
+    // ];
 
     //TEXT
     this.applesText = new text(this, 700, 150, "0");
