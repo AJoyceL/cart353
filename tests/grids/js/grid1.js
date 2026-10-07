@@ -43,6 +43,16 @@ class Crop //draws crops
     };
 }
 
+class text
+{
+    constructor(scene, x, y, text)
+    {
+        this.scene = scene;
+        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#7e699b" });
+        this.text.setOrigin(.5, .5);
+    }
+}
+
 const config = {
     width: 800,
     height: 400,
@@ -58,6 +68,7 @@ const config = {
     },
     scene: 
     {
+        init: init,
         preload: preload,
         create: create,
         update: update
@@ -69,6 +80,11 @@ const game = new Phaser.Game(config);
 function preload()
 {
 
+}
+
+function init()
+{
+    this.textCount1 = 0;
 }
 
 function create()
@@ -111,6 +127,10 @@ function create()
         this.crop2,
         this.crop3
     ];
+
+    //TEXT
+    this.text1 = new text(this, 700, 250, "0");
+    
 }
 
 function update()
@@ -142,10 +162,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             {
                 return;
             };
-        // if (gameObject.scale < 1.5)
-        //     {
-        //         return;
-        //     }
 
         gameObject.x = pointer.x;
         gameObject.y = pointer.y;
@@ -163,33 +179,27 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                     scale: 1.5,
                     duration: 5000,
                     ease: "Sine.easeInOut",
+
+                    onComplete: () => {
+                        fullyGrown = true;
+
+                        gameObject.on("pointerdown", () => {
+                            gameObject.x = 700;
+                            gameObject.y = 200;
+
+                            gameObject.disableInteractive();
+
+                            // increase text
+                            scene.textCount1 += 1;
+                            scene.text1.text.text = scene.textCount1;
+                        });
+                    }
                 });
 
                 gameObject.x = plot.x;
                 gameObject.y = plot.y;
 
                 planted = true;
-
-                //makes the crop movable after fully grwon
-                if (gameObject.scale >= 1.5) 
-                {
-                    fullyGrown = true;
-                }
-
-                //moves crops to a single location when clicked
-                if (gameObject.scale >= 1.5)
-                {
-                    gameObject.on("pointerdown", () => {
-                        gameObject.x = 700;
-                        gameObject.y = 200;
-                        planted = true;
-                        //make fullyGrown crops unmovable
-                        gameObject.disableInteractive();
-                        // gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
-                        // gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
-                        // gameObject.off(Phaser.Input.Events.POINTER_MOVE, onDrag);
-                    })
-                }
 
                 console.log("crop in");
             };
