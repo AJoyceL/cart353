@@ -30,12 +30,25 @@ class Plot //draws plots
     };
 }
 
-class Crop //draws crops
+class Apple //draws crops
 {
     constructor (scene, x, y)
     {
         this.scene = scene;
         this.circle = scene.add.circle(x, y, 25, 0x70a9ba);
+        this.circle.setInteractive();
+        this.circle.setDepth(3);
+        
+        makeDraggable(this.circle, scene);
+    };
+}
+
+class Orange //draws crops
+{
+    constructor (scene, x, y)
+    {
+        this.scene = scene;
+        this.circle = scene.add.circle(x, y, 25, 0x78f6638);
         this.circle.setInteractive();
         this.circle.setDepth(3);
         
@@ -84,7 +97,8 @@ function preload()
 
 function init()
 {
-    this.textCount1 = 0;
+    this.appleCount = 0;
+    this.orangeCount = 0;
 }
 
 function create()
@@ -117,20 +131,32 @@ function create()
         this.plot9
     ];
 
-    //CROPS
-    this.crop1 = new Crop(this, 50, 100);
-    this.crop2 = new Crop(this, 50, 200);
-    this.crop3 = new Crop(this, 50, 300);
+    //APPLES
+    this.apple1 = new Apple(this, 50, 100);
+    this.apple2 = new Apple(this, 50, 100);
+    this.apple3 = new Apple(this, 50, 100);
 
-    this.crops = [
-        this.crop1,
-        this.crop2,
-        this.crop3
+    this.apples = [
+        this.apple1,
+        this.apple2,
+        this.apple3
+    ];
+
+    //ORANGES
+    this.orange1 = new Orange(this, 50, 200);
+    this.orange2 = new Orange(this, 50, 200);
+    this.orange3 = new Orange(this, 50, 200);
+
+    this.oranges = [
+        this.orange1,
+        this.orange2,
+        this.orange3
     ];
 
     //TEXT
-    this.text1 = new text(this, 700, 250, "0");
-    
+    this.applesText = new text(this, 700, 150, "0");
+    this.orangesText = new text(this, 700, 250, "0");
+
 }
 
 function update()
@@ -183,16 +209,38 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                     onComplete: () => {
                         fullyGrown = true;
 
-                        gameObject.on("pointerdown", () => {
+                        //for apples
+                        if(gameObject.fillColor === 0x70a9ba)
+                        {
+                            gameObject.on("pointerdown", () => {
                             gameObject.x = 700;
-                            gameObject.y = 200;
+                            gameObject.y = 100;
+                            gameObject.setScale(1);
 
                             gameObject.disableInteractive();
 
                             // increase text
-                            scene.textCount1 += 1;
-                            scene.text1.text.text = scene.textCount1;
+                            scene.appleCount += 1;
+                            scene.applesText.text.text = scene.appleCount;
                         });
+                        }
+
+                        //for oranges
+                        if(gameObject.fillColor === 0x78f6638)
+                        {
+                            gameObject.on("pointerdown", () => {
+                            gameObject.x = 700;
+                            gameObject.y = 200;
+                            gameObject.setScale(1);
+
+                            gameObject.disableInteractive();
+
+                            // increase text
+                            scene.orangeCount += 1;
+                            scene.orangesText.text.text = scene.orangeCount;
+                        });
+                        }
+                        
                     }
                 });
 
