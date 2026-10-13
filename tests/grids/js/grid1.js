@@ -7,6 +7,8 @@ class Plot //draws plots
         this.x = x;
         this.y = y;
 
+        this.occupied = false; //plot empty
+
         this.rectangle = scene.add.rectangle(x, y, 100, 100, 0x7d7482);
         this.rectangle.setInteractive();
 
@@ -35,7 +37,7 @@ class Apple //apples class
     constructor (scene, x, y)
     {
         this.scene = scene;
-        this.circle = scene.add.circle(x, y, 25, 0x70a9ba);
+        this.circle = scene.add.circle(x, y, 15, 0x70a9ba);
         this.circle.setInteractive();
         this.circle.setDepth(3);
         
@@ -48,7 +50,7 @@ class Orange //oranges class
     constructor (scene, x, y)
     {
         this.scene = scene;
-        this.circle = scene.add.circle(x, y, 25, 0x78f6638);
+        this.circle = scene.add.circle(x, y, 15, 0x78f6638);
         this.circle.setInteractive();
         this.circle.setDepth(3);
         
@@ -61,7 +63,7 @@ class Berry //berries class
     constructor (scene, x, y)
     {
         this.scene = scene;
-        this.circle = scene.add.circle(x, y, 25, 0x914359);
+        this.circle = scene.add.circle(x, y, 15, 0x914359);
         this.circle.setInteractive();
         this.circle.setDepth(3);
         
@@ -146,42 +148,6 @@ function create()
         this.plot9
     ];
 
-    
-    // FRUITS WILL BE CREATED WHEN ARROW UP, DOWN AND LEFT ARE PRESSED. 
-    // THIS WORKS DESPITE THE FACT THAT THE FRUITS ARE NOT CREATED IN THE CREATE FUNCTION.
-
-    //APPLES
-    // this.apple1 = new Apple(this, 50, 100);
-    // this.apple2 = new Apple(this, 50, 100);
-    // this.apple3 = new Apple(this, 50, 100);
-
-    // this.apples = [
-    //     this.apple1,
-    //     this.apple2,
-    //     this.apple3
-    // ];
-
-    // //ORANGES
-    // this.orange1 = new Orange(this, 50, 200);
-    // this.orange2 = new Orange(this, 50, 200);
-    // this.orange3 = new Orange(this, 50, 200);
-
-    // this.oranges = [
-    //     this.orange1,
-    //     this.orange2,
-    //     this.orange3
-    // ];
-
-    // this.berry1 = new Berry(this, 50, 300);
-    // this.berry2 = new Berry(this, 50, 300);
-    // this.berry3 = new Berry(this, 50, 300);
-
-    // this.berries = [
-    //     this.berry1,
-    //     this.berry2,
-    //     this.berry3
-    // ];
-
     //TEXT
     this.applesText = new text(this, 700, 150, "0");
     this.orangesText = new text(this, 700, 250, "0");
@@ -194,30 +160,33 @@ function create()
 function update()
 {
     //when pressed, create a new fruit and add it to the scene
-    if (Phaser.Input.Keyboard.JustDown(this.arrows.up))
+    if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apple
     {
         this.apple = new Apple(this, 50, 100);
         console.log("buy apple")
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.arrows.down))
+    if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
     {
         this.orange = new Orange(this, 50, 200);
         console.log("buy orange")
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.arrows.left))
+    if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
     {
         this.berry = new Berry(this, 50, 300);
         console.log("buy berry")
     }
 }
 
+
 //ref: https://youtu.be/jWglIBp4usY?si=ewJsWkuTyCx2tdrG
 function makeDraggable(gameObject, scene, enableLogs = false) 
 {
-        let planted = false;
-        let fullyGrown = false;
+    //crop growth variables
+    let growthStage = 0;
+    let planted = false;
+    let fullyGrown = false;
 
     gameObject.setInteractive();
 
@@ -229,102 +198,129 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
     };
 
+    //ONDRAG FUNTION
     function onDrag(pointer) 
     {
         log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`);
 
-        if(planted && !fullyGrown)
-            {
-                return;
-            };
+        // Prevent dragging if the fruit is planted and not fully grown
+        if(planted && !fullyGrown){
+            return;
+        };
 
         gameObject.x = pointer.x;
         gameObject.y = pointer.y;
     }
 
+    //GROW FRUIT FUNCTION
+    function growFruit() {
+        growthStage++;
+
+        //Animate the growth of the fruit by increasing its scale
+        scene.tweens.add({
+            targets: gameObject,
+            scale: gameObject.scale + 0.5,
+            duration: 2000,
+            ease: "Sine.easeInOut",
+
+            onComplete: () => {
+                //If fruit not fully grown, trigger next growth stage (watering crop)
+                if (growthStage < 3) {
+                    gameObject.once("pointerdown", () => {
+                        growFruit();
+                    });
+                } 
+                //If fruit fully grown, harvest crop + update count
+                else {
+                    fullyGrown = true;
+
+                    gameObject.once("pointerdown", () => {
+                        gameObject.setScale(1.5);
+                        gameObject.disableInteractive();
+
+                        // Apples
+                        if (gameObject.fillColor === 0x70a9ba) {
+                            gameObject.setPosition(700, 100);
+                            
+                            //Count
+                            scene.appleCount++;
+                            scene.applesText.text.setText(scene.appleCount);
+                        }
+
+                        // Oranges
+                        if (gameObject.fillColor === 0x78f6638) {
+                            gameObject.setPosition(700, 200);
+
+                            //Count
+                            scene.orangeCount++;
+                            scene.orangesText.text.setText(scene.orangeCount);
+                        }
+
+                        // Berries
+                        if (gameObject.fillColor === 0x914359) {
+                            gameObject.setPosition(700, 300);
+
+                            //Count
+                            scene.berryCount++;
+                            scene.berriesText.text.setText(scene.berryCount);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    //STOPDRAG FUNCTION
     function stopDrag(pointer) 
     {
         log(`[makeDraggable:stopDrag] invoked for game object: ${gameObject.name}`);
 
-        scene.plots.forEach(plot => {
-            if (plot.contains(gameObject.x, gameObject.y))
-            {
-                scene.tweens.add({
-                    targets: gameObject,
-                    scale: 1.5,
-                    duration: 5000,
-                    ease: "Sine.easeInOut",
+        // Find the plot that contains the fruits
+        const plot = scene.plots.find(plot =>
+            plot.contains(gameObject.x, gameObject.y)
+        );
 
-                    onComplete: () => {
-                        fullyGrown = true;
+        // If a plot is found + not occupied, plant the fruit
+        if (plot && !plot.occupied &&!planted)
+        {
+            gameObject.x = plot.x;
+            gameObject.y = plot.y;
 
-                        //for apples
-                        if(gameObject.fillColor === 0x70a9ba)
-                        {
-                            gameObject.on("pointerdown", () => {
-                                gameObject.x = 700;
-                                gameObject.y = 100;
-                                gameObject.setScale(1);
+            plot.occupied = true;
+            planted = true;
+            growthStage = 0;
 
-                                gameObject.disableInteractive();
+            // Start the growth process
+            growFruit();
 
-                                // increase text
-                                scene.appleCount += 1;
-                                scene.applesText.text.text = scene.appleCount;
-                            });
-                        }
-
-                        //for oranges
-                        if(gameObject.fillColor === 0x78f6638)
-                        {
-                            gameObject.on("pointerdown", () => {
-                                gameObject.x = 700;
-                                gameObject.y = 200;
-                                gameObject.setScale(1);
-
-                                gameObject.disableInteractive();
-
-                                // increase text
-                                scene.orangeCount += 1;
-                                scene.orangesText.text.text = scene.orangeCount;
-                            });
-                        }
-                        
-                        //for berries
-                        if(gameObject.fillColor === 0x914359)
-                        {
-                            gameObject.on("pointerdown", () => {
-                                gameObject.x = 700;
-                                gameObject.y = 300;
-                                gameObject.setScale(1);
-
-                                gameObject.disableInteractive();
-
-                                // increase text
-                                scene.berryCount += 1;
-                                scene.berriesText.text.text = scene.berryCount;
-                            });
-                        }
-                    }
-                });
-
-                gameObject.x = plot.x;
-                gameObject.y = plot.y;
-
-                planted = true;
-
-                console.log("crop in");
-            };
-        });
+            console.log("crop in");
+        }
+        // If the plot is occupied, log a message
+        else{
+            console.log("plot occupied");
+        }
 
         gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
         gameObject.off(Phaser.Input.Events.POINTER_MOVE, onDrag);
 
+        // If the fruit is fully grown, allow it to be harvested again
+        if (fullyGrown)
+        {
+            gameObject.on(
+                Phaser.Input.Events.POINTER_DOWN,
+                startDrag
+            );
+        }
     }
 
-    function startDrag(pointer) 
-    {
+    //STARTDRAG FUNCTION
+    function startDrag(pointer) {
+        // Prevent dragging if the fruit is planted and not fully grown
+        if (planted && !fullyGrown) {
+            return;
+        }
+
         log(`[makeDraggable:startDrag] invoked for game object: ${gameObject.name}`);
 
         gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
