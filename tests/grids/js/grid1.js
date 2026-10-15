@@ -162,6 +162,9 @@ function create()
 
     //calls fmailiar into scene
     this.familiar = new Familiar(this, 700, 50);
+
+    //calls magic bar
+    // this.magicBar = new MagicBar(this, 120, 40)
 }
 
 function update(time, delta)
@@ -215,6 +218,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
     };
 
+    //FAMILIAR PLANTING
     gameObject.plantInPlot = function(plot) {
         if(planted || plot.occupied) {
             return false;
@@ -231,7 +235,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
         return true;
     }
-
 
     //ONDRAG FUNTION
     function onDrag(pointer) 
@@ -272,6 +275,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                     gameObject.once("pointerdown", () => {
                         gameObject.setScale(1.5);
                         gameObject.disableInteractive();
+                        scene.magicBar.addPoint();
 
                         // Apples
                         if (gameObject.fillColor === 0x70a9ba) {
@@ -366,5 +370,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
 }
 
-//calls other scripts
-window.Familiar = Familiar;
+// //calls other scripts
+// window.Familiar = Familiar;
+// window.MagicBar = MagicBar;
