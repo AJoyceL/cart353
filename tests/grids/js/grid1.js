@@ -173,8 +173,10 @@ function create()
     this.arrows = this.input.keyboard.createCursorKeys();
 
     //calls fmailiar into scene
-    this.familiar = new Familiar(this, 700, 50);
-
+    if (this.magicCount >= 2){
+        this.familiar = new Familiar(this, 700, 50);
+    }
+    
     //calls magic bar
     // this.magicBar = new MagicBar(this, 120, 40)
 }
@@ -217,6 +219,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     let growthStage = 0;
     let planted = false;
     let fullyGrown = false;
+    let plantedPlot = null;
 
     gameObject.setInteractive();
     gameObject.isPlanted = false;
@@ -288,6 +291,14 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                         gameObject.setScale(1.5);
                         gameObject.disableInteractive();
                         // scene.magicBar.addPoint();
+                        if(plantedPlot) {
+                            plantedPlot.occupied = false;
+                            plantedPlot = null;
+                        }
+                        planted = false;
+                        fullyGrown = false;
+                        gameObject.isPlanted = false;
+                        growthStage = 0;
 
                         //magic bar
                         scene.magicCount++;
@@ -336,33 +347,39 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         );
 
         // If a plot is found + not occupied, plant the fruit
-        if (plot && !plot.occupied &&!planted)
-        {
-            gameObject.x = plot.x;
-            gameObject.y = plot.y;
+        if (!plot) {
+            console.log("Crop was not dropped over a plot.");
+        }
+        else if (plot.occupied) {
+            console.log("This plot is already occupied.");
+        }
+        else if (planted) {
+            console.log("This crop is already planted.");
+        }
+        else {
+            // Snap crop to the centre of the plot
+            gameObject.setPosition(plot.x, plot.y);
 
+            // Mark the plot and crop as planted
+            // Mark the plot and crop as planted
             plot.occupied = true;
+            plantedPlot = plot;
             planted = true;
-            growthStage = 0;
-
-            //for familiar
+            fullyGrown = false;
             gameObject.isPlanted = true;
-            if (scene.familiar && scene.familiar.task && scene.familiar.task.crop === gameObject) {
+
+            growthStage = 0;
+            gameObject.setScale(1);
+            growFruit();
+                        // Cancel the familiar's task if it was targeting this crop
+            if (scene.familiar && scene.familiar.task &&
+                scene.familiar.task.crop === gameObject) {
                 gameObject.isBeingCarried = false;
                 scene.familiar.task = null;
                 scene.familiar.destination();
             }
-
-
-            // Start the growth process
-            growFruit();
-
-            console.log("crop in");
-        }
-        // If the plot is occupied, log a message
-        else{
-            console.log("plot occupied");
-        }
+        }    
+        
 
         gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
@@ -371,10 +388,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         // If the fruit is fully grown, allow it to be harvested again
         if (fullyGrown)
         {
-            gameObject.on(
-                Phaser.Input.Events.POINTER_DOWN,
-                startDrag
-            );
+            gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
         }
     }
 
@@ -397,4 +411,3 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
 // //calls other scripts
 window.Familiar = Familiar;
-// window.MagicBar = MagicBar;
