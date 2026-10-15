@@ -1,3 +1,5 @@
+
+
 //CLASSES
 class Plot //draws plots
 {
@@ -155,9 +157,12 @@ function create()
 
     //KEYBOARD INPUT
     this.arrows = this.input.keyboard.createCursorKeys();
+
+    //calls fmailiar into scene
+    this.familiar = new Familiar(this, 700, 50);
 }
 
-function update()
+function update(time, delta)
 {
     //when pressed, create a new fruit and add it to the scene
     if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apple
@@ -176,6 +181,11 @@ function update()
     {
         this.berry = new Berry(this, 50, 300);
         console.log("buy berry")
+    }
+
+    //updates familiar into scene
+    if(this.familiar){
+        this.familiar.update(time, delta);
     }
 }
 
@@ -330,3 +340,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
     gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
 }
+
+//calls other scripts
+window.Familiar = Familiar;
