@@ -150,6 +150,8 @@ function create()
         this.plot9
     ];
 
+    this.crops = [];
+
     //TEXT
     this.applesText = new text(this, 700, 150, "0");
     this.orangesText = new text(this, 700, 250, "0");
@@ -168,18 +170,21 @@ function update(time, delta)
     if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apple
     {
         this.apple = new Apple(this, 50, 100);
+        this.crops.push(this.apple.circle);
         console.log("buy apple")
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
     {
         this.orange = new Orange(this, 50, 200);
+        this.crops.push(this.orange.circle);
         console.log("buy orange")
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
     {
         this.berry = new Berry(this, 50, 300);
+        this.crops.push(this.berry.circle);
         console.log("buy berry")
     }
 
@@ -199,6 +204,8 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     let fullyGrown = false;
 
     gameObject.setInteractive();
+    gameObject.isPlanted = false;
+    gameObject.isBeingCarried = false;
 
     function log(message)
     {
@@ -207,6 +214,24 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             console.log(message);
         }
     };
+
+    gameObject.plantInPlot = function(plot) {
+        if(planted || plot.occupied) {
+            return false;
+        }
+
+        gameObject.setPosition(plot.x, plot.y);
+
+        plot.occupied = true;
+        planted = true;
+        gameObject.isPlanted = true;
+
+        growthStage = 0;
+        growFruit();
+
+        return true;
+    }
+
 
     //ONDRAG FUNTION
     function onDrag(pointer) 
