@@ -173,9 +173,9 @@ function create()
     this.arrows = this.input.keyboard.createCursorKeys();
 
     //calls fmailiar into scene
-    if (this.magicCount >= 2){
-        this.familiar = new Familiar(this, 700, 50);
-    }
+    // if (this.magicCount >= 2){
+    //     this.familiar = new Familiar(this, 700, 50);
+    // }
     
     //calls magic bar
     // this.magicBar = new MagicBar(this, 120, 40)
@@ -224,6 +224,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     gameObject.setInteractive();
     gameObject.isPlanted = false;
     gameObject.isBeingCarried = false;
+    gameObject.isHarvested = false;
 
     function log(message)
     {
@@ -290,6 +291,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                     gameObject.once("pointerdown", () => {
                         gameObject.setScale(1.5);
                         gameObject.disableInteractive();
+
                         // scene.magicBar.addPoint();
                         if(plantedPlot) {
                             plantedPlot.occupied = false;
@@ -299,10 +301,15 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                         fullyGrown = false;
                         gameObject.isPlanted = false;
                         growthStage = 0;
+                        gameObject.isHarvested = true;
 
                         //magic bar
                         scene.magicCount++;
                         scene.magicBar.text.setText("Magic: " + scene.magicCount);
+
+                        if (scene.magicCount >= 10 && !scene.familiar) {
+                            scene.familiar = new Familiar(scene, 700, 50);
+                        }
 
                         // Apples
                         if (gameObject.fillColor === 0x70a9ba) {
@@ -360,7 +367,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             // Snap crop to the centre of the plot
             gameObject.setPosition(plot.x, plot.y);
 
-            // Mark the plot and crop as planted
             // Mark the plot and crop as planted
             plot.occupied = true;
             plantedPlot = plot;

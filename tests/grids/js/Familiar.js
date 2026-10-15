@@ -18,7 +18,7 @@ class Familiar {
         // Find an unplanted crop and unoccupied plot
         //reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
         const crop = this.scene.crops.find(
-            crop => !crop.isPlanted && !crop.isBeingCarried
+            crop => !crop.isPlanted && !crop.isBeingCarried && !crop.isHarvested
         );
 
         const plot = this.scene.plots.find(
