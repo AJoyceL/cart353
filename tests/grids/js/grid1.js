@@ -83,6 +83,16 @@ class text //text class
     }
 }
 
+class MagicBar{
+    constructor(scene, x, y, text)
+    {
+        this.scene = scene;
+        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#7e699b" });
+        this.text.setOrigin(.5, .5);
+    }
+
+}
+
 const config = {
     width: 800,
     height: 400,
@@ -118,6 +128,7 @@ function init()
     this.appleCount = 0;
     this.orangeCount = 0;
     this.berryCount = 0;
+    this.magicCount = 0;
 }
 
 function create()
@@ -156,6 +167,7 @@ function create()
     this.applesText = new text(this, 700, 150, "0");
     this.orangesText = new text(this, 700, 250, "0");
     this.berriesText = new text(this, 700, 350, "0");
+    this.magicBar = new MagicBar(this, 100, 50, "Magic: 0");
 
     //KEYBOARD INPUT
     this.arrows = this.input.keyboard.createCursorKeys();
@@ -275,7 +287,11 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                     gameObject.once("pointerdown", () => {
                         gameObject.setScale(1.5);
                         gameObject.disableInteractive();
-                        scene.magicBar.addPoint();
+                        // scene.magicBar.addPoint();
+
+                        //magic bar
+                        scene.magicCount++;
+                        scene.magicBar.text.setText("Magic: " + scene.magicCount);
 
                         // Apples
                         if (gameObject.fillColor === 0x70a9ba) {
@@ -329,6 +345,15 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             planted = true;
             growthStage = 0;
 
+            //for familiar
+            gameObject.isPlanted = true;
+            if (scene.familiar && scene.familiar.task && scene.familiar.task.crop === gameObject) {
+                gameObject.isBeingCarried = false;
+                scene.familiar.task = null;
+                scene.familiar.destination();
+            }
+
+
             // Start the growth process
             growFruit();
 
@@ -371,5 +396,5 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 }
 
 // //calls other scripts
-// window.Familiar = Familiar;
+window.Familiar = Familiar;
 // window.MagicBar = MagicBar;
