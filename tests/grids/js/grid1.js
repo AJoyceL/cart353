@@ -174,6 +174,7 @@ function create()
 
     //FAMILIARS
     this.familiars = [];
+    
 
     this.gardenerCreated = false; //calls gardener type
 
@@ -236,22 +237,30 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     };
 
     //FAMILIAR PLANTING
+
     gameObject.plantInPlot = function(plot) {
-        if(planted || plot.occupied) {
+        if (planted || plot.occupied) {
             return false;
         }
 
         gameObject.setPosition(plot.x, plot.y);
 
+        // Record which plot this crop occupies
         plot.occupied = true;
+        plantedPlot = plot;
+
         planted = true;
+        fullyGrown = false;
         gameObject.isPlanted = true;
+        gameObject.isHarvested = false;
 
         growthStage = 0;
+        gameObject.setScale(1);
         growFruit();
 
         return true;
     }
+
 
     //ONDRAG FUNTION
     function onDrag(pointer) 
@@ -293,11 +302,11 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                         gameObject.setScale(1.5);
                         gameObject.disableInteractive();
 
-                        // scene.magicBar.addPoint();
                         if(plantedPlot) {
                             plantedPlot.occupied = false;
                             plantedPlot = null;
                         }
+                    
 
                         planted = false;
                         fullyGrown = false;
@@ -312,15 +321,9 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                         //calls familiar
                         if (scene.magicCount >= 1 && !scene.gardenerCreated) {
                             scene.gardenerCreated = true;
-                            // const gardener = new Familiar(scene, 700, 50, 0x2c2a59, "gardener");
 
                             scene.familiars.push(new Familiar(scene, 700, 50, 0x2c2a59, "gardener"));
                         }
-
-                        // if (scene.magicCount >= 2 && !scene.gardenerCreated) {
-                        //     scene.gardenerCreated = true;
-                        //     scene.familiars.push(gardener);
-                        // }
 
                         // Apples
                         if (gameObject.fillColor === 0x70a9ba) {
@@ -388,7 +391,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             growthStage = 0;
             gameObject.setScale(1);
             growFruit();
-                        // Cancel the familiar1's task if it was targeting this crop
+            // Cancel the familiar1's task if it was targeting this crop
             if (scene.familiar1 && scene.familiar1.task &&
                 scene.familiar1.task.crop === gameObject) {
                 gameObject.isBeingCarried = false;

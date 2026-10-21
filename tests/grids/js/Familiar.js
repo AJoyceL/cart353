@@ -5,7 +5,7 @@ class Familiar {
         this.type = type;
 
         this.circle = scene.add.circle(x, y, 25, color);
-        this.circle.setDepth(3);
+        this.circle.setDepth(10);
 
         this.speed = 60;
         this.targetX = x;
