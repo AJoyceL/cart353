@@ -32,4 +32,4 @@
 // }
 
 
-window.MagicBar = MagicBar;
+// window.MagicBar = MagicBar;

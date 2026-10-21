@@ -1,9 +1,10 @@
 
 class Familiar {
-    constructor(scene, x, y) {
+    constructor(scene, x, y, color, type) {
         this.scene = scene;
+        this.type = type;
 
-        this.circle = scene.add.circle(x, y, 25, 0x2c2a59);
+        this.circle = scene.add.circle(x, y, 25, color);
         this.circle.setDepth(3);
 
         this.speed = 60;
@@ -11,12 +12,22 @@ class Familiar {
         this.targetY = y;
         this.task = null;
 
-        this.destination();
+        if(this.type === "gardener") {
+            this.destination();
+        }
+        else {
+            this.wander();
+        }
+
     }
 
     destination() {
         // Find an unplanted crop and unoccupied plot
         //reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+        if (this.type !== "gardener") {
+            return
+        }
+
         const crop = this.scene.crops.find(
             crop => !crop.isPlanted && !crop.isBeingCarried && !crop.isHarvested
         );
@@ -42,14 +53,40 @@ class Familiar {
         else {
             // Wander around when no crops
             this.task = null;
+            this.wander();
 
-            //random direction
-            this.targetX = Phaser.Math.Between(50, 750);
-            this.targetY = Phaser.Math.Between(50, 350);
+            // //random direction
+            // this.targetX = Phaser.Math.Between(50, 750);
+            // this.targetY = Phaser.Math.Between(50, 350);
 
-            //monvement delay
-            this.scene.time.delayedCall(Phaser.Math.Between(1500, 3000), () => this.destination());
+            // //monvement delay
+            // this.scene.time.delayedCall(Phaser.Math.Between(1500, 3000), () => this.destination());
         }
+    }
+
+    //Wander when no crops
+    wander() {
+        this.task = null;
+
+        //random direction
+        this.targetX = Phaser.Math.Between(50, 750);
+        this.targetY = Phaser.Math.Between(50, 350);
+
+        //monvement delay
+        this.scene.time.delayedCall(Phaser.Math.Between(1500, 3000), () => {
+            if (!this.circle.active) {
+                return;
+            }
+
+            if (this.type === "gardener") {
+                this.destination();
+            }
+
+            else {
+                this.wander();
+            }
+        });
+
     }
 
     update(time, delta) {
@@ -73,12 +110,12 @@ class Familiar {
             }
         }
 
-        //stop task if no crop available
-        if (!this.task) {
+        //wandering familiars
+        if (this.type !== "gardener" || !this.task) {
             return;
-        }    
+        }
 
-        // Reached the crop: carry it towards the plot
+        //garderner reached crops
         if (this.task.phase === "crop" && d <= 3) {
             this.task.phase = "plot";
             this.targetX = this.task.plot.x;

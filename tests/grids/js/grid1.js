@@ -172,13 +172,12 @@ function create()
     //KEYBOARD INPUT
     this.arrows = this.input.keyboard.createCursorKeys();
 
-    //calls fmailiar into scene
-    // if (this.magicCount >= 2){
-    //     this.familiar = new Familiar(this, 700, 50);
-    // }
-    
-    //calls magic bar
-    // this.magicBar = new MagicBar(this, 120, 40)
+    //FAMILIARS
+    this.familiars = [];
+
+    this.gardenerCreated = false; //calls gardener type
+
+    this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wander"));
 }
 
 function update(time, delta)
@@ -205,9 +204,11 @@ function update(time, delta)
         console.log("buy berry")
     }
 
-    //updates familiar into scene
-    if(this.familiar){
-        this.familiar.update(time, delta);
+    // Update all familiars
+    if (this.familiars) {
+        this.familiars.forEach(familiar => {
+            familiar.update(time, delta);
+        });
     }
 }
 
@@ -297,6 +298,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                             plantedPlot.occupied = false;
                             plantedPlot = null;
                         }
+
                         planted = false;
                         fullyGrown = false;
                         gameObject.isPlanted = false;
@@ -307,9 +309,18 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                         scene.magicCount++;
                         scene.magicBar.text.setText("Magic: " + scene.magicCount);
 
-                        if (scene.magicCount >= 10 && !scene.familiar) {
-                            scene.familiar = new Familiar(scene, 700, 50);
+                        //calls familiar
+                        if (scene.magicCount >= 1 && !scene.gardenerCreated) {
+                            scene.gardenerCreated = true;
+                            // const gardener = new Familiar(scene, 700, 50, 0x2c2a59, "gardener");
+
+                            scene.familiars.push(new Familiar(scene, 700, 50, 0x2c2a59, "gardener"));
                         }
+
+                        // if (scene.magicCount >= 2 && !scene.gardenerCreated) {
+                        //     scene.gardenerCreated = true;
+                        //     scene.familiars.push(gardener);
+                        // }
 
                         // Apples
                         if (gameObject.fillColor === 0x70a9ba) {
@@ -377,12 +388,12 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             growthStage = 0;
             gameObject.setScale(1);
             growFruit();
-                        // Cancel the familiar's task if it was targeting this crop
-            if (scene.familiar && scene.familiar.task &&
-                scene.familiar.task.crop === gameObject) {
+                        // Cancel the familiar1's task if it was targeting this crop
+            if (scene.familiar1 && scene.familiar1.task &&
+                scene.familiar1.task.crop === gameObject) {
                 gameObject.isBeingCarried = false;
-                scene.familiar.task = null;
-                scene.familiar.destination();
+                scene.familiar1.task = null;
+                scene.familiar1.destination();
             }
         }    
         
