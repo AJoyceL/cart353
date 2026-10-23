@@ -176,9 +176,11 @@ function create()
     this.familiars = [];
     
 
-    this.gardenerCreated = false; //calls gardener type
+    this.planterCreated = false; //calls planter type
 
-    this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wander"));
+    this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer"));
+
+    this.watererCreated = false;
 }
 
 function update(time, delta)
@@ -218,15 +220,18 @@ function update(time, delta)
 function makeDraggable(gameObject, scene, enableLogs = false) 
 {
     //crop growth variables
-    let growthStage = 0;
-    let planted = false;
-    let fullyGrown = false;
-    let plantedPlot = null;
+    let growthStage = 0; //crop size
+    let planted = false; //crop movable
+    let fullyGrown = false; //crop harvested
+    let plantedPlot = null; //plot occupied
+    let familiarWatering = false; //familiar watering
 
     gameObject.setInteractive();
     gameObject.isPlanted = false;
     gameObject.isBeingCarried = false;
     gameObject.isHarvested = false;
+    gameObject.isFullyGrown = false;
+    gameObject.harvestCrop = harvestCrop;
 
     function log(message)
     {
@@ -237,7 +242,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     };
 
     //FAMILIAR PLANTING
-
     gameObject.plantInPlot = function(plot) {
         if (planted || plot.occupied) {
             return false;
@@ -253,6 +257,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         fullyGrown = false;
         gameObject.isPlanted = true;
         gameObject.isHarvested = false;
+        gameObject.isFullyGrown = false;
 
         growthStage = 0;
         gameObject.setScale(1);
@@ -261,6 +266,73 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         return true;
     }
 
+    //FAMILIAR WATERING
+    gameObject.waterCrop = function() {
+        if (!planted || fullyGrown || familiarWatering) {
+            return false;
+        }
+
+        familiarWatering = true;
+        growFruit();
+
+        return true;
+    };
+
+    function harvestCrop() {
+        if (!fullyGrown) {
+            return;
+        }
+
+        gameObject.setScale(1.5);
+        gameObject.disableInteractive();
+
+        if (plantedPlot) {
+            plantedPlot.occupied = false;
+            plantedPlot = null;
+        }
+
+        planted = false;
+        fullyGrown = false;
+        gameObject.isPlanted = false;
+        gameObject.isFullyGrown = false;
+        growthStage = 0;
+        gameObject.isHarvested = true;
+
+        // Update magic
+        scene.magicCount++;
+        scene.magicBar.text.setText("Magic: " + scene.magicCount);
+
+        // Unlock planter
+        if (scene.magicCount >= 1 && !scene.planterCreated) {
+            scene.planterCreated = true;
+            scene.familiars.push(new Familiar(scene, 700, 50, 0x2c2a59, "planter"));
+        }
+
+        // Unlock only one waterer after 2 harvests
+        if (scene.magicCount >= 2 && !scene.watererCreated) {
+            scene.watererCreated = true;
+            scene.familiars.push(new Familiar(scene, 700, 50, 0xa1f7e3, "waterer"));
+        }
+
+        // Add harvested crop to inventory
+        if (gameObject.fillColor === 0x70a9ba) {
+            gameObject.setPosition(700, 100);
+            scene.appleCount++;
+            scene.applesText.text.setText(scene.appleCount);
+        }
+        else if (gameObject.fillColor === 0x78f6638) {
+            gameObject.setPosition(700, 200);
+            scene.orangeCount++;
+            scene.orangesText.text.setText(scene.orangeCount);
+        }
+        else if (gameObject.fillColor === 0x914359) {
+            gameObject.setPosition(700, 300);
+            scene.berryCount++;
+            scene.berriesText.text.setText(scene.berryCount);
+        }
+
+        console.log("Crop harvested!");
+    }
 
     //ONDRAG FUNTION
     function onDrag(pointer) 
@@ -276,6 +348,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         gameObject.y = pointer.y;
     }
 
+    
     //GROW FRUIT FUNCTION
     function growFruit() {
         growthStage++;
@@ -288,6 +361,8 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             ease: "Sine.easeInOut",
 
             onComplete: () => {
+                familiarWatering = false;
+
                 //If fruit not fully grown, trigger next growth stage (watering crop)
                 if (growthStage < 3) {
                     gameObject.once("pointerdown", () => {
@@ -297,65 +372,15 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                 //If fruit fully grown, harvest crop + update count
                 else {
                     fullyGrown = true;
+                    gameObject.isFullyGrown = true;
 
-                    gameObject.once("pointerdown", () => {
-                        gameObject.setScale(1.5);
-                        gameObject.disableInteractive();
-
-                        if(plantedPlot) {
-                            plantedPlot.occupied = false;
-                            plantedPlot = null;
-                        }
-                    
-
-                        planted = false;
-                        fullyGrown = false;
-                        gameObject.isPlanted = false;
-                        growthStage = 0;
-                        gameObject.isHarvested = true;
-
-                        //magic bar
-                        scene.magicCount++;
-                        scene.magicBar.text.setText("Magic: " + scene.magicCount);
-
-                        //calls familiar
-                        if (scene.magicCount >= 1 && !scene.gardenerCreated) {
-                            scene.gardenerCreated = true;
-
-                            scene.familiars.push(new Familiar(scene, 700, 50, 0x2c2a59, "gardener"));
-                        }
-
-                        // Apples
-                        if (gameObject.fillColor === 0x70a9ba) {
-                            gameObject.setPosition(700, 100);
-                            
-                            //Count
-                            scene.appleCount++;
-                            scene.applesText.text.setText(scene.appleCount);
-                        }
-
-                        // Oranges
-                        if (gameObject.fillColor === 0x78f6638) {
-                            gameObject.setPosition(700, 200);
-
-                            //Count
-                            scene.orangeCount++;
-                            scene.orangesText.text.setText(scene.orangeCount);
-                        }
-
-                        // Berries
-                        if (gameObject.fillColor === 0x914359) {
-                            gameObject.setPosition(700, 300);
-
-                            //Count
-                            scene.berryCount++;
-                            scene.berriesText.text.setText(scene.berryCount);
-                        }
-                    });
+                    gameObject.once("pointerdown", harvestCrop);
                 }
             }
         });
     }
+
+    
 
     //STOPDRAG FUNCTION
     function stopDrag(pointer) 
