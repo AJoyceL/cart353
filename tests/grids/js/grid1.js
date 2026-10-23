@@ -1,28 +1,28 @@
-
-
 //CLASSES
-class Plot //draws plots
+class Plot //draws garden plot
 {
     constructor(scene, x, y)
     {
-        this.scene = scene;
-        this.x = x;
-        this.y = y;
+        this.scene = scene; 
+        this.x = x; 
+        this.y = y; 
 
-        this.occupied = false; //plot empty
+        this.occupied = false; //tracks occupancy
 
-        this.rectangle = scene.add.rectangle(x, y, 100, 100, 0x7d7482);
+        this.rectangle = scene.add.rectangle(x, y, 100, 100, 0x7d7482); //creates rec
         this.rectangle.setInteractive();
 
         //MOUSE EVENTS
+        //ref: https://docs.phaser.io/api-documentation/namespace/input-events
         this.rectangle.on("pointerover", () => {
-            this.rectangle.setFillStyle(0x574f5c);
+            this.rectangle.setFillStyle(0x574f5c); //darken when hovering
         });
         this.rectangle.on("pointerout", () => {
-            this.rectangle.setFillStyle(0x7d7482);
+            this.rectangle.setFillStyle(0x7d7482); //return colour
         });
     };
 
+    //check center of plot 
     contains(x, y)
     {
         return (
@@ -34,7 +34,7 @@ class Plot //draws plots
     };
 }
 
-class Apple //apples class
+class Apple //draws apples
 {
     constructor (scene, x, y)
     {
@@ -43,11 +43,11 @@ class Apple //apples class
         this.circle.setInteractive();
         this.circle.setDepth(3);
         
-        makeDraggable(this.circle, scene);
+        makeDraggable(this.circle, scene); //allow apple to be dragged
     };
 }
 
-class Orange //oranges class
+class Orange //draws oranges
 {
     constructor (scene, x, y)
     {
@@ -56,11 +56,11 @@ class Orange //oranges class
         this.circle.setInteractive();
         this.circle.setDepth(3);
         
-        makeDraggable(this.circle, scene);
+        makeDraggable(this.circle, scene); //allow orange to be dragged
     };
 }
 
-class Berry //berries class
+class Berry //draws berry
 {
     constructor (scene, x, y)
     {
@@ -69,11 +69,11 @@ class Berry //berries class
         this.circle.setInteractive();
         this.circle.setDepth(3);
         
-        makeDraggable(this.circle, scene);
+        makeDraggable(this.circle, scene); //allow berry to be dragged
     };
 }
 
-class text //text class
+class text //draws text
 {
     constructor(scene, x, y, text)
     {
@@ -83,7 +83,7 @@ class text //text class
     }
 }
 
-class MagicBar{
+class MagicBar{ //draws magic count
     constructor(scene, x, y, text)
     {
         this.scene = scene;
@@ -93,6 +93,8 @@ class MagicBar{
 
 }
 
+
+//PHASER GAME CONFIGURATION
 const config = {
     width: 800,
     height: 400,
@@ -115,16 +117,16 @@ const config = {
     }
 };
 
-const game = new Phaser.Game(config);
+const game = new Phaser.Game(config); //create Phaser game
 
 function preload()
 {
-
+    //will add
 }
 
 function init()
 {
-    //initilise fruit counts
+    //initilise text counts
     this.appleCount = 0;
     this.orangeCount = 0;
     this.berryCount = 0;
@@ -134,10 +136,11 @@ function init()
 function create()
 {
     //GRID
-    this.grid = this.add.grid(400, 200, 300, 300, 100, 100, 0x543f13, 0, 0x574f5c, 1);
-    this.grid.setDepth(2); //z-index
+    this.grid = this.add.grid(400, 200, 300, 300, 100, 100, 0x543f13, 0, 0x574f5c, 1); //draws grid
+    this.grid.setDepth(2);
 
     //PLOT
+    //draws 9 plot
     this.plot1 = new Plot(this, 300, 200);
     this.plot2 = new Plot(this, 400, 200);
     this.plot3 = new Plot(this, 500, 200);
@@ -148,7 +151,7 @@ function create()
     this.plot8 = new Plot(this, 400, 300);
     this.plot9 = new Plot(this, 500, 300);
 
-    //plot arrays
+    //store plots in array
     this.plots = [
         this.plot1,
         this.plot2,
@@ -161,31 +164,34 @@ function create()
         this.plot9
     ];
 
-    this.crops = [];
+    //CROP
+    this.crops = []; //store crop in array
 
     //TEXT
+    //draws text
     this.applesText = new text(this, 700, 150, "0");
     this.orangesText = new text(this, 700, 250, "0");
     this.berriesText = new text(this, 700, 350, "0");
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0");
 
     //KEYBOARD INPUT
+    //ref: https://docs.phaser.io/api-documentation/function/input
     this.arrows = this.input.keyboard.createCursorKeys();
 
     //FAMILIARS
-    this.familiars = [];
+    this.familiars = []; //store familiars in array
     
+    this.planterCreated = false; //track type
+    this.watererCreated = false; //track type
 
-    this.planterCreated = false; //calls planter type
-
-    this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer"));
-
-    this.watererCreated = false;
+    this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer")); //draws wandering familiar
 }
 
 function update(time, delta)
 {
-    //when pressed, create a new fruit and add it to the scene
+    //KEYBOARD CONTROLS
+    //buys fruits (temporary)
+    //ref: https://docs.phaser.io/api-documentation/function/input
     if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apple
     {
         this.apple = new Apple(this, 50, 100);
@@ -207,7 +213,8 @@ function update(time, delta)
         console.log("buy berry")
     }
 
-    // Update all familiars
+    //FAMILIAR UPDATES
+    //calls familiars
     if (this.familiars) {
         this.familiars.forEach(familiar => {
             familiar.update(time, delta);
@@ -215,7 +222,7 @@ function update(time, delta)
     }
 }
 
-
+//DRAGGING + CROP BEHAVIOUR
 //ref: https://youtu.be/jWglIBp4usY?si=ewJsWkuTyCx2tdrG
 function makeDraggable(gameObject, scene, enableLogs = false) 
 {
@@ -227,12 +234,15 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     let familiarWatering = false; //familiar watering
 
     gameObject.setInteractive();
+
+    //public state for familiars to check
     gameObject.isPlanted = false;
     gameObject.isBeingCarried = false;
     gameObject.isHarvested = false;
     gameObject.isFullyGrown = false;
-    gameObject.harvestCrop = harvestCrop;
+    gameObject.harvestCrop = harvestCrop; //calls harvesting function
 
+    //DEBUG
     function log(message)
     {
         if (enableLogs)
@@ -241,24 +251,27 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
     };
 
-    //FAMILIAR PLANTING
+    //FAMILIAR PLANTING FUNCTION
     gameObject.plantInPlot = function(plot) {
+        //stop if plot occupied
         if (planted || plot.occupied) {
             return false;
         }
 
-        gameObject.setPosition(plot.x, plot.y);
+        gameObject.setPosition(plot.x, plot.y); //move seed to center
 
-        // Record which plot this crop occupies
+        //record which plot this crop occupies
         plot.occupied = true;
         plantedPlot = plot;
 
+        //update crop
         planted = true;
         fullyGrown = false;
         gameObject.isPlanted = true;
         gameObject.isHarvested = false;
         gameObject.isFullyGrown = false;
 
+        //reset harvested crop
         growthStage = 0;
         gameObject.setScale(1);
         growFruit();
@@ -266,8 +279,9 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         return true;
     }
 
-    //FAMILIAR WATERING
+    //FAMILIAR WATERING FUNCTION
     gameObject.waterCrop = function() {
+        //stop if no planted crop
         if (!planted || fullyGrown || familiarWatering) {
             return false;
         }
@@ -278,19 +292,23 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         return true;
     };
 
+    //HARVESTING FUNCTION
     function harvestCrop() {
+        //stop harvesting until complete
         if (!fullyGrown) {
             return;
         }
 
-        gameObject.setScale(1.5);
+        gameObject.setScale(1.5); //grow crop
         gameObject.disableInteractive();
 
+        //free plot after harvesting
         if (plantedPlot) {
             plantedPlot.occupied = false;
             plantedPlot = null;
         }
 
+        //reset states
         planted = false;
         fullyGrown = false;
         gameObject.isPlanted = false;
@@ -298,23 +316,23 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         growthStage = 0;
         gameObject.isHarvested = true;
 
-        // Update magic
+        //UPDATE MAGIC
         scene.magicCount++;
         scene.magicBar.text.setText("Magic: " + scene.magicCount);
 
-        // Unlock planter
+        //calls planter familiar
         if (scene.magicCount >= 1 && !scene.planterCreated) {
             scene.planterCreated = true;
             scene.familiars.push(new Familiar(scene, 700, 50, 0x2c2a59, "planter"));
         }
 
-        // Unlock only one waterer after 2 harvests
+        //calls waterer familiar
         if (scene.magicCount >= 2 && !scene.watererCreated) {
             scene.watererCreated = true;
             scene.familiars.push(new Familiar(scene, 700, 50, 0xa1f7e3, "waterer"));
         }
 
-        // Add harvested crop to inventory
+        //HARVESTING + INCREASE COUNT
         if (gameObject.fillColor === 0x70a9ba) {
             gameObject.setPosition(700, 100);
             scene.appleCount++;
@@ -331,7 +349,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             scene.berriesText.text.setText(scene.berryCount);
         }
 
-        console.log("Crop harvested!");
+        console.log("Crop harvested!"); //debug
     }
 
     //ONDRAG FUNTION
@@ -339,41 +357,43 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     {
         log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`);
 
-        // Prevent dragging if the fruit is planted and not fully grown
+        //stop drag if planted and fully grown
         if(planted && !fullyGrown){
             return;
         };
 
+        //follow pointer position
         gameObject.x = pointer.x;
         gameObject.y = pointer.y;
     }
 
     
-    //GROW FRUIT FUNCTION
+    //GROW FRUIT
     function growFruit() {
-        growthStage++;
+        growthStage++; //advance crop size
 
-        //Animate the growth of the fruit by increasing its scale
+        //animate growth
+        //ref:  https://docs.phaser.io/api-documentation/class/tweens-tweenmanager
         scene.tweens.add({
             targets: gameObject,
             scale: gameObject.scale + 0.5,
             duration: 2000,
             ease: "Sine.easeInOut",
 
+            //run when complete
             onComplete: () => {
                 familiarWatering = false;
 
-                //If fruit not fully grown, trigger next growth stage (watering crop)
+                //trigger watering 
                 if (growthStage < 3) {
                     gameObject.once("pointerdown", () => {
                         growFruit();
                     });
                 } 
-                //If fruit fully grown, harvest crop + update count
+                //trigger harvesting when fully grown
                 else {
                     fullyGrown = true;
                     gameObject.isFullyGrown = true;
-
                     gameObject.once("pointerdown", harvestCrop);
                 }
             }
@@ -387,12 +407,14 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     {
         log(`[makeDraggable:stopDrag] invoked for game object: ${gameObject.name}`);
 
-        // Find the plot that contains the fruits
+        //find plot containing crop
+        //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
         const plot = scene.plots.find(plot =>
             plot.contains(gameObject.x, gameObject.y)
         );
 
-        // If a plot is found + not occupied, plant the fruit
+        //DEBUG 
+        //check plot state
         if (!plot) {
             console.log("Crop was not dropped over a plot.");
         }
@@ -403,20 +425,22 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             console.log("This crop is already planted.");
         }
         else {
-            // Snap crop to the centre of the plot
+            //snap seed to center
             gameObject.setPosition(plot.x, plot.y);
 
-            // Mark the plot and crop as planted
+            //record state
             plot.occupied = true;
             plantedPlot = plot;
             planted = true;
             fullyGrown = false;
             gameObject.isPlanted = true;
 
+            //reset size + start animation
             growthStage = 0;
             gameObject.setScale(1);
-            growFruit();
-            // Cancel the familiar1's task if it was targeting this crop
+            growFruit(); //calls grow funtion
+
+            //stop planter from picking planted seed
             if (scene.familiar1 && scene.familiar1.task &&
                 scene.familiar1.task.crop === gameObject) {
                 gameObject.isBeingCarried = false;
@@ -425,12 +449,12 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             }
         }    
         
-
+        //interactions
         gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.off(Phaser.Input.Events.POINTER_UP, stopDrag);
         gameObject.off(Phaser.Input.Events.POINTER_MOVE, onDrag);
 
-        // If the fruit is fully grown, allow it to be harvested again
+        //allow harvesting fully grown fruit
         if (fullyGrown)
         {
             gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
@@ -439,20 +463,21 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
     //STARTDRAG FUNCTION
     function startDrag(pointer) {
-        // Prevent dragging if the fruit is planted and not fully grown
+        //stop when planted + fully grown
         if (planted && !fullyGrown) {
             return;
         }
 
         log(`[makeDraggable:startDrag] invoked for game object: ${gameObject.name}`);
 
+        //interactions
         gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
         gameObject.on(Phaser.Input.Events.POINTER_UP, stopDrag);
         gameObject.on(Phaser.Input.Events.POINTER_MOVE, onDrag);
     }
 
-    gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag);
+    gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag); //listens for clicks
 }
 
-// //calls other scripts
+//CLASS SCRIPTS
 window.Familiar = Familiar;
