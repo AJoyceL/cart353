@@ -78,8 +78,9 @@ class text //draws text
     constructor(scene, x, y, text)
     {
         this.scene = scene;
-        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#7e699b" });
+        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#1f1a25" });
         this.text.setOrigin(.5, .5);
+        this.text.setDepth(9);
     }
 }
 
@@ -87,17 +88,16 @@ class MagicBar{ //draws magic count
     constructor(scene, x, y, text)
     {
         this.scene = scene;
-        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#7e699b" });
+        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#c9b5e5" });
         this.text.setOrigin(.5, .5);
     }
 
 }
 
-
 //PHASER GAME CONFIGURATION
 const config = {
-    width: 800,
-    height: 400,
+    width: 960,
+    height: 540,
     type: Phaser.AUTO,
     physics:
     {
@@ -169,9 +169,9 @@ function create()
 
     //TEXT
     //draws text
-    this.applesText = new text(this, 700, 150, "0");
-    this.orangesText = new text(this, 700, 250, "0");
-    this.berriesText = new text(this, 700, 350, "0");
+    this.applesText = new text(this, 625, 500, "0");
+    this.orangesText = new text(this, 775, 500, "0");
+    this.berriesText = new text(this, 925, 500, "0");
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0");
 
     //KEYBOARD INPUT
@@ -185,6 +185,12 @@ function create()
     this.watererCreated = false; //track type
 
     this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer")); //draws wandering familiar
+
+    //Inventory
+    this.inventory = [];//inventory array
+
+    this.inventory.push (new Inventory(this, 0, 400, 960, 150)); //draws inventory
+
 }
 
 function update(time, delta)
@@ -334,17 +340,17 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
         //HARVESTING + INCREASE COUNT
         if (gameObject.fillColor === 0x70a9ba) {
-            gameObject.setPosition(700, 100);
+            gameObject.setPosition(600, 4);
             scene.appleCount++;
             scene.applesText.text.setText(scene.appleCount);
         }
         else if (gameObject.fillColor === 0x78f6638) {
-            gameObject.setPosition(700, 200);
+            gameObject.setPosition(750, 4);
             scene.orangeCount++;
             scene.orangesText.text.setText(scene.orangeCount);
         }
         else if (gameObject.fillColor === 0x914359) {
-            gameObject.setPosition(700, 300);
+            gameObject.setPosition(900, 4);
             scene.berryCount++;
             scene.berriesText.text.setText(scene.berryCount);
         }
@@ -480,4 +486,5 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 }
 
 //CLASS SCRIPTS
-window.Familiar = Familiar;
+window.Familiar = Familiar; //familiar
+// window.Inventory = Inventory; //inventory

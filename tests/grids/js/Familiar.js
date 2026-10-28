@@ -94,7 +94,7 @@ class Familiar {
 
         //random direction
         //ref: https://docs.phaser.io/phaser/concepts/math
-        this.targetX = Phaser.Math.Between(50, 750);
+        this.targetX = Phaser.Math.Between(50, 910);
         this.targetY = Phaser.Math.Between(50, 350);
 
         //monvement delay
