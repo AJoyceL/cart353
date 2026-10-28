@@ -97,6 +97,15 @@ class MagicBar{ //draws magic count
 
 }
 
+class Wallet{
+    constructor(scene, x, y, text) 
+    {
+        this.scene = scene;
+        this.text = scene.add.text(x, y, text, {fontSize: "32px", fill: "#c9b5e5"});
+        this.text.setOrigin(.5, .5);
+    }
+}
+
 //PHASER GAME CONFIGURATION
 const config = {
     width: 960,
@@ -137,7 +146,10 @@ function init()
     this.appleCount = 0;
     this.orangeCount = 0;
     this.berryCount = 0;
-    this.magicCount = 0;
+
+    this.magicCount = 0; //magic level
+
+    this.money = 0;
 }
 
 function create()
@@ -181,7 +193,10 @@ function create()
     this.applesText = new text(this, 625, 500, "0");
     this.orangesText = new text(this, 775, 500, "0");
     this.berriesText = new text(this, 925, 500, "0");
-    this.magicBar = new MagicBar(this, 100, 50, "Magic: 0");
+
+    this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level
+
+    this.wallet = new Wallet(this, 900, 50, "$"); //cash
 
     //KEYBOARD INPUT
     //ref: https://docs.phaser.io/api-documentation/function/input
@@ -211,11 +226,15 @@ function update(time, delta)
     //KEYBOARD CONTROLS
     //buys fruits (temporary)
     //ref: https://docs.phaser.io/api-documentation/function/input
-    if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apple
+    if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apples
     {
         this.apple = new Apple(this, 50, 100);
         this.crops.push(this.apple.circle);
         console.log("buy apple")
+
+        //spend money
+        this.money -= 5;
+        this.wallet.text.setText(this.money + "$");
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
@@ -223,13 +242,21 @@ function update(time, delta)
         this.orange = new Orange(this, 50, 200);
         this.crops.push(this.orange.circle);
         console.log("buy orange")
+                
+        //spend money
+        this.money -= 8;
+        this.wallet.text.setText(this.money + "$");
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
     {
         this.berry = new Berry(this, 50, 300);
         this.crops.push(this.berry.circle);
-        console.log("buy berry")
+        console.log("buy berry")        
+        
+        //spend money
+        this.money -= 15;
+        this.wallet.text.setText(this.money + "$");
     }
 
     //FAMILIAR UPDATES
