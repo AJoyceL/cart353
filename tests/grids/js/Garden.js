@@ -1,3 +1,6 @@
+// //GAME SCENES
+import Shop from "./scene/Shop.js";
+
 //CLASSES
 class Plot //draws garden plot
 {
@@ -109,12 +112,16 @@ const config = {
         }
     },
     scene: 
-    {
-        init: init,
-        preload: preload,
-        create: create,
-        update: update
-    }
+    [
+        {
+            key: "Garden",
+            init: init,
+            preload: preload,
+            create: create,
+            update: update, 
+        },
+        Shop
+    ]
 };
 
 const game = new Phaser.Game(config); //create Phaser game
@@ -136,20 +143,22 @@ function init()
 function create()
 {
     //GRID
-    this.grid = this.add.grid(400, 200, 300, 300, 100, 100, 0x543f13, 0, 0x574f5c, 1); //draws grid
+    this.grid = this.add.grid(480, 200, 300, 300, 100, 100, 0x543f13, 0, 0x574f5c, 1); //draws grid
     this.grid.setDepth(2);
 
     //PLOT
     //draws 9 plot
-    this.plot1 = new Plot(this, 300, 200);
-    this.plot2 = new Plot(this, 400, 200);
-    this.plot3 = new Plot(this, 500, 200);
-    this.plot4 = new Plot(this, 300, 100);
-    this.plot5 = new Plot(this, 400, 100);
-    this.plot6 = new Plot(this, 500, 100);
-    this.plot7 = new Plot(this, 300, 300);
-    this.plot8 = new Plot(this, 400, 300);
-    this.plot9 = new Plot(this, 500, 300);
+    this.plot1 = new Plot(this, 380, 200);
+    this.plot2 = new Plot(this, 480, 200);
+    this.plot3 = new Plot(this, 580, 200);
+
+    this.plot4 = new Plot(this, 380, 100);
+    this.plot5 = new Plot(this, 480, 100);
+    this.plot6 = new Plot(this, 580, 100);
+
+    this.plot7 = new Plot(this, 380, 300);
+    this.plot8 = new Plot(this, 480, 300);
+    this.plot9 = new Plot(this, 580, 300);
 
     //store plots in array
     this.plots = [
@@ -186,10 +195,14 @@ function create()
 
     this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer")); //draws wandering familiar
 
-    //Inventory
+    //INVENTORY
     this.inventory = [];//inventory array
-
     this.inventory.push (new Inventory(this, 0, 400, 960, 150)); //draws inventory
+
+    //BUTTONS
+    this.buttons = [];
+    this.buttons.push (new Button(this, -20, 325, 150, 50, "shop"));
+
 
 }
 
@@ -487,4 +500,3 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
 //CLASS SCRIPTS
 window.Familiar = Familiar; //familiar
-// window.Inventory = Inventory; //inventory
