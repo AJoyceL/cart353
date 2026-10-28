@@ -1,14 +1,14 @@
 class Button
 {
     //will have to change for an img or sprite
-    constructor(scene, x, y, w, h, type)
+    constructor(scene, x, y, w, h, color, type)
     {
         this.scene = scene;
         this.type = type;
 
         this.rect = scene.add.graphics();
         this.rect.fillRoundedRect(x, y, w, h, 20);
-        this.rect.fillStyle(0xe9e1f2, 1);
+        this.rect.fillStyle(color, 1);
         this.rect.setDepth(20);
         
         //Interactible zone
@@ -25,7 +25,7 @@ class Button
 
         this.zone.on("pointerout", () => {
             this.rect.clear();
-            this.rect.fillStyle(0xe9e1f2, 1);
+            this.rect.fillStyle(color, 1);
             this.rect.fillRoundedRect(x, y, w, h, 20);
         });
 
@@ -39,7 +39,7 @@ class Button
     ShopBtn()
     {
         // switch to the Shop scene
-        this.scene.scene.start("Shop");
+        window.location.href = "shop.html";
     }
 }
 

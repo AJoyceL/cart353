@@ -121,16 +121,14 @@ const config = {
         }
     },
     scene: 
-    [
-        {
-            key: "Garden",
-            init: init,
-            preload: preload,
-            create: create,
-            update: update, 
-        },
-        Shop
-    ]
+    {
+        key: "Garden",
+        init: init,
+        preload: preload,
+        create: create,
+        update: update, 
+    },
+
 };
 
 const game = new Phaser.Game(config); //create Phaser game
@@ -216,7 +214,7 @@ function create()
 
     //BUTTONS
     this.buttons = [];
-    this.buttons.push (new Button(this, -20, 325, 150, 50, "shop"));
+    this.buttons.push (new Button(this, -20, 325, 150, 50, 0xe9e1f2, "shop"));
 
 
 }
