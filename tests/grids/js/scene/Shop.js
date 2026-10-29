@@ -1,4 +1,5 @@
 import Button from "../Button.js";
+import Wallet from "../Buying.js";
 
 export default class Shop extends Phaser.Scene {
     constructor() {
@@ -22,6 +23,13 @@ export default class Shop extends Phaser.Scene {
         // this.outline = this.add.rectangle(480, 325, 415, 315, 0x574f5c)
         this.shopMenu = this.add.rectangle(480, 325, 400, 300, 0x7d7482).setDepth(2);
 
-        //Buying
+        //WALLET
+        this.wallet = new Wallet(this, 900, 50);
+
+        //Buying btn
+        if (Wallet.spend(10)) {
+            this.wallet.update();
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 import Shop from "./scene/Shop.js";
+import Wallet from "./Buying.js";
 
 //CLASSES
 class Plot //draws garden plot
@@ -95,14 +96,14 @@ class MagicBar{ //draws magic count
 
 }
 
-class Wallet{
-    constructor(scene, x, y, text) 
-    {
-        this.scene = scene;
-        this.text = scene.add.text(x, y, text, {fontSize: "32px", fill: "#c9b5e5"});
-        this.text.setOrigin(.5, .5);
-    }
-}
+// class Wallet{
+//     constructor(scene, x, y, text) 
+//     {
+//         this.scene = scene;
+//         this.text = scene.add.text(x, y, text, {fontSize: "32px", fill: "#c9b5e5"});
+//         this.text.setOrigin(.5, .5);
+//     }
+// }
 
 //PHASER GAME CONFIGURATION
 const config = {
@@ -148,7 +149,6 @@ function init()
 
     this.magicCount = 0; //magic level
 
-    this.money = 0;
 }
 
 function create()
@@ -195,7 +195,7 @@ function create()
 
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level
 
-    this.wallet = new Wallet(this, 900, 50, "$"); //cash
+    this.wallet = new Wallet(this, 900, 50);
 
     //KEYBOARD INPUT
     //ref: https://docs.phaser.io/api-documentation/function/input
@@ -233,7 +233,7 @@ function update(time, delta)
 
         //spend money
         this.money -= 5;
-        this.wallet.text.setText(this.money + "$");
+        this.wallet.update();
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
@@ -244,7 +244,7 @@ function update(time, delta)
                 
         //spend money
         this.money -= 8;
-        this.wallet.text.setText(this.money + "$");
+        this.wallet.update();
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
@@ -255,7 +255,7 @@ function update(time, delta)
         
         //spend money
         this.money -= 15;
-        this.wallet.text.setText(this.money + "$");
+        this.wallet.update();
     }
 
     //FAMILIAR UPDATES
