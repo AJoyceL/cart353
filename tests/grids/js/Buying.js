@@ -1,7 +1,7 @@
 export default class Wallet 
 {
     //ref: https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static
-    static money = 100;
+    static money = 100;//initial amount
 
     constructor(scene, x, y, text) 
     {
@@ -11,6 +11,7 @@ export default class Wallet
         this.update();
     }
 
+    //Spending
     static spend(amount) 
     {
         if (Wallet.money < amount) {
@@ -22,6 +23,7 @@ export default class Wallet
         return true;
     }
 
+    //Gaining
     static add(amount) 
     {
         Wallet.money += amount;

@@ -39,6 +39,7 @@ export default class Button
         });
     }
 
+    //SCENES
     ShopBtn()
     {
         // switch to the Shop scene
@@ -48,6 +49,12 @@ export default class Button
     {
         this.scene.scene.start("Garden");
     }
+
+    //PURCHASE
+    // BuySeed() 
+    // {
+
+    // }
 }
 
 window.Button = Button;
