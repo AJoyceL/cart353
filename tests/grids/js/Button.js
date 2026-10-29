@@ -1,4 +1,4 @@
-class Button
+export default class Button 
 {
     //will have to change for an img or sprite
     constructor(scene, x, y, w, h, color, type)
@@ -33,13 +33,20 @@ class Button
             if (this.type === "shop") {
                 this.ShopBtn();
             }
+            else if (this.type === "garden") {
+                this.GardenBtn();
+            }
         });
     }
 
     ShopBtn()
     {
         // switch to the Shop scene
-        window.location.href = "shop.html";
+        this.scene.scene.start("Shop");
+    }
+    GardenBtn()
+    {
+        this.scene.scene.start("Garden");
     }
 }
 

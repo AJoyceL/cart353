@@ -1,4 +1,3 @@
-// //GAME SCENES
 import Shop from "./scene/Shop.js";
 
 //CLASSES
@@ -86,7 +85,6 @@ class text //draws text
         this.text.setDepth(9);
     }
 }
-
 class MagicBar{ //draws magic count
     constructor(scene, x, y, text)
     {
@@ -121,13 +119,16 @@ const config = {
         }
     },
     scene: 
-    {
-        key: "Garden",
-        init: init,
-        preload: preload,
-        create: create,
-        update: update, 
-    },
+    [
+        {
+            key: "Garden",
+            init: init,
+            preload: preload,
+            create: create,
+            update: update, 
+        },
+        Shop,
+    ]
 
 };
 
