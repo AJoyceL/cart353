@@ -27,9 +27,13 @@ export default class Shop extends Phaser.Scene {
         this.wallet = new Wallet(this, 900, 50);
 
         //Buying btn
-        if (Wallet.spend(10)) {
-            this.wallet.update();
-        }
+        this.buySeeds = [];
+
+        this
+        // if (Wallet.spend(10)) {
+        //     this.wallet.update();
+        // }
+
 
     }
 }

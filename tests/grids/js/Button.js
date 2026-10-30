@@ -36,6 +36,17 @@ export default class Button
             else if (this.type === "garden") {
                 this.GardenBtn();
             }
+
+            //Buy seeds
+            else if (this.type === "seed1"){
+                this.BuySeed1();
+            }
+            else if (this.type === "seed2"){
+                this.BuySeed12();
+            }
+            else if (this.type === "seed3"){
+                this.ByuSeed3();
+            }
         });
     }
 
@@ -51,10 +62,20 @@ export default class Button
     }
 
     //PURCHASE
-    // BuySeed() 
-    // {
+    BuySeed1() 
+    {
 
-    // }
+    }
+
+    BuySeed2() 
+    {
+
+    }
+
+    ByuSeed3()
+    {
+
+    }
 }
 
 window.Button = Button;

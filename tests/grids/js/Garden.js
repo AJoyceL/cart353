@@ -1,5 +1,6 @@
-import Shop from "./scene/Shop.js";
-import Wallet from "./Buying.js";
+import Shop from "./scene/Shop.js"; //shop scene
+import Wallet from "./Buying.js"; //wallet class
+import Seed from "./Seed.js"; //seeds class
 
 //CLASSES
 class Plot //draws garden plot
@@ -37,44 +38,44 @@ class Plot //draws garden plot
     };
 }
 
-class Apple //draws apples
-{
-    constructor (scene, x, y)
-    {
-        this.scene = scene;
-        this.circle = scene.add.circle(x, y, 15, 0x70a9ba);
-        this.circle.setInteractive();
-        this.circle.setDepth(3);
+// class Apple //draws apples
+// {
+//     constructor (scene, x, y)
+//     {
+//         this.scene = scene;
+//         this.circle = scene.add.circle(x, y, 15, 0x70a9ba);
+//         this.circle.setInteractive();
+//         this.circle.setDepth(3);
         
-        makeDraggable(this.circle, scene); //allow apple to be dragged
-    };
-}
+//         makeDraggable(this.circle, scene); //allow apple to be dragged
+//     };
+// }
 
-class Orange //draws oranges
-{
-    constructor (scene, x, y)
-    {
-        this.scene = scene;
-        this.circle = scene.add.circle(x, y, 15, 0x78f6638);
-        this.circle.setInteractive();
-        this.circle.setDepth(3);
+// class Orange //draws oranges
+// {
+//     constructor (scene, x, y)
+//     {
+//         this.scene = scene;
+//         this.circle = scene.add.circle(x, y, 15, 0x78f6638);
+//         this.circle.setInteractive();
+//         this.circle.setDepth(3);
         
-        makeDraggable(this.circle, scene); //allow orange to be dragged
-    };
-}
+//         makeDraggable(this.circle, scene); //allow orange to be dragged
+//     };
+// }
 
-class Berry //draws berry
-{
-    constructor (scene, x, y)
-    {
-        this.scene = scene;
-        this.circle = scene.add.circle(x, y, 15, 0x914359);
-        this.circle.setInteractive();
-        this.circle.setDepth(3);
+// class Berry //draws berry
+// {
+//     constructor (scene, x, y)
+//     {
+//         this.scene = scene;
+//         this.circle = scene.add.circle(x, y, 15, 0x914359);
+//         this.circle.setInteractive();
+//         this.circle.setDepth(3);
         
-        makeDraggable(this.circle, scene); //allow berry to be dragged
-    };
-}
+//         makeDraggable(this.circle, scene); //allow berry to be dragged
+//     };
+// }
 
 class text //draws text
 {
@@ -227,8 +228,9 @@ function update(time, delta)
     //ref: https://docs.phaser.io/api-documentation/function/input
     if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apples
     {
-        this.apple = new Apple(this, 50, 100);
+        this.apple = new Seed(this, 50, 100, "1");
         this.crops.push(this.apple.circle);
+        makeDraggable(this.apple.circle, this);
         console.log("buy apple")
 
         //spend money
@@ -238,8 +240,9 @@ function update(time, delta)
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
     {
-        this.orange = new Orange(this, 50, 200);
+        this.orange = new Seed(this, 50, 200, "2");
         this.crops.push(this.orange.circle);
+        makeDraggable(this.orange.circle, this);
         console.log("buy orange")
                 
         //spend money
@@ -249,8 +252,9 @@ function update(time, delta)
 
     if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
     {
-        this.berry = new Berry(this, 50, 300);
+        this.berry = new Seed(this, 50, 300, "3");
         this.crops.push(this.berry.circle);
+        makeDraggable(this.berry.circle, this);
         console.log("buy berry")        
         
         //spend money
@@ -344,7 +348,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             return;
         }
 
-        gameObject.setScale(1.5); //grow crop
+        gameObject.setScale(5); //grow crop
         gameObject.disableInteractive();
 
         //free plot after harvesting
@@ -378,18 +382,18 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
 
         //HARVESTING + INCREASE COUNT
-        if (gameObject.fillColor === 0x70a9ba) {
-            gameObject.setPosition(600, 4);
+        if (gameObject.type === "1") {
+            gameObject.setPosition(600, 475);
             scene.appleCount++;
             scene.applesText.text.setText(scene.appleCount);
         }
-        else if (gameObject.fillColor === 0x78f6638) {
-            gameObject.setPosition(750, 4);
+        else if (gameObject.type === "2") {
+            gameObject.setPosition(750, 475);
             scene.orangeCount++;
             scene.orangesText.text.setText(scene.orangeCount);
         }
-        else if (gameObject.fillColor === 0x914359) {
-            gameObject.setPosition(900, 4);
+        else if (gameObject.type === "3") {
+            gameObject.setPosition(900, 475);
             scene.berryCount++;
             scene.berriesText.text.setText(scene.berryCount);
         }
@@ -421,8 +425,8 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         //ref:  https://docs.phaser.io/api-documentation/class/tweens-tweenmanager
         scene.tweens.add({
             targets: gameObject,
-            scale: gameObject.scale + 0.5,
-            duration: 2000,
+            scale: gameObject.scale + 1.5,
+            duration: 5000,
             ease: "Sine.easeInOut",
 
             //run when complete
@@ -430,7 +434,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                 familiarWatering = false;
 
                 //trigger watering 
-                if (growthStage < 3) {
+                if (growthStage < 5) {
                     gameObject.once("pointerdown", () => {
                         growFruit();
                     });
