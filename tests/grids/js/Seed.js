@@ -25,23 +25,36 @@ export default class Seeds
         this.circle.setInteractive();
         this.circle.setDepth(3);
         this.circle.type = type;
-        
-        // makeDraggable(this.circle, scene); //allow apple to be dragged
     };
 
-    // Seed1(x, y)
-    // {
-    //     this.circle = this.add.circle(x, y, 5, 0x70a9ba);
-    // }
+    static createSeed(garden, type) 
+    {
+        let y;
 
-    // Seed2(x, y)
-    // {
-    //     this.circle = this.add.circle(x, y, 5, 0x78f6638);
-    // }
+        if (this.type === "1")
+        {
+           y = 100;
+        }
 
-    // Seed3(x, y)
-    // {
-    //     this.circle = this.add.circle(x, y, 5, 0x914359);
-    // }
-    
+        else if (this.type === "2")
+        {
+           y = 200;
+        }
+
+        else if (this.type === "3")
+        {
+            y = 300;
+        }
+
+        else
+        {
+            return null;
+        }
+
+        const seed = new Seeds(garden, 59, y, type);
+        garden.crops.push(seed.circle);
+
+        return seed;
+    }
+
 }

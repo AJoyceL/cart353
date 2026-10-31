@@ -1,3 +1,4 @@
+//IMPORTS
 import Shop from "./scene/Shop.js"; //shop scene
 import Wallet from "./Buying.js"; //wallet class
 import Seed from "./Seed.js"; //seeds class
@@ -185,8 +186,17 @@ function create()
         this.plot9
     ];
 
-    //CROP
+    //CROP & SEEDS
     this.crops = []; //store crop in array
+    this.newSeeds = []; //store seeds in array
+
+    this.addSeed = (type) => {
+        const seed = Seed.createSeed(this, type);
+
+        if (seed) {
+            makeDraggable(seed.circle, this);
+        }
+    };
 
     //TEXT
     //draws text
@@ -223,6 +233,11 @@ function create()
 
 function update(time, delta)
 {
+    while (this.newSeeds.length > 0) {
+    const type = this.newSeeds.shift();
+    this.addSeed(type);
+}
+
     //KEYBOARD CONTROLS
     //buys fruits (temporary)
     //ref: https://docs.phaser.io/api-documentation/function/input
@@ -268,6 +283,17 @@ function update(time, delta)
         this.familiars.forEach(familiar => {
             familiar.update(time, delta);
         });
+    }
+}
+
+//SEEDS
+function addSeed(type)
+{
+    const seed = Seed.createSeed(this, type);
+
+    if (seed) 
+    {
+        makeDraggable(seed.circle, this);
     }
 }
 

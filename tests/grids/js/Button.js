@@ -1,3 +1,7 @@
+//IMPORTS
+import Wallet from "./Buying.js";
+import Seed from "./Seed.js";
+
 export default class Button 
 {
     //will have to change for an img or sprite
@@ -7,8 +11,8 @@ export default class Button
         this.type = type;
 
         this.rect = scene.add.graphics();
-        this.rect.fillRoundedRect(x, y, w, h, 20);
         this.rect.fillStyle(color, 1);
+        this.rect.fillRoundedRect(x, y, w, h, 20);
         this.rect.setDepth(20);
         
         //Interactible zone
@@ -36,21 +40,19 @@ export default class Button
             else if (this.type === "garden") {
                 this.GardenBtn();
             }
-
-            //Buy seeds
-            else if (this.type === "seed1"){
+            else if (this.type === "seed1") {
                 this.BuySeed1();
             }
-            else if (this.type === "seed2"){
-                this.BuySeed12();
+            else if (this.type === "seed2") {
+                this.BuySeed2();
             }
-            else if (this.type === "seed3"){
-                this.ByuSeed3();
+            else if (this.type === "seed3") {
+                this.BuySeed3();
             }
         });
     }
 
-    //SCENES
+    //CALLS SCENES
     ShopBtn()
     {
         // switch to the Shop scene
@@ -61,20 +63,34 @@ export default class Button
         this.scene.scene.start("Garden");
     }
 
-    //PURCHASE
+    //PURCHASE SEEDS
     BuySeed1() 
     {
-
+        this.BuySeed("1", 5);
     }
 
     BuySeed2() 
     {
-
+        this.BuySeed("2", 8);
     }
 
-    ByuSeed3()
+    BuySeed3()
     {
+        this.BuySeed("3", 15);
+    }
 
+    BuySeed(type, price)
+    {
+        if (!Wallet.spend(price)) 
+        {
+            console.log("U BROKE");
+            return;
+        }
+
+        const garden = this.scene.scene.get("Garden");
+        garden.newSeeds.push(type);
+        this.scene.wallet.update();
+        console.log("U bought:", type);
     }
 }
 
