@@ -190,10 +190,13 @@ function create()
     this.crops = []; //store crop in array
     this.newSeeds = []; //store seeds in array
 
-    this.addSeed = (type) => {
+    //draws seed types to scene
+    this.addSeed = (type) =>
+    {
         const seed = Seed.createSeed(this, type);
 
-        if (seed) {
+        if (seed)
+        {
             makeDraggable(seed.circle, this);
         }
     };
@@ -233,49 +236,56 @@ function create()
 
 function update(time, delta)
 {
-    while (this.newSeeds.length > 0) {
-    const type = this.newSeeds.shift();
-    this.addSeed(type);
-}
+    //access seeds
+    //ref: https://docs.phaser.io/api-documentation/class/data-datamanager
+    const pendingSeeds = this.game.registry.get("pendingSeeds") || [];
+
+    //check seeds
+    while (pendingSeeds.length > 0)
+    {
+        const type = pendingSeeds.shift(); //
+        console.log("Creating seed:", type);
+        this.addSeed(type);
+    }
 
     //KEYBOARD CONTROLS
     //buys fruits (temporary)
     //ref: https://docs.phaser.io/api-documentation/function/input
-    if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apples
-    {
-        this.apple = new Seed(this, 50, 100, "1");
-        this.crops.push(this.apple.circle);
-        makeDraggable(this.apple.circle, this);
-        console.log("buy apple")
+    // if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apples
+    // {
+    //     this.apple = new Seed(this, 50, 100, "1");
+    //     this.crops.push(this.apple.circle);
+    //     makeDraggable(this.apple.circle, this);
+    //     console.log("buy apple")
 
-        //spend money
-        this.money -= 5;
-        this.wallet.update();
-    }
+    //     //spend money
+    //     this.money -= 5;
+    //     this.wallet.update();
+    // }
 
-    if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
-    {
-        this.orange = new Seed(this, 50, 200, "2");
-        this.crops.push(this.orange.circle);
-        makeDraggable(this.orange.circle, this);
-        console.log("buy orange")
+    // if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
+    // {
+    //     this.orange = new Seed(this, 50, 200, "2");
+    //     this.crops.push(this.orange.circle);
+    //     makeDraggable(this.orange.circle, this);
+    //     console.log("buy orange")
                 
-        //spend money
-        this.money -= 8;
-        this.wallet.update();
-    }
+    //     //spend money
+    //     this.money -= 8;
+    //     this.wallet.update();
+    // }
 
-    if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
-    {
-        this.berry = new Seed(this, 50, 300, "3");
-        this.crops.push(this.berry.circle);
-        makeDraggable(this.berry.circle, this);
-        console.log("buy berry")        
+    // if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
+    // {
+    //     this.berry = new Seed(this, 50, 300, "3");
+    //     this.crops.push(this.berry.circle);
+    //     makeDraggable(this.berry.circle, this);
+    //     console.log("buy berry")        
         
-        //spend money
-        this.money -= 15;
-        this.wallet.update();
-    }
+    //     //spend money
+    //     this.money -= 15;
+    //     this.wallet.update();
+    // }
 
     //FAMILIAR UPDATES
     //calls familiars

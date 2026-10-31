@@ -55,12 +55,17 @@ export default class Button
     //CALLS SCENES
     ShopBtn()
     {
-        // switch to the Shop scene
-        this.scene.scene.start("Shop");
+        this.scene.scene.launch("Shop");
+        this.scene.scene.pause("Garden"); //pause scene
     }
     GardenBtn()
     {
-        this.scene.scene.start("Garden");
+        this.scene.scene.resume("Garden");
+        this.scene.scene.stop("Shop");
+
+        //refresh wallet
+        const garden = this.scene.scene.get("Gardeb");
+        garden.wallet.update();
     }
 
     //PURCHASE SEEDS
@@ -81,17 +86,31 @@ export default class Button
 
     BuySeed(type, price)
     {
-        if (!Wallet.spend(price)) 
+        if (!Wallet.spend(price))
         {
             console.log("U BROKE");
             return;
         }
 
-        const garden = this.scene.scene.get("Garden");
-        garden.newSeeds.push(type);
-        this.scene.wallet.update();
-        console.log("U bought:", type);
-    }
+        //data manager seed
+        //ref: https://docs.phaser.io/phaser/concepts/data-manager
+        const registry = this.scene.game.registry;
+        let pendingSeeds = registry.get("pendingSeeds"); //get list
+
+        //create the list if not existant
+        if (!pendingSeeds)
+        {
+            pendingSeeds = [];
+            registry.set("pendingSeeds", pendingSeeds);
+        }
+
+        pendingSeeds.push(type); //add purhcased type to list
+
+        this.scene.wallet.update(); //update wallet
+
+        console.log("Seed purchased:", type);
+        console.log("Pending seeds:", pendingSeeds);
+    }     
 }
 
 window.Button = Button;

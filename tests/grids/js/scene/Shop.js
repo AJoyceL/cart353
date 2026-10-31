@@ -8,6 +8,10 @@ export default class Shop extends Phaser.Scene {
     }
 
     create() {
+        //BACKGROUND
+        this.background = this.add.rectangle(0, 0, 960, 540,0x00000, 1);
+        this.background.setOrigin(0, 0);
+
         //TEXT
         this.add.text(480, 100, "Shop", {
             fontSize: "40px",

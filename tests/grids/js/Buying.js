@@ -12,15 +12,20 @@ export default class Wallet
     }
 
     //Spending
-    static spend(amount) 
+     static spend(amount)
     {
-        if (Wallet.money < amount) {
-            console.log("U BROKE");
-            return false;
+        if (Wallet.money >= amount)
+        {
+            Wallet.money -= amount;
+            return true;
         }
 
-        Wallet.money -= amount;
-        return true;
+        return false;
+    }
+
+    update()
+    {
+        this.text.setText(Wallet.money + "$");
     }
 
     //Gaining
