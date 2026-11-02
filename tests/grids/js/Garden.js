@@ -3,6 +3,7 @@ import Shop from "./scene/Shop.js"; //shop scene
 import Wallet from "./Buying.js"; //wallet class
 import Seed from "./Seed.js"; //seeds class
 
+
 //CLASSES
 class Plot //draws garden plot
 {
@@ -39,45 +40,6 @@ class Plot //draws garden plot
     };
 }
 
-// class Apple //draws apples
-// {
-//     constructor (scene, x, y)
-//     {
-//         this.scene = scene;
-//         this.circle = scene.add.circle(x, y, 15, 0x70a9ba);
-//         this.circle.setInteractive();
-//         this.circle.setDepth(3);
-        
-//         makeDraggable(this.circle, scene); //allow apple to be dragged
-//     };
-// }
-
-// class Orange //draws oranges
-// {
-//     constructor (scene, x, y)
-//     {
-//         this.scene = scene;
-//         this.circle = scene.add.circle(x, y, 15, 0x78f6638);
-//         this.circle.setInteractive();
-//         this.circle.setDepth(3);
-        
-//         makeDraggable(this.circle, scene); //allow orange to be dragged
-//     };
-// }
-
-// class Berry //draws berry
-// {
-//     constructor (scene, x, y)
-//     {
-//         this.scene = scene;
-//         this.circle = scene.add.circle(x, y, 15, 0x914359);
-//         this.circle.setInteractive();
-//         this.circle.setDepth(3);
-        
-//         makeDraggable(this.circle, scene); //allow berry to be dragged
-//     };
-// }
-
 class text //draws text
 {
     constructor(scene, x, y, text)
@@ -98,14 +60,6 @@ class MagicBar{ //draws magic count
 
 }
 
-// class Wallet{
-//     constructor(scene, x, y, text) 
-//     {
-//         this.scene = scene;
-//         this.text = scene.add.text(x, y, text, {fontSize: "32px", fill: "#c9b5e5"});
-//         this.text.setOrigin(.5, .5);
-//     }
-// }
 
 //PHASER GAME CONFIGURATION
 const config = {
@@ -137,10 +91,12 @@ const config = {
 
 const game = new Phaser.Game(config); //create Phaser game
 
+
 function preload()
 {
     //will add
 }
+
 
 function init()
 {
@@ -152,6 +108,7 @@ function init()
     this.magicCount = 0; //magic level
 
 }
+
 
 function create()
 {
@@ -186,6 +143,7 @@ function create()
         this.plot9
     ];
 
+
     //CROP & SEEDS
     this.crops = []; //store crop in array
     this.newSeeds = []; //store seeds in array
@@ -201,6 +159,7 @@ function create()
         }
     };
 
+
     //TEXT
     //draws text
     this.applesText = new text(this, 625, 500, "0");
@@ -209,15 +168,18 @@ function create()
 
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level
 
+
     //WALLET 
     this.wallet = new Wallet(this, 900, 50);
     this.events.on("resume", () => {
         this.wallet.update(); //update wallet when returning to garden
     });
 
+
     //KEYBOARD INPUT
     //ref: https://docs.phaser.io/api-documentation/function/input
     this.arrows = this.input.keyboard.createCursorKeys();
+
 
     //FAMILIARS
     this.familiars = []; //store familiars in array
@@ -227,16 +189,17 @@ function create()
 
     this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer")); //draws wandering familiar
 
+
     //INVENTORY
     this.inventory = [];//inventory array
     this.inventory.push (new Inventory(this, 0, 400, 960, 150)); //draws inventory
 
+
     //BUTTONS
     this.buttons = [];
     this.buttons.push (new Button(this, -20, 325, 150, 50, 0xe9e1f2, "shop"));
-
-
 }
+
 
 function update(time, delta)
 {
@@ -252,44 +215,6 @@ function update(time, delta)
         this.addSeed(type);
     }
 
-    //KEYBOARD CONTROLS
-    //buys fruits (temporary)
-    //ref: https://docs.phaser.io/api-documentation/function/input
-    // if (Phaser.Input.Keyboard.JustDown(this.arrows.up))//adds apples
-    // {
-    //     this.apple = new Seed(this, 50, 100, "1");
-    //     this.crops.push(this.apple.circle);
-    //     makeDraggable(this.apple.circle, this);
-    //     console.log("buy apple")
-
-    //     //spend money
-    //     this.money -= 5;
-    //     this.wallet.update();
-    // }
-
-    // if (Phaser.Input.Keyboard.JustDown(this.arrows.down))//adds orange
-    // {
-    //     this.orange = new Seed(this, 50, 200, "2");
-    //     this.crops.push(this.orange.circle);
-    //     makeDraggable(this.orange.circle, this);
-    //     console.log("buy orange")
-                
-    //     //spend money
-    //     this.money -= 8;
-    //     this.wallet.update();
-    // }
-
-    // if (Phaser.Input.Keyboard.JustDown(this.arrows.left))//adds berry
-    // {
-    //     this.berry = new Seed(this, 50, 300, "3");
-    //     this.crops.push(this.berry.circle);
-    //     makeDraggable(this.berry.circle, this);
-    //     console.log("buy berry")        
-        
-    //     //spend money
-    //     this.money -= 15;
-    //     this.wallet.update();
-    // }
 
     //FAMILIAR UPDATES
     //calls familiars
@@ -299,6 +224,7 @@ function update(time, delta)
         });
     }
 }
+
 
 //SEEDS
 function addSeed(type)
@@ -311,8 +237,10 @@ function addSeed(type)
     }
 }
 
+
 //DRAGGING + CROP BEHAVIOUR
 //ref: https://youtu.be/jWglIBp4usY?si=ewJsWkuTyCx2tdrG
+//ref: https://youtu.be/mWaLFYbLWIk?si=Mu9LVW4tv0-V9yNH
 function makeDraggable(gameObject, scene, enableLogs = false) 
 {
     //crop growth variables
@@ -331,6 +259,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
     gameObject.isFullyGrown = false;
     gameObject.harvestCrop = harvestCrop; //calls harvesting function
 
+
     //DEBUG
     function log(message)
     {
@@ -339,6 +268,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             console.log(message);
         }
     };
+
 
     //FAMILIAR PLANTING FUNCTION
     gameObject.plantInPlot = function(plot) {
@@ -368,6 +298,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         return true;
     }
 
+
     //FAMILIAR WATERING FUNCTION
     gameObject.waterCrop = function() {
         //stop if no planted crop
@@ -380,6 +311,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
         return true;
     };
+
 
     //HARVESTING FUNCTION
     function harvestCrop() {
@@ -441,10 +373,15 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         console.log("Crop harvested!"); //debug
     }
 
+
     //ONDRAG FUNTION
-    function onDrag(pointer) 
+    function onDrag(pointer, dragObject, dragX, dragY) 
     {
         log(`[makeDraggable:onDrag] invoked for game object: ${gameObject.name}`);
+
+        if (dragObject !== gameObject) {
+            return;
+        }
 
         //stop drag if planted and fully grown
         if(planted && !fullyGrown){
@@ -452,11 +389,10 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         };
 
         //follow pointer position
-        gameObject.x = pointer.x;
-        gameObject.y = pointer.y;
+        gameObject.setPosition(dragX, dragY);
     }
 
-    
+
     //GROW FRUIT
     function growFruit() {
         growthStage++; //advance crop size
@@ -489,7 +425,6 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         });
     }
 
-    
 
     //STOPDRAG FUNCTION
     function stopDrag(pointer) 
@@ -550,22 +485,26 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
     }
 
+
     //STARTDRAG FUNCTION
-    function startDrag(pointer) {
+    function startDrag() {
         //stop when planted + fully grown
         if (planted && !fullyGrown) {
             return;
         }
 
         log(`[makeDraggable:startDrag] invoked for game object: ${gameObject.name}`);
-
-        //interactions
-        gameObject.off(Phaser.Input.Events.POINTER_DOWN, startDrag);
-        gameObject.on(Phaser.Input.Events.POINTER_UP, stopDrag);
-        gameObject.on(Phaser.Input.Events.POINTER_MOVE, onDrag);
     }
 
-    gameObject.on(Phaser.Input.Events.POINTER_DOWN, startDrag); //listens for clicks
+    //listens for clicks
+    //ref: https://docs.phaser.io/api-documentation/namespace/input-events
+    scene.input.setDraggable(gameObject); //makes draggable
+    scene.input.on(Phaser.Input.Events.DRAG, onDrag);
+    scene.input.on(Phaser.Input.Events.DRAG_END, (pointer, dragObject) => { 
+        if (dragObject === gameObject) {
+            stopDrag(pointer);
+        }
+    });
 }
 
 //CLASS SCRIPTS
