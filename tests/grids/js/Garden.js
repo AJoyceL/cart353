@@ -209,7 +209,11 @@ function create()
 
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level
 
+    //WALLET 
     this.wallet = new Wallet(this, 900, 50);
+    this.events.on("resume", () => {
+        this.wallet.update(); //update wallet when returning to garden
+    });
 
     //KEYBOARD INPUT
     //ref: https://docs.phaser.io/api-documentation/function/input
