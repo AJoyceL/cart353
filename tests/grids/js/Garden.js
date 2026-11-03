@@ -156,6 +156,32 @@ function create()
         if (seed)
         {
             makeDraggable(seed.circle, this);
+
+            //crop info
+            seed.circle.on("pointerdown", () => {
+                let infoText = "";
+
+                if (this.cropInfoText) {
+                    this.cropInfoText.destroy(); //destroy previous text
+                }
+                //call crop secific text
+                if (seed.circle.type === "1") {
+                    infoText = "Apple!";
+                } 
+                else if (seed.circle.type === "2") {
+                    infoText = "Orange!";
+                } 
+                else if (seed.circle.type === "3") {
+                    infoText = "Berry!";
+                }
+                else{
+                    return;
+                }
+                
+                this.cropInfoText = this.add.text(0, 400, infoText, { fontSize: "16px", fill: "#1f1a25" });
+                this.cropInfoText.setDepth(10);
+                this.cropInfoText.setOrigin(0, 0);
+            });
         }
     };
 

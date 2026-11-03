@@ -65,7 +65,7 @@ export default class Button
         this.scene.scene.stop("Shop");
 
         //refresh wallet
-        const garden = this.scene.scene.get("Gardeb");
+        const garden = this.scene.scene.get("Garden");
         garden.wallet.update();
     }
 
