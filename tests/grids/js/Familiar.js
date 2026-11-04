@@ -1,4 +1,4 @@
-
+// ref: https://www.youtube.com/watch?v=ow_Lum-Agbs&t=88s
 class Familiar {
     constructor(scene, x, y, color, type) {
         this.scene = scene;
