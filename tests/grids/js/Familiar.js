@@ -1,3 +1,6 @@
+//IDEAS:
+// Make familiars interactable with the player: they need occasional attention like petting or clicks or they feel neglected and stop working. If neglected for too long, they leave and dn't come back. If the player gives them affection more often, they'll work faster and harder.
+
 // ref: https://www.youtube.com/watch?v=ow_Lum-Agbs&t=88s
 class Familiar {
     constructor(scene, x, y, color, type) {
