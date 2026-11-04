@@ -50,6 +50,7 @@ class text //draws text
         this.text.setDepth(9);
     }
 }
+
 class MagicBar{ //draws magic count
     constructor(scene, x, y, text)
     {
@@ -66,6 +67,10 @@ const config = {
     width: 960,
     height: 540,
     type: Phaser.AUTO,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics:
     {
         default: "arcade",
