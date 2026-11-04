@@ -407,6 +407,21 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             scene.type3Count++;
             scene.type3Text.text.setText(scene.type3Count);
         }
+        else if (gameObject.type === "4") {
+            gameObject.setPosition(700, 475);
+            scene.type4Count++;
+            scene.type4Text.text.setText(scene.type4Count);
+        }
+        else if (gameObject.type === "5") {
+            gameObject.setPosition(800, 475);
+            scene.type5Count++;
+            scene.type5Text.text.setText(scene.type5Count);
+        }
+        else if (gameObject.type === "6") {
+            gameObject.setPosition(900, 475);
+            scene.type6Count++;
+            scene.type6Text.text.setText(scene.type6Count);
+        }
 
         console.log("Crop harvested!"); //debug
     }

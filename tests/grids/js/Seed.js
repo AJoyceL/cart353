@@ -18,22 +18,22 @@ export default class Seeds
 
         else if (type === "3")
         {
-            color = 0x914359;
+            color = 0x963562;
         }
 
         else if (type === "4")
         {
-            color = 0x8b0000;
+            color = 0xd1c569;
         }  
 
         else if (type === "5")
         {
-            color = 0x00ff00;
+            color = 0x57a15c;
         }   
 
         else if (type === "6")
         {
-            color = 0x0000ff;
+            color = 0x44246e;
         }
 
         this.circle = scene.add.circle(x, y, 5, color);
@@ -46,33 +46,35 @@ export default class Seeds
     {
         if (type === "1")
         {
-            x = 100;
-           y = 100;
+            x = 50;
+            y = 125;
         }
 
         else if (type === "2")
         {
-           y = 200;
+            x = 50
+            y = 175;
         }
 
         else if (type === "3")
         {
-            y = 300;
+            x = 50; 
+            y = 225;
         }
         else if (type === "4")
         {
-            x = 100; 
-            y = 100;
+            x = 125; 
+            y = 125;
         }   
         else if (type === "5")
         {
-            x = 100;
-            y = 200;
+            x = 125;
+            y = 175;
         }   
         else if (type === "6")
         {
-            x = 100;
-            y = 300;
+            x = 125;
+            y = 225;
         }
 
         else
@@ -80,7 +82,7 @@ export default class Seeds
             return null;
         }
 
-        const seed = new Seeds(garden, 50, y, type);
+        const seed = new Seeds(garden, x, y, type);
         garden.crops.push(seed.circle);
 
         return seed;

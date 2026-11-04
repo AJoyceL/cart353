@@ -49,6 +49,15 @@ export default class Button
             else if (this.type === "seed3") {
                 this.BuySeed3();
             }
+            else if (this.type === "seed4") {
+                this.BuySeed4();
+            }
+            else if (this.type === "seed5") {
+                this.BuySeed5();
+            }
+            else if (this.type === "seed6") {
+                this.BuySeed6();
+            }
         });
     }
 
