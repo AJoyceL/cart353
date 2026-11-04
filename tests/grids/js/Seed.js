@@ -1,3 +1,6 @@
+// IDEAS: 
+// Use L-Systems t animate the growth of the plants.
+ 
 export default class Seeds 
 {
     constructor (scene, x, y, type)
