@@ -1,7 +1,7 @@
 export default class Wallet 
 {
     //ref: https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static
-    static money = 100;//initial amount
+    static money = 150;//initial amount = 100$
 
     constructor(scene, x, y, text) 
     {

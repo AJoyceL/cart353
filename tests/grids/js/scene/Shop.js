@@ -1,6 +1,6 @@
 //IMPORTS
 import Button from "../Button.js";
-import Wallet from "../Buying.js";
+import Wallet from "../Wallet.js";
 
 export default class Shop extends Phaser.Scene {
     constructor() {
@@ -9,7 +9,7 @@ export default class Shop extends Phaser.Scene {
 
     create() {
         //BACKGROUND
-        this.background = this.add.rectangle(0, 0, 960, 540,0x00000, 1);
+        this.background = this.add.rectangle(0, 0, 960, 600,0x00000, 1);
         this.background.setOrigin(0, 0);
 
         //TEXT
@@ -50,19 +50,19 @@ export default class Shop extends Phaser.Scene {
 
         //LABELS
         //Seed 1
-        this.add.text(375, 225, "Apple $5", {
+        this.add.text(375, 225, "Seed 1 $5", {
             fontSize: "18px",
             color: "#1f1a25"
         }).setOrigin(0.5).setDepth(22);
 
         //Seed 2
-        this.add.text(375, 325, "Orange $8", {
+        this.add.text(375, 325, "Seed 2 $8", {
             fontSize: "18px",
             color: "#1f1a25"
         }).setOrigin(0.5).setDepth(22);
 
         //Seed3
-        this.add.text(375, 425, "Berry $15", {
+        this.add.text(375, 425, "Seed 3 $15", {
             fontSize: "18px",
             color: "#1f1a25"
         }).setOrigin(0.5).setDepth(22);

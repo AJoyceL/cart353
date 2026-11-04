@@ -1,5 +1,5 @@
 //IMPORTS
-import Wallet from "./Buying.js";
+import Wallet from "./Wallet.js";
 import Seed from "./Seed.js";
 
 export default class Button 
