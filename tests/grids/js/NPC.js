@@ -11,5 +11,34 @@
 
 export default class NPC 
 {
+    constructor (scene, x, y)
+    {
+        this.scene = scene;
+        this.x = x;
+        this.y = y;
 
+        this.npc = scene.add.rectangle(x, y, 50, 50, 0x0000ff);
+        this.npc.setInteractive();
+        this.npc.setDepth(5);
+    }
+
+    //SPRITES
+    preload()
+    {
+        //will add img
+    }
+
+    //INTERACTIONS
+    // Will have to connect this to a JSON fil to get dialogues
+    interact()
+    {
+        //will add interactions
+    }
+
+    //PRICING
+    // Pricing will be based on real-time data from a finacial API. 
+    getPrice()
+    {
+        //will add pricing
+    }
 }

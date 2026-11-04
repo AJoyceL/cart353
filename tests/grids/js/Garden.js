@@ -354,7 +354,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
 
         familiarWatering = true;
-        growFruit();
+        growFruit(); // calls growth function for familars
 
         return true;
     };
