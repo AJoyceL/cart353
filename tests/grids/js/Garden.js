@@ -45,7 +45,7 @@ class text //draws text
     constructor(scene, x, y, text)
     {
         this.scene = scene;
-        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#1f1a25" });
+        this.text = scene.add.text(x, y, text, { fontSize: "28px", fill: "#1f1a25" });
         this.text.setOrigin(.5, .5);
         this.text.setDepth(9);
     }
@@ -55,8 +55,9 @@ class MagicBar{ //draws magic count
     constructor(scene, x, y, text)
     {
         this.scene = scene;
-        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#c9b5e5" });
+        this.text = scene.add.text(x, y, text, { fontSize: "32px", fill: "#c9b5e5"});
         this.text.setOrigin(.5, .5);
+        this.text.setAlpha(0);
     }
 
 }
@@ -106,9 +107,12 @@ function preload()
 function init()
 {
     //initilise text counts
-    this.appleCount = 0;
-    this.orangeCount = 0;
-    this.berryCount = 0;
+    this.type1Count = 0;
+    this.type2Count = 0;
+    this.type3Count = 0;
+    this.type4Count = 0;
+    this.type5Count = 0;
+    this.type6Count = 0;
 
     this.magicCount = 0; //magic level
 
@@ -193,12 +197,15 @@ function create()
 
     //TEXT
     //draws text
-    this.applesText = new text(this, 625, 500, "0");
-    this.orangesText = new text(this, 775, 500, "0");
-    this.berriesText = new text(this, 925, 500, "0");
+    this.type1Text = new text(this, 425, 500, "0");
+    this.type2Text = new text(this, 525, 500, "0");
+    this.type3Text = new text(this, 625, 500, "0");
+    this.type4Text = new text(this, 725, 500, "0");   
+    this.type5Text = new text(this, 825, 500, "0");
+    this.type6Text = new text(this, 925, 500, "0");
 
-    this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level
-
+    this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level is invisible
+    
 
     //WALLET 
     this.wallet = new Wallet(this, 900, 50);
@@ -351,7 +358,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             return;
         }
 
-        gameObject.setScale(5); //grow crop
+        gameObject.setScale(3); //grow crop
         gameObject.disableInteractive();
 
         //free plot after harvesting
@@ -386,19 +393,19 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
         //HARVESTING + INCREASE COUNT
         if (gameObject.type === "1") {
-            gameObject.setPosition(600, 475);
-            scene.appleCount++;
-            scene.applesText.text.setText(scene.appleCount);
+            gameObject.setPosition(400, 475);
+            scene.type1Count++;
+            scene.type1Text.text.setText(scene.type1Count);
         }
         else if (gameObject.type === "2") {
-            gameObject.setPosition(750, 475);
-            scene.orangeCount++;
-            scene.orangesText.text.setText(scene.orangeCount);
+            gameObject.setPosition(500, 475);
+            scene.type2Count++;
+            scene.type2Text.text.setText(scene.type2Count);
         }
         else if (gameObject.type === "3") {
-            gameObject.setPosition(900, 475);
-            scene.berryCount++;
-            scene.berriesText.text.setText(scene.berryCount);
+            gameObject.setPosition(600, 475);
+            scene.type3Count++;
+            scene.type3Text.text.setText(scene.type3Count);
         }
 
         console.log("Crop harvested!"); //debug
@@ -433,7 +440,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         scene.tweens.add({
             targets: gameObject,
             scale: gameObject.scale + 1.5,
-            duration: 5000,
+            duration: 1500, //time is 5000
             ease: "Sine.easeInOut",
 
             //run when complete
@@ -441,7 +448,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
                 familiarWatering = false;
 
                 //trigger watering 
-                if (growthStage < 5) {
+                if (growthStage < 3) { //max growth is 5
                     gameObject.once("pointerdown", () => {
                         growFruit();
                     });

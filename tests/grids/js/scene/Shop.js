@@ -36,30 +36,53 @@ export default class Shop extends Phaser.Scene {
         //PURCHASE SEEDS
         this.buySeeds = [];
 
-        this.buySeeds.push(new Button(this, 480, 200, 150, 50, 0xe9e1f2, "seed1")); //seed 1
+        this.buySeeds.push(new Button(this, 300, 200, 150, 50, 0xe9e1f2, "seed1")); //seed 1
 
-        this.buySeeds.push(new Button(this, 480, 300, 150, 50, 0xe9e1f2, "seed2")); //seed 2
+        this.buySeeds.push(new Button(this, 300, 300, 150, 50, 0xe9e1f2, "seed2")); //seed 2
 
-        this.buySeeds.push(new Button(this, 480, 400, 150, 50, 0xe9e1f2, "seed3")); //seed 3
+        this.buySeeds.push(new Button(this, 300, 400, 150, 50, 0xe9e1f2, "seed3")); //seed 3
+
+        this.buySeeds.push(new Button(this, 500, 200, 150, 50, 0xe9e1f2, "seed4"));
+
+        this.buySeeds.push(new Button(this, 500, 300, 150, 50, 0xe9e1f2, "seed5"));
+        
+        this.buySeeds.push(new Button(this, 500, 400, 150, 50, 0xe9e1f2, "seed6"));
 
         //LABELS
         //Seed 1
-        this.add.text(550, 225, "Apple $5", {
+        this.add.text(375, 225, "Apple $5", {
             fontSize: "18px",
             color: "#1f1a25"
         }).setOrigin(0.5).setDepth(22);
 
         //Seed 2
-        this.add.text(550, 325, "Orange $8", {
+        this.add.text(375, 325, "Orange $8", {
             fontSize: "18px",
             color: "#1f1a25"
         }).setOrigin(0.5).setDepth(22);
 
         //Seed3
-        this.add.text(550, 425, "Berry $15", {
+        this.add.text(375, 425, "Berry $15", {
             fontSize: "18px",
             color: "#1f1a25"
         }).setOrigin(0.5).setDepth(22);
 
+        //Seed 4
+        this.add.text(575, 225, "Seed 4 $20", {
+            fontSize: "18px",
+            color: "#1f1a25"
+        }).setOrigin(0.5).setDepth(22);
+
+        //Seed 5
+        this.add.text(575, 325, "Seed 5 $28", {
+            fontSize: "18px",
+            color: "#1f1a25"
+        }).setOrigin(0.5).setDepth(22);
+
+        //Seed 6
+        this.add.text(575, 425, "Seed 6 $35", {
+            fontSize: "18px",
+            color: "#1f1a25"
+        }).setOrigin(0.5).setDepth(22);
     }
 }

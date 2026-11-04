@@ -84,6 +84,21 @@ export default class Button
     {
         this.BuySeed("3", 15);
     }
+    
+    BuySeed4() 
+    {
+        this.BuySeed("4", 20);
+    }
+
+    BuySeed5() 
+    {
+        this.BuySeed("5", 28);
+    }
+
+    BuySeed6() 
+    {
+        this.BuySeed("6", 35);
+    }
 
     BuySeed(type, price)
     {
@@ -95,6 +110,7 @@ export default class Button
 
         //data manager seed
         //ref: https://docs.phaser.io/phaser/concepts/data-manager
+        // ref: https://phaser.io/devlogs/162?utm_source=chatgpt.com 
         const registry = this.scene.game.registry;
         let pendingSeeds = registry.get("pendingSeeds"); //get list
 
