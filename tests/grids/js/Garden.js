@@ -417,17 +417,17 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             scene.type3Text.text.setText(scene.type3Count);
         }
         else if (gameObject.type === "4") {
-            gameObject.setPosition(650, 475);
+            gameObject.setPosition(650, 575);
             scene.type4Count++;
             scene.type4Text.text.setText(scene.type4Count);
         }
         else if (gameObject.type === "5") {
-            gameObject.setPosition(750, 475);
+            gameObject.setPosition(750, 575);
             scene.type5Count++;
             scene.type5Text.text.setText(scene.type5Count);
         }
         else if (gameObject.type === "6") {
-            gameObject.setPosition(850, 475);
+            gameObject.setPosition(850, 575);
             scene.type6Count++;
             scene.type6Text.text.setText(scene.type6Count);
         }
