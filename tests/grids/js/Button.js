@@ -151,9 +151,9 @@ export default class Button
     AnswerNPC()
     {
        if (this.scene.npcs.length === 0)
-    {
-        this.scene.npcs.push(new NPC(this.scene, 900, 250));
-    }
+        {
+            this.scene.npcs.push(new NPC(this.scene, 900, 250));
+        }
     }
 }
 

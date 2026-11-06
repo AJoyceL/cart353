@@ -21,6 +21,8 @@ export default class NPC
         this.npc.setOrigin(0.5, 0.5);
         this.npc.setInteractive();
         this.npc.setDepth(50);
+        
+        this.TextBubble();
     }
 
     //SPRITES
@@ -44,13 +46,15 @@ export default class NPC
     }
 
     //SPEECH
+    // ref: https://docs.phaser.io/phaser/concepts/gameobjects/text
     TextBubble()
     {
-        //Add text bubble
-        //this.scene.add.rectangle(800, 100, 200, 50, 0xffffff);
-
+        //Text
+        let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        
         //Add text
-        this.scene.add.text(800, 100, "hello!", { font: "20px", fill: "#000000" });
+        this.scene.add.text(725, 350, text, { font: "16px", fill: "#000000", align: "left", wordWrap: { width: 225 } }).setDepth(51);
+        
     }
 
 }
