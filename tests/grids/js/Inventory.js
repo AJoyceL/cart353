@@ -1,3 +1,7 @@
+// IDEAS:
+// Make a small ivnentory bar in the middle to fit exactly 6 type of seeds.
+// text pops up on top of the in entory bar.
+
 class Inventory
 {
     constructor(scene, x, y, w, h)

@@ -2,6 +2,7 @@
 import Shop from "./scene/Shop.js"; //shop scene
 import Wallet from "./Wallet.js"; //wallet class
 import Seed from "./Seed.js"; //seeds class
+import NPC from "./NPC.js"; //npc class
 
 
 //CLASSES
@@ -225,7 +226,9 @@ function create()
 
     //KEYBOARD INPUT
     //ref: https://docs.phaser.io/api-documentation/function/input
-    this.arrows = this.input.keyboard.createCursorKeys();
+    this.cursor = this.input.keyboard.createCursorKeys();
+    this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.input.keyboard.addCapture(Phaser.Input.Keyboard.KeyCodes.SPACE); //prevent default spacebar scrolling
 
 
     //FAMILIARS
@@ -244,12 +247,25 @@ function create()
 
     //BUTTONS
     this.buttons = [];
-    this.buttons.push (new Button(this, -20, 325, 150, 50, 0xe9e1f2, "shop"));
+    this.buttons.push (new Button(this, -20, 325, 150, 50, 0xe9e1f2, "shop")); // scene button
+
+    this.buttons.push (new Button(this, 850, 325, 150, 50, 0xe9e1f2, "NPC")); // NPC button
+
+
+
+    //NPC
+    this.npcs = [];
+    
+    
 }
 
 
 function update(time, delta)
 {
+    if (this.spaceBar.isDown) {
+        this.npcs.push (new NPC(this, 900, 250)); //draws npc
+    }
+
     //access seeds
     //ref: https://docs.phaser.io/api-documentation/class/data-datamanager
     const pendingSeeds = this.game.registry.get("pendingSeeds") || [];

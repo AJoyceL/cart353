@@ -1,6 +1,7 @@
 //IMPORTS
 import Wallet from "./Wallet.js";
 import Seed from "./Seed.js";
+import NPC from "./NPC.js"; //npc class
 
 export default class Button 
 {
@@ -34,12 +35,15 @@ export default class Button
         });
 
         this.zone.on("pointerdown", () => {
+            // Change scenes
             if (this.type === "shop") {
                 this.ShopBtn();
             }
             else if (this.type === "garden") {
                 this.GardenBtn();
             }
+
+            // Buy seeds
             else if (this.type === "seed1") {
                 this.BuySeed1();
             }
@@ -57,6 +61,11 @@ export default class Button
             }
             else if (this.type === "seed6") {
                 this.BuySeed6();
+            }
+
+            // Answer npcs
+            else if(this.type === "NPC"){
+                this.AnswerNPC();
             }
         });
     }
@@ -136,7 +145,16 @@ export default class Button
 
         console.log("Seed purchased:", type);
         console.log("Pending seeds:", pendingSeeds);
-    }     
+    }  
+    
+    //CALL NPC
+    AnswerNPC()
+    {
+       if (this.scene.npcs.length === 0)
+    {
+        this.scene.npcs.push(new NPC(this.scene, 900, 250));
+    }
+    }
 }
 
 window.Button = Button;

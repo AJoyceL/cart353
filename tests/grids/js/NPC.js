@@ -17,9 +17,10 @@ export default class NPC
         this.x = x;
         this.y = y;
 
-        this.npc = scene.add.rectangle(x, y, 50, 50, 0x0000ff);
+        this.npc = scene.add.rectangle(x, y, 400, 300, 0xdbd0bd);
+        this.npc.setOrigin(0.5, 0.5);
         this.npc.setInteractive();
-        this.npc.setDepth(5);
+        this.npc.setDepth(50);
     }
 
     //SPRITES
@@ -41,4 +42,15 @@ export default class NPC
     {
         //will add pricing
     }
+
+    //SPEECH
+    TextBubble()
+    {
+        //Add text bubble
+        //this.scene.add.rectangle(800, 100, 200, 50, 0xffffff);
+
+        //Add text
+        this.scene.add.text(800, 100, "hello!", { font: "20px", fill: "#000000" });
+    }
+
 }
