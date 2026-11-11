@@ -206,13 +206,13 @@ function create()
 
 
     //TEXT
-    //draws text
-    this.type1Text = new text(this, 675, 475, "0");
-    this.type2Text = new text(this, 775, 475, "0");
-    this.type3Text = new text(this, 875, 475, "0");
-    this.type4Text = new text(this, 675, 575, "0");   
-    this.type5Text = new text(this, 775, 575, "0");
-    this.type6Text = new text(this, 875, 575, "0");
+    //Crop text
+    this.type1Text = new text(this, 200, 550, "0");
+    this.type2Text = new text(this, 325, 550, "0");
+    this.type3Text = new text(this, 450, 550, "0");
+    this.type4Text = new text(this, 575, 550, "0");
+    this.type5Text = new text(this, 700, 550, "0");
+    this.type6Text = new text(this, 825, 550, "0");
 
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level is invisible
     
@@ -242,7 +242,7 @@ function create()
 
     //INVENTORY
     this.inventory = [];//inventory array
-    this.inventory.push (new Inventory(this, 0, 400, 960, 200)); //draws inventory
+    this.inventory.push (new Inventory(this, 75, 475, 800, 100)); //draws inventory
 
 
     //BUTTONS
@@ -418,32 +418,32 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
         //HARVESTING + INCREASE COUNT
         if (gameObject.type === "1") {
-            gameObject.setPosition(650, 475);
+            gameObject.setPosition(175, 500);
             scene.type1Count++;
             scene.type1Text.text.setText(scene.type1Count);
         }
         else if (gameObject.type === "2") {
-            gameObject.setPosition(750, 475);
+            gameObject.setPosition(300, 500);
             scene.type2Count++;
             scene.type2Text.text.setText(scene.type2Count);
         }
         else if (gameObject.type === "3") {
-            gameObject.setPosition(850, 475);
+            gameObject.setPosition(425, 500);
             scene.type3Count++;
             scene.type3Text.text.setText(scene.type3Count);
         }
         else if (gameObject.type === "4") {
-            gameObject.setPosition(650, 575);
+            gameObject.setPosition(550, 500);
             scene.type4Count++;
             scene.type4Text.text.setText(scene.type4Count);
         }
         else if (gameObject.type === "5") {
-            gameObject.setPosition(750, 575);
+            gameObject.setPosition(675, 500);
             scene.type5Count++;
             scene.type5Text.text.setText(scene.type5Count);
         }
         else if (gameObject.type === "6") {
-            gameObject.setPosition(850, 575);
+            gameObject.setPosition(800, 500);
             scene.type6Count++;
             scene.type6Text.text.setText(scene.type6Count);
         }

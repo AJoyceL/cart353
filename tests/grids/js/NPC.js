@@ -17,7 +17,7 @@ export default class NPC
         this.x = x;
         this.y = y;
 
-        this.npc = scene.add.rectangle(x, y, 400, 300, 0xdbd0bd);
+        this.npc = scene.add.rectangle(x, y, 400, 350, 0xdbd0bd);
         this.npc.setOrigin(0.5, 0.5);
         this.npc.setInteractive();
         this.npc.setDepth(50);
@@ -53,7 +53,7 @@ export default class NPC
         let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         
         //Add text
-        this.scene.add.text(725, 350, text, { font: "16px", fill: "#000000", align: "left", wordWrap: { width: 225 } }).setDepth(51);
+        this.scene.add.text(725, 350, text, { font: "15px", fill: "#000000", align: "left", wordWrap: { width: 225 } }).setDepth(51);
         
     }
 
