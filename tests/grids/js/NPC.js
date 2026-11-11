@@ -31,6 +31,11 @@ export default class NPC
         //will add img
     }
 
+    NPCObject()
+    {
+ 
+    }
+
     //INTERACTIONS
     // Will have to connect this to a JSON fil to get dialogues
     interact()
@@ -49,6 +54,11 @@ export default class NPC
     // ref: https://docs.phaser.io/phaser/concepts/gameobjects/text
     TextBubble()
     {
+        this.name = ["", "John", "Jane", "Bob", "Alice", "Mike", "Emily"][Math.floor(Math.random() * 7)];
+        this.crops = ["", "Carrots", "Tomatoes", "Lettuce", "Potatoes", "Cucumbers", "Peppers"][Math.floor(Math.random() * 7)];
+        this.cropAmount = Math.floor(Math.random() * 10) + 1;
+        this.price = (Math.random() * 10).toFixed(2);  
+        
         //Text
         let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         
