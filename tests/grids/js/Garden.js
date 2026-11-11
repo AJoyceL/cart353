@@ -251,8 +251,6 @@ function create()
 
     this.buttons.push (new Button(this, 850, 325, 150, 50, 0xe9e1f2, "NPC")); // NPC button
 
-
-
     //NPC
     this.npcs = [];
     
@@ -262,9 +260,9 @@ function create()
 
 function update(time, delta)
 {
-    if (this.spaceBar.isDown) {
-        this.npcs.push (new NPC(this, 900, 250)); //draws npc
-    }
+    // if (this.spaceBar.isDown) {
+    //     this.npcs.push (new NPC(this, 660, 100)); //draws npc
+    // }
 
     //access seeds
     //ref: https://docs.phaser.io/api-documentation/class/data-datamanager

@@ -17,8 +17,8 @@ export default class NPC
         this.x = x;
         this.y = y;
 
-        this.npc = scene.add.rectangle(x, y, 400, 350, 0xdbd0bd);
-        this.npc.setOrigin(0.5, 0.5);
+        this.npc = scene.add.rectangle(x, y, 300, 350, 0xdbd0bd);
+        this.npc.setOrigin(0);
         this.npc.setInteractive();
         this.npc.setDepth(50);
         
@@ -31,9 +31,49 @@ export default class NPC
         //will add img
     }
 
+    //CREATE NPC OBJECTS
     NPCObject()
     {
- 
+        this.name = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"][Math.floor(Math.random() * 6)];
+
+        if (this.name === "John") {
+            // this.img = "npc1";
+            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0xff0000); // Placeholder for John
+            this.img.setDepth(55);
+        }
+        else if (this.name === "Jane") {
+            // this.img = "npc2";
+            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0x00ff00); // Placeholder for Jane    
+            this.img.setDepth(55);
+        }
+        else if (this.name === "Bob") {
+            // this.img = "npc3";
+            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0x0000ff); // Placeholder for Bob
+            this.img.setDepth(55);
+        }
+        else if (this.name === "Alice") {
+            // this.img = "npc4";
+            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0xffff00); // Placeholder for Alice
+            this.img.setDepth(55);
+        }
+        else if (this.name === "Mike") {
+            // this.img = "npc5";
+            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0xff00ff); // Placeholder for Mike
+            this.img.setDepth(55);
+        }
+        else if (this.name === "Emily") {
+            // this.img = "npc6";
+            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0x00ffff); // Placeholder for Emily
+            this.img.setDepth(55);
+        }
+    }
+
+    //CREATE CROP RELATED TEXT
+    CropObject()
+    {
+        this.crops = ["", "Carrots", "Tomatoes", "Lettuce", "Potatoes", "Cucumbers", "Peppers"][Math.floor(Math.random() * 7)];
+        this.cropAmount = Math.floor(Math.random() * 10) + 1;
+        this.price = (Math.random() * 10).toFixed(2);
     }
 
     //INTERACTIONS
@@ -54,16 +94,14 @@ export default class NPC
     // ref: https://docs.phaser.io/phaser/concepts/gameobjects/text
     TextBubble()
     {
-        this.name = ["", "John", "Jane", "Bob", "Alice", "Mike", "Emily"][Math.floor(Math.random() * 7)];
-        this.crops = ["", "Carrots", "Tomatoes", "Lettuce", "Potatoes", "Cucumbers", "Peppers"][Math.floor(Math.random() * 7)];
-        this.cropAmount = Math.floor(Math.random() * 10) + 1;
-        this.price = (Math.random() * 10).toFixed(2);  
-        
+        this.NPCObject(); //calls the NPC names
+        this.CropObject(); //calls the crop names, amount, and price
+
         //Text
         let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         
         //Add text
-        this.scene.add.text(725, 350, text, { font: "15px", fill: "#000000", align: "left", wordWrap: { width: 225 } }).setDepth(51);
+        this.scene.add.text(this.x + 30, this.y + 275, text, { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 275 } }).setDepth(51);
         
     }
 
