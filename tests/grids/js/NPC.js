@@ -31,6 +31,26 @@ export default class NPC
         //will add img
     }
 
+    //FETCH API DATA
+    // ref: https://www.youtube.com/watch?v=VmQ6dHvnKIM
+    // API: https://randomapi.dev/apis/products#route-root
+    getPrice = async () => {
+        try
+        {
+            const response = await fetch("https://randomapi.dev/api/products?category=food&minPrice=10&maxPrice=100&currency=CAD&count=100"); //waits to fetch data from API
+            
+            const data = await response.json(); //waits to convert data to JSON
+            const randomiseProduct = data.data[Math.floor(Math.random() * data.data.length)]; //randomly selects data from API
+
+            return Math.round(randomiseProduct.price); //rounds price
+        }
+        catch (error)
+        {
+            console.error("Error fetching price:", error);
+            return null;
+        }
+    }
+
     //CREATE NPC OBJECTS
     NPCObject()
     {
@@ -71,9 +91,9 @@ export default class NPC
     //CREATE CROP RELATED TEXT
     CropObject()
     {
-        this.crops = ["", "Carrots", "Tomatoes", "Lettuce", "Potatoes", "Cucumbers", "Peppers"][Math.floor(Math.random() * 7)];
+        this.crops = ["Sage", "Rosemary", "Mugwort", "Yarrow", "Holy Basil", "Marigold"][Math.floor(Math.random() * 6)];
         this.cropAmount = Math.floor(Math.random() * 10) + 1;
-        this.price = (Math.random() * 10).toFixed(2);
+        // this.price = (Math.random() * 10).toFixed(2);
     }
 
     //INTERACTIONS
@@ -92,10 +112,12 @@ export default class NPC
 
     //SPEECH
     // ref: https://docs.phaser.io/phaser/concepts/gameobjects/text
-    TextBubble()
+    async TextBubble()
     {
         this.NPCObject(); //calls the NPC names
         this.CropObject(); //calls the crop names, amount, and price
+
+        this.price = await this.getPrice(); //calls the price API
 
         //Text
         let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
