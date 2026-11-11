@@ -35,15 +35,41 @@ export default class NPC
     // ref: https://www.youtube.com/watch?v=VmQ6dHvnKIM
     // API: https://randomapi.dev/apis/products#route-root
     getPrice = async () => {
+        // try
+        // {
+        //     const response = await fetch("https://randomapi.dev/api/products?category=food&minPrice=10&maxPrice=100&currency=CAD&count=100"); //waits to fetch data from API
+
+        //     const data = await response.json(); //waits to convert data to JSON
+        //     const randomiseProduct = data.data[Math.floor(Math.random() * data.data.length)]; //randomly selects data from API
+
+        //     return Math.round(randomiseProduct.price); //rounds price
+        // }
+
         try
         {
-            const response = await fetch("https://randomapi.dev/api/products?category=food&minPrice=10&maxPrice=100&currency=CAD&count=100"); //waits to fetch data from API
-            
-            const data = await response.json(); //waits to convert data to JSON
-            const randomiseProduct = data.data[Math.floor(Math.random() * data.data.length)]; //randomly selects data from API
+            let API;
 
-            return Math.round(randomiseProduct.price); //rounds price
+            if (this.cropAmount >= 1 && this.cropAmount <= 3)
+            {
+                API = "https://randomapi.dev/api/products?category=food&minPrice=10&maxPrice=50&currency=CAD&count=100";
+            }
+            else if (this.cropAmount >= 4 && this.cropAmount <= 6)
+            {
+                API = "https://randomapi.dev/api/products?category=food&minPrice=50&maxPrice=100&currency=CAD&count=100";
+            }
+            else if (this.cropAmount >= 7 && this.cropAmount <= 10)
+            {
+                API = "https://randomapi.dev/api/products?category=food&minPrice=100&maxPrice=150&currency=CAD&count=100";
+            }
+
+            const response = await fetch(API); // waits to fetch data
+            const data = await response.json(); // waits to convert data
+
+            const randomiseProduct = data.data[Math.floor(Math.random() * data.data.length)]; // randomly selects price
+
+            return Math.round(randomiseProduct.price); // rounds price
         }
+        
         catch (error)
         {
             console.error("Error fetching price:", error);
