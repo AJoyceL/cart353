@@ -142,7 +142,7 @@ export default class NPC
         let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         
         //Add text
-        this.scene.add.text(this.x + 30, this.y + 250, text, { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270 } }).setDepth(51);
+        this.dialogue = this.scene.add.text(this.x + 30, this.y + 250, text, { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270 } }).setDepth(51);
         
     }
 
@@ -150,11 +150,22 @@ export default class NPC
     {
        this.ReplyBtn = [];
 
-       this.ReplyBtn.push(new Button(this.scene, this.x + 20, this.y + 315, 50, 25, 0xe9e1f2, "Yes"));
+       this.ReplyBtn.push(new Button(this.scene, this.x + 20, this.y + 315, 50, 25, 0xe9e1f2, "Yes", this));
 
-        this.ReplyBtn.push(new Button(this.scene, this.x + 100, this.y + 315, 50, 25, 0xe9e1f2, "No"));
+        this.ReplyBtn.push(new Button(this.scene, this.x + 100, this.y + 315, 50, 25, 0xe9e1f2, "No", this));
 
-        this.ReplyBtn.push(new Button(this.scene, this.x + 180, this.y + 315, 100, 25, 0xe9e1f2, "Haggle"));
+        this.ReplyBtn.push(new Button(this.scene, this.x + 180, this.y + 315, 100, 25, 0xe9e1f2, "Haggle", this));
     }
 
+    RemoveNPC()
+    {
+        this.npc.destroy();
+        this.dialogue.destroy();
+        this.img.destroy();
+        
+        this.ReplyBtn.forEach(button => {
+            button.rect.destroy();
+            button.zone.destroy();
+        })
+    }
 }

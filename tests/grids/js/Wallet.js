@@ -12,7 +12,7 @@ export default class Wallet
     }
 
     //Spending
-     static spend(amount)
+    static spend(amount)
     {
         if (Wallet.money >= amount)
         {

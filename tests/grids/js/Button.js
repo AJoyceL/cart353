@@ -6,10 +6,11 @@ import NPC from "./NPC.js"; //npc class
 export default class Button 
 {
     //will have to change for an img or sprite
-    constructor(scene, x, y, w, h, color, type)
+    constructor(scene, x, y, w, h, color, type, npc)
     {
         this.scene = scene;
         this.type = type;
+        this.npc = npc;
 
         this.rect = scene.add.graphics();
         this.rect.fillStyle(color, 1);
@@ -25,10 +26,12 @@ export default class Button
         if (this.type === "Yes" || this.type === "No" || this.type === "Haggle")
             {
                 this.rect.setDepth(60);
+                this.zone.setDepth(61);
             }
             else
             {
                 this.rect.setDepth(20);
+                this.zone.setDepth(21);
             }
 
 
@@ -182,20 +185,28 @@ export default class Button
     }
 
     //REPLY NPC
-    // YesBtn()
-    // {
+    YesBtn()
+    {
+        Wallet.add(this.npc.price);
 
-    // }
+        this.scene.wallet.update();
+        this.npc.RemoveNPC();
+
+        console.log("You sold " + this.npc.cropAmount + " " + this.npc.crop + " for " + this.npc.price + ".");
+    }
 
     // NoBtn()
     // {
 
     // }
 
-    // HaggleBtn()
-    // {
+    async HaggleBtn()
+    {
+        console.log("Haggling with npc")
+        this.npc.price = await this.npc.getPrice();
 
-    // }
+        this.npc.dialogue.setText("Hello! I'm " + this.npc.name + ". I would like to buy " + this.npc.cropAmount + " " + this.npc.crops + " for $" + this.npc.price + ".");
+    }
 }
 
 window.Button = Button;
