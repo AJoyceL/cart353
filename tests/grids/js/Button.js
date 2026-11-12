@@ -21,6 +21,17 @@ export default class Button
         this.zone.setDepth(21);
         this.zone.setInteractive();
 
+        //Set Depth og btn
+        if (this.type === "Yes" || this.type === "No" || this.type === "Haggle")
+            {
+                this.rect.setDepth(60);
+            }
+            else
+            {
+                this.rect.setDepth(20);
+            }
+
+
         //Mouse Event
         this.zone.on("pointerover", () =>{
             this.rect.clear();
@@ -66,6 +77,20 @@ export default class Button
             // Answer npcs
             else if(this.type === "NPC"){
                 this.AnswerNPC();
+            }
+
+            //Player reply
+            else if (this.type === "Yes")
+            {
+                this.YesBtn();
+            }
+            else if (this.type === "No")
+            {
+                this.NoBtn();
+            }
+            else if (this.type === "Haggle")
+            {
+                this.HaggleBtn();
             }
         });
     }
@@ -155,6 +180,22 @@ export default class Button
             this.scene.npcs.push(new NPC(this.scene, 660, 100));
         }
     }
+
+    //REPLY NPC
+    // YesBtn()
+    // {
+
+    // }
+
+    // NoBtn()
+    // {
+
+    // }
+
+    // HaggleBtn()
+    // {
+
+    // }
 }
 
 window.Button = Button;

@@ -9,6 +9,8 @@
 // https://youtu.be/OrMFLc90TzI?si=idqDT-SCNHke2qvb  
 // https://dev.to/williamsmithh/top-5-free-financial-data-apis-for-building-a-powerful-stock-portfolio-tracker-4dhj
 
+import Button from "./Button.js";
+
 export default class NPC 
 {
     constructor (scene, x, y)
@@ -23,6 +25,7 @@ export default class NPC
         this.npc.setDepth(50);
         
         this.TextBubble();
+        this.PlayerReply();
     }
 
     //SPRITES
@@ -35,16 +38,6 @@ export default class NPC
     // ref: https://www.youtube.com/watch?v=VmQ6dHvnKIM
     // API: https://randomapi.dev/apis/products#route-root
     getPrice = async () => {
-        // try
-        // {
-        //     const response = await fetch("https://randomapi.dev/api/products?category=food&minPrice=10&maxPrice=100&currency=CAD&count=100"); //waits to fetch data from API
-
-        //     const data = await response.json(); //waits to convert data to JSON
-        //     const randomiseProduct = data.data[Math.floor(Math.random() * data.data.length)]; //randomly selects data from API
-
-        //     return Math.round(randomiseProduct.price); //rounds price
-        // }
-
         try
         {
             let API;
@@ -149,8 +142,19 @@ export default class NPC
         let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         
         //Add text
-        this.scene.add.text(this.x + 30, this.y + 275, text, { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 275 } }).setDepth(51);
+        this.scene.add.text(this.x + 30, this.y + 250, text, { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270 } }).setDepth(51);
         
+    }
+
+    PlayerReply()
+    {
+       this.ReplyBtn = [];
+
+       this.ReplyBtn.push(new Button(this.scene, this.x + 20, this.y + 315, 50, 25, 0xe9e1f2, "Yes"));
+
+        this.ReplyBtn.push(new Button(this.scene, this.x + 100, this.y + 315, 50, 25, 0xe9e1f2, "No"));
+
+        this.ReplyBtn.push(new Button(this.scene, this.x + 180, this.y + 315, 100, 25, 0xe9e1f2, "Haggle"));
     }
 
 }
