@@ -178,9 +178,11 @@ export default class Button
     //CALL NPC
     AnswerNPC()
     {
-       if (this.scene.npcs.length === 0)
+        if (this.scene.npcs.length === 0)
         {
-            this.scene.npcs.push(new NPC(this.scene, 660, 100));
+            this.scene.npcs.push(
+                new NPC(this.scene, 660, 100)
+            );
         }
     }
 
@@ -188,24 +190,48 @@ export default class Button
     YesBtn()
     {
         Wallet.add(this.npc.price);
-
         this.scene.wallet.update();
-        this.npc.RemoveNPC();
 
-        console.log("You sold " + this.npc.cropAmount + " " + this.npc.crop + " for " + this.npc.price + ".");
+        this.npc.RemoveNPC();
     }
 
-    // NoBtn()
-    // {
-
-    // }
+    NoBtn()
+    {
+        this.npc.RemoveNPC();
+    }
 
     async HaggleBtn()
     {
+        this.npc.haggleCount++;
         console.log("Haggling with npc")
-        this.npc.price = await this.npc.getPrice();
 
-        this.npc.dialogue.setText("Hello! I'm " + this.npc.name + ". I would like to buy " + this.npc.cropAmount + " " + this.npc.crops + " for $" + this.npc.price + ".");
+        // this.npc.price = await this.npc.getPrice();
+
+        if (this.npc.haggleCount === 1)
+        {
+            this.npc.price = await this.npc.getPrice();
+
+            this.npc.dialogue.setText("All right, then for " + this.npc.price + "$?");
+        }
+
+        else if (this.npc.haggleCount === 2)
+        {
+            this.npc.price = await this.npc.getPrice();
+
+            this.npc.dialogue.setText("No? Fine, " + this.npc.price + "$ for these.");
+        }
+
+        else if (this.npc.haggleCount === 3)
+        {
+            this.npc.price = await this.npc.getPrice();
+            
+            this.npc.dialogue.setText("That's my final offer! Take it or leave it. " + this.npc.price + "$.");
+        }
+
+        else if (this.npc.haggleCount === 4)
+        {
+            this.npc.RemoveNPC();
+        }
     }
 }
 

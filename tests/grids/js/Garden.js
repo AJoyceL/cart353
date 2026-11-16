@@ -260,10 +260,6 @@ function create()
 
 function update(time, delta)
 {
-    // if (this.spaceBar.isDown) {
-    //     this.npcs.push (new NPC(this, 660, 100)); //draws npc
-    // }
-
     //access seeds
     //ref: https://docs.phaser.io/api-documentation/class/data-datamanager
     const pendingSeeds = this.game.registry.get("pendingSeeds") || [];

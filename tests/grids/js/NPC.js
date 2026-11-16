@@ -26,6 +26,8 @@ export default class NPC
         
         this.TextBubble();
         this.PlayerReply();
+
+        this.haggleCount = 0; //to count haggling attemps
     }
 
     //SPRITES
@@ -115,20 +117,6 @@ export default class NPC
         // this.price = (Math.random() * 10).toFixed(2);
     }
 
-    //INTERACTIONS
-    // Will have to connect this to a JSON fil to get dialogues
-    interact()
-    {
-        //will add interactions
-    }
-
-    //PRICING
-    // Pricing will be based on real-time data from a finacial API. 
-    getPrice()
-    {
-        //will add pricing
-    }
-
     //SPEECH
     // ref: https://docs.phaser.io/phaser/concepts/gameobjects/text
     async TextBubble()
@@ -139,7 +127,38 @@ export default class NPC
         this.price = await this.getPrice(); //calls the price API
 
         //Text
-        let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        // let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        let text;
+        
+        if (this.name === "John")
+        {
+            text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+
+        else if (this.name === "Jane")
+        {
+            text = "Good Morning! I'm " + this.name + ". It's a pleasure to meet you. I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+
+        else if (this.name === "Bob")
+        {
+            text = "G'Day'! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+
+        else if (this.name === "Alice")
+        {
+            text = "G'Day! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+
+        else if (this.name === "Mike")
+        {
+            text = "Hey! I'm " + this.name + "! Can I get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+
+        else if (this.name === "Emily")
+        {
+            text = "Good Morrow! I am the esteemed" + this.name + ". I would like to purchase " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
         
         //Add text
         this.dialogue = this.scene.add.text(this.x + 30, this.y + 250, text, { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270 } }).setDepth(51);
@@ -148,9 +167,9 @@ export default class NPC
 
     PlayerReply()
     {
-       this.ReplyBtn = [];
+        this.ReplyBtn = [];
 
-       this.ReplyBtn.push(new Button(this.scene, this.x + 20, this.y + 315, 50, 25, 0xe9e1f2, "Yes", this));
+        this.ReplyBtn.push(new Button(this.scene, this.x + 20, this.y + 315, 50, 25, 0xe9e1f2, "Yes", this));
 
         this.ReplyBtn.push(new Button(this.scene, this.x + 100, this.y + 315, 50, 25, 0xe9e1f2, "No", this));
 
@@ -160,12 +179,15 @@ export default class NPC
     RemoveNPC()
     {
         this.npc.destroy();
-        this.dialogue.destroy();
-        this.img.destroy();
-        
+
+        if (this.dialogue) this.dialogue.destroy();
+        if (this.img) this.img.destroy();
+
         this.ReplyBtn.forEach(button => {
             button.rect.destroy();
             button.zone.destroy();
-        })
+        });
+
+        this.scene.npcs = this.scene.npcs.filter(npc => npc !== this);
     }
 }
