@@ -128,11 +128,38 @@ export default class NPC
     {
         this.crops = ["Sage", "Rosemary", "Mugwort", "Yarrow", "Holy Basil", "Marigold"][Math.floor(Math.random() * 6)];
         this.cropAmount = Math.floor(Math.random() * 10) + 1;
-        // this.price = (Math.random() * 10).toFixed(2);
+    }
+
+    //INTERACTION
+    GetDialogue()
+    {
+        if (this.name === "John")
+        {
+            return "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+        else if (this.name === "Jane")
+        {
+            return "Good Morning! I'm " + this.name + ". It's a pleasure to meet you. I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+        else if (this.name === "Bob")
+        {
+            return "G'Day'! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+        else if (this.name === "Alice")
+        {
+            return "G'Day! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+        else if (this.name === "Mike")
+        {
+            return "Hey! I'm " + this.name + "! Can I get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
+        else if (this.name === "Emily")
+        {
+            return "Good Morrow! I am the esteemed " + this.name + ". I would like to purchase " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+        }
     }
 
     //SPEECH
-    // ref: https://docs.phaser.io/phaser/concepts/gameobjects/text
     async TextBubble()
     {
         //calls the NPC names
@@ -143,42 +170,22 @@ export default class NPC
 
         this.CropObject(); //calls the crop names, amount, and price
 
+        this.price = ""; //temp value while it updates
+        
+        //dialogue
+        this.dialogue = this.scene.add.text(this.x + 30, this.y + 250, this.GetDialogue(), { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270}}).setDepth(51);
+
         this.price = await this.getPrice(); //calls the price API
 
-        //Text
-        let text;
-        
-        //name specific text
-        if (this.name === "John")
+        // Update dialogue 
+        if (this.dialogue)
         {
-            text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+            this.dialogue.setText(this.GetDialogue());
         }
-        else if (this.name === "Jane")
-        {
-            text = "Good Morning! I'm " + this.name + ". It's a pleasure to meet you. I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
-        }
-        else if (this.name === "Bob")
-        {
-            text = "G'Day'! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
-        }
-        else if (this.name === "Alice")
-        {
-            text = "G'Day! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
-        }
-        else if (this.name === "Mike")
-        {
-            text = "Hey! I'm " + this.name + "! Can I get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
-        }
-        else if (this.name === "Emily")
-        {
-            text = "Good Morrow! I am the esteemed" + this.name + ". I would like to purchase " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
-        }
-        
-        //Add text
-        this.dialogue = this.scene.add.text(this.x + 30, this.y + 250, text, { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270 } }).setDepth(51);
-        
+        else{return;}
     }
 
+    //PLAYER REPLY
     PlayerReply()
     {
         this.ReplyBtn = [];
@@ -190,6 +197,7 @@ export default class NPC
         this.ReplyBtn.push(new Button(this.scene, this.x + 180, this.y + 315, 100, 25, 0xe9e1f2, "Haggle", this));
     }
 
+    //NPC REACTION
     RemoveNPC()
     {
         this.npc.destroy();

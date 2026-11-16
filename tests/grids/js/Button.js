@@ -244,6 +244,10 @@ export default class Button
     //REPLY NPC
     YesBtn()
     {
+        if (this.npc.price === null)
+        {
+            return;
+        }
         Wallet.add(this.npc.price);
         this.scene.wallet.update();
 
