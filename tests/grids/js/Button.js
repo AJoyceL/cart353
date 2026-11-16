@@ -79,7 +79,7 @@ export default class Button
 
             // Answer npcs
             else if(this.type === "NPC"){
-                this.AnswerNPC();
+                this.NPCBtn();
             }
 
             //Player reply
@@ -176,9 +176,15 @@ export default class Button
     }  
     
     //CALL NPC
-    AnswerNPC()
+    NPCBtn()
     {
-        if (this.scene.npcs.length === 0)
+        let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"];
+
+        let availableNPCs = names.filter(
+            name => !this.scene.angryNPCs.includes(name)
+        ); // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+
+        if (this.scene.npcs.length === 0 && availableNPCs.length > 0)
         {
             this.scene.npcs.push(
                 new NPC(this.scene, 660, 100)
@@ -192,20 +198,29 @@ export default class Button
         Wallet.add(this.npc.price);
         this.scene.wallet.update();
 
-        this.npc.RemoveNPC();
+        this.npc.BoughtNPC();
     }
 
     NoBtn()
     {
-        this.npc.RemoveNPC();
+        let name = this.npc.name;
+
+        this.scene.npcNoCounts[name]++;
+
+        if (this.scene.npcNoCounts[name] >= 2)
+        {
+            this.npc.AngryNPC();
+        }
+        else
+        {
+            this.npc.BoughtNPC();
+        }
     }
 
     async HaggleBtn()
     {
         this.npc.haggleCount++;
         console.log("Haggling with npc")
-
-        // this.npc.price = await this.npc.getPrice();
 
         if (this.npc.haggleCount === 1)
         {
@@ -224,13 +239,13 @@ export default class Button
         else if (this.npc.haggleCount === 3)
         {
             this.npc.price = await this.npc.getPrice();
-            
+
             this.npc.dialogue.setText("That's my final offer! Take it or leave it. " + this.npc.price + "$.");
         }
 
         else if (this.npc.haggleCount === 4)
         {
-            this.npc.RemoveNPC();
+            this.npc.AngryNPC();
         }
     }
 }

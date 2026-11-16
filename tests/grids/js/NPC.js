@@ -73,9 +73,21 @@ export default class NPC
     }
 
     //CREATE NPC OBJECTS
+    
     NPCObject()
     {
-        this.name = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"][Math.floor(Math.random() * 6)];
+        let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"];
+
+        names = names.filter(name => !this.scene.angryNPCs.includes(name)); //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+
+        if (names.length === 0) 
+        {
+            return false;
+        }
+        
+        this.name = names[Math.floor(Math.random() * names.length)];
+
+        this.noCount = this.scene.npcNoCounts[this.name] || 0;
 
         if (this.name === "John") {
             // this.img = "npc1";
@@ -107,6 +119,8 @@ export default class NPC
             this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0x00ffff); // Placeholder for Emily
             this.img.setDepth(55);
         }
+
+        return true;
     }
 
     //CREATE CROP RELATED TEXT
@@ -121,13 +135,17 @@ export default class NPC
     // ref: https://docs.phaser.io/phaser/concepts/gameobjects/text
     async TextBubble()
     {
-        this.NPCObject(); //calls the NPC names
+        //calls the NPC names
+        if (!this.NPCObject())
+        {
+            return;
+        } 
+
         this.CropObject(); //calls the crop names, amount, and price
 
         this.price = await this.getPrice(); //calls the price API
 
         //Text
-        // let text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         let text;
         
         if (this.name === "John")
@@ -188,6 +206,21 @@ export default class NPC
             button.zone.destroy();
         });
 
-        this.scene.npcs = this.scene.npcs.filter(npc => npc !== this);
+        this.scene.npcs = this.scene.npcs.filter(npc => npc !== this); //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+    }
+    
+    BoughtNPC()
+    {
+        this.RemoveNPC();
+    }
+
+    AngryNPC()
+    {
+        if (!this.scene.angryNPCs.includes(this.name))
+        {
+            this.scene.angryNPCs.push(this.name);
+        }
+
+        this.RemoveNPC();
     }
 }

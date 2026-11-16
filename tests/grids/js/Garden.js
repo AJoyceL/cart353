@@ -252,9 +252,20 @@ function create()
     this.buttons.push (new Button(this, 850, 325, 150, 50, 0xe9e1f2, "NPC")); // NPC button
 
     //NPC
+    this.npcs = []; //calls npc array
+    this.angryNPCs = []; //calls angry npcs
     this.npcs = [];
-    
-    
+    this.angryNPCs = [];
+    //counts how many times they're rejected
+    this.npcNoCounts = {
+        John: 0,
+        Jane: 0,
+        Bob: 0,
+        Alice: 0,
+        Mike: 0,
+        Emily: 0
+    };
+ 
 }
 
 
