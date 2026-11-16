@@ -253,9 +253,8 @@ function create()
 
     //NPC
     this.npcs = []; //calls npc array
+    this.npcBtnAvailable = true;
     this.angryNPCs = []; //calls angry npcs
-    this.npcs = [];
-    this.angryNPCs = [];
     //counts how many times they're rejected
     this.npcNoCounts = {
         John: 0,

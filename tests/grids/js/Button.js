@@ -9,8 +9,15 @@ export default class Button
     constructor(scene, x, y, w, h, color, type, npc)
     {
         this.scene = scene;
-        this.type = type;
-        this.npc = npc;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.type = type; // btn type
+
+        this.npc = npc; // calls npc vars
+        this.npcBtnAvailable = true;
+        this.npcBtnCooldown = false;
 
         this.rect = scene.add.graphics();
         this.rect.fillStyle(color, 1);
@@ -24,15 +31,15 @@ export default class Button
 
         //Set Depth og btn
         if (this.type === "Yes" || this.type === "No" || this.type === "Haggle")
-            {
-                this.rect.setDepth(60);
-                this.zone.setDepth(61);
-            }
-            else
-            {
-                this.rect.setDepth(20);
-                this.zone.setDepth(21);
-            }
+        {
+            this.rect.setDepth(60);
+            this.zone.setDepth(61);
+        }
+        else
+        {
+            this.rect.setDepth(20);
+            this.zone.setDepth(21);
+        }
 
 
         //Mouse Event
@@ -40,16 +47,28 @@ export default class Button
             this.rect.clear();
             this.rect.fillStyle(0x6f6678, 1);
             this.rect.fillRoundedRect(x, y, w, h, 20);
+
+            if (this.type === "NPC" && !this.scene.npcBtnAvailable)
+            {
+                return;
+            }
         })
 
         this.zone.on("pointerout", () => {
-            this.rect.clear();
-            this.rect.fillStyle(color, 1);
-            this.rect.fillRoundedRect(x, y, w, h, 20);
+            if (this.type === "NPC")
+            {
+                this.NPCBtnState();
+            }
+            else
+            {
+                this.rect.clear();
+                this.rect.fillStyle(color, 1);
+                this.rect.fillRoundedRect(x, y, w, h, 20);
+            }
         });
 
         this.zone.on("pointerdown", () => {
-            // Change scenes
+            // SCENES
             if (this.type === "shop") {
                 this.ShopBtn();
             }
@@ -57,7 +76,7 @@ export default class Button
                 this.GardenBtn();
             }
 
-            // Buy seeds
+            // SEEDS
             else if (this.type === "seed1") {
                 this.BuySeed1();
             }
@@ -77,12 +96,12 @@ export default class Button
                 this.BuySeed6();
             }
 
-            // Answer npcs
+            // NPCS
             else if(this.type === "NPC"){
                 this.NPCBtn();
             }
 
-            //Player reply
+            // PLAYER REPLY
             else if (this.type === "Yes")
             {
                 this.YesBtn();
@@ -178,18 +197,48 @@ export default class Button
     //CALL NPC
     NPCBtn()
     {
+        if (!this.scene.npcBtnAvailable)
+        {
+            return;
+        }
+
         let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"];
 
-        let availableNPCs = names.filter(
-            name => !this.scene.angryNPCs.includes(name)
-        ); // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+        let availableNPCs = names.filter(name => !this.scene.angryNPCs.includes(name)); // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 
         if (this.scene.npcs.length === 0 && availableNPCs.length > 0)
         {
+            this.scene.npcBtnAvailable = false;
+            this.NPCBtnState();
+
+            let randomTime = Math.floor(Math.random() * 10000) + 5000; //time randomiser
+
             this.scene.npcs.push(
                 new NPC(this.scene, 660, 100)
             );
+
+            //delay time for npc availability
+            // ref: https://docs.phaser.io/phaser/concepts/time
+            this.scene.time.delayedCall(randomTime, () => {
+                this.scene.npcBtnAvailable = true;
+                this.NPCBtnState();
+            })
         }
+    }
+
+    NPCBtnState()
+    {
+        this.rect.clear();
+
+        if (this.scene.npcBtnAvailable)
+        {
+            this.rect.fillStyle(0xe9e1f2, 1);
+        }
+        else
+        {
+            this.rect.fillStyle(0x6f6678, 1);
+        }
+        this.rect.fillRoundedRect(this.x, this.y, this.w, this.h, 20);
     }
 
     //REPLY NPC
@@ -207,7 +256,7 @@ export default class Button
 
         this.scene.npcNoCounts[name]++;
 
-        if (this.scene.npcNoCounts[name] >= 2)
+        if (this.scene.npcNoCounts[name] >= 3)
         {
             this.npc.AngryNPC();
         }

@@ -148,31 +148,27 @@ export default class NPC
         //Text
         let text;
         
+        //name specific text
         if (this.name === "John")
         {
             text = "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         }
-
         else if (this.name === "Jane")
         {
             text = "Good Morning! I'm " + this.name + ". It's a pleasure to meet you. I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         }
-
         else if (this.name === "Bob")
         {
             text = "G'Day'! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         }
-
         else if (this.name === "Alice")
         {
             text = "G'Day! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         }
-
         else if (this.name === "Mike")
         {
             text = "Hey! I'm " + this.name + "! Can I get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
         }
-
         else if (this.name === "Emily")
         {
             text = "Good Morrow! I am the esteemed" + this.name + ". I would like to purchase " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
