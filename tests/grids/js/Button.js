@@ -2,6 +2,7 @@
 import Wallet from "./Wallet.js";
 import Seed from "./Seed.js";
 import NPC from "./NPC.js"; //npc class
+import CropCount from "./CropCount.js";
 
 export default class Button 
 {
@@ -211,18 +212,9 @@ export default class Button
             this.scene.npcBtnAvailable = false;
             this.NPCBtnState();
 
-            let randomTime = Math.floor(Math.random() * 10000) + 5000; //time randomiser
-
             this.scene.npcs.push(
                 new NPC(this.scene, 660, 100)
             );
-
-            //delay time for npc availability
-            // ref: https://docs.phaser.io/phaser/concepts/time
-            this.scene.time.delayedCall(randomTime, () => {
-                this.scene.npcBtnAvailable = true;
-                this.NPCBtnState();
-            })
         }
     }
 
@@ -241,17 +233,44 @@ export default class Button
         this.rect.fillRoundedRect(this.x, this.y, this.w, this.h, 20);
     }
 
+    NPCBtnCooldown()
+    {
+        let randomTime = Math.floor(Math.random() * 10000) + 5000; //time randomiser
+
+        //delay time for npc availability
+        // ref: https://docs.phaser.io/phaser/concepts/time
+        this.scene.time.delayedCall(randomTime, () => {
+            this.scene.npcBtnAvailable = true;
+            this.NPCBtnState();
+        })
+    }
+
     //REPLY NPC
     YesBtn()
     {
-        if (this.npc.price === null)
+        if (this.npc.price === null || this.npc.price === "")
         {
             return;
         }
-        Wallet.add(this.npc.price);
-        this.scene.wallet.update();
 
-        this.npc.BoughtNPC();
+        const type = this.npc.cropType - 1;
+        const amount = this.npc.cropAmount;
+
+        if (CropCount.sell(type, amount))
+        {
+            Wallet.add(this.npc.price);
+            this.scene.wallet.update();
+
+            this.scene[`type${this.npc.cropType}Text`].update();
+
+            this.npc.BoughtNPC();
+        }
+        else
+        {
+            this.npc.dialogue.setText("You don't have enough " + this.npc.crops + "? I'll come back next time.")
+
+            this.scene.time.delayedCall(1500, () => {this.npc.AngryNPC();})
+        }
     }
 
     NoBtn()

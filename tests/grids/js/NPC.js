@@ -10,6 +10,7 @@
 // https://dev.to/williamsmithh/top-5-free-financial-data-apis-for-building-a-powerful-stock-portfolio-tracker-4dhj
 
 import Button from "./Button.js";
+import CropCount from "./CropCount.js";
 
 export default class NPC 
 {
@@ -126,7 +127,9 @@ export default class NPC
     //CREATE CROP RELATED TEXT
     CropObject()
     {
-        this.crops = ["Sage", "Rosemary", "Mugwort", "Yarrow", "Holy Basil", "Marigold"][Math.floor(Math.random() * 6)];
+        const cropNames = ["Sage", "Thyme", "Mugwort", "Hemlock", "Holy Basil", "Fairy Cups"];
+        this.cropType = Math.floor(Math.random() * 6) +1;
+        this.crops = cropNames[this.cropType -1];
         this.cropAmount = Math.floor(Math.random() * 10) + 1;
     }
 
@@ -211,6 +214,14 @@ export default class NPC
         });
 
         this.scene.npcs = this.scene.npcs.filter(npc => npc !== this); //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+
+        //calls cooldown for btn
+        const npcButton = this.scene.npcButton;
+
+        if (npcButton)
+        {
+            npcButton.NPCBtnCooldown();
+        }
     }
     
     BoughtNPC()

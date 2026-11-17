@@ -241,7 +241,7 @@ function create()
     this.buttons = [];
     this.buttons.push (new Button(this, -20, 325, 150, 50, 0xe9e1f2, "shop")); // scene button
 
-    this.buttons.push (new Button(this, 850, 325, 150, 50, 0xe9e1f2, "NPC")); // NPC button
+    this.npcButton = new Button(this, 850, 325, 150, 50, 0xe9e1f2, "NPC"); // NPC button
 
     //NPC
     this.npcs = []; //calls npc array
