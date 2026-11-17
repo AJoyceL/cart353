@@ -1,7 +1,7 @@
 export default class Wallet 
 {
     //ref: https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static
-    static money = 150;//initial amount = 100$
+    static money = 100;//stores money
 
     constructor(scene, x, y, text) 
     {
@@ -23,6 +23,7 @@ export default class Wallet
         return false;
     }
 
+    //Update wallet
     update()
     {
         this.text.setText(Wallet.money + "$");
@@ -33,11 +34,6 @@ export default class Wallet
     {
         Wallet.money += amount;
     }
-
-    update() 
-    {
-        this.text.setText(Wallet.money + "$");
-    }
-
 }
+
 window.Wallet = Wallet;

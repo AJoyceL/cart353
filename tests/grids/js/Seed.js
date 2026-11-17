@@ -9,31 +9,28 @@ export default class Seeds
         this.type = type;
         let color;
 
+        //Assign color by type
+        //Will replace with sprites
         if (type === "1")
         {
            color = 0x70a9ba;
         }
-
         else if (type === "2")
         {
            color = 0x78f6638;
         }
-
         else if (type === "3")
         {
             color = 0x963562;
         }
-
         else if (type === "4")
         {
             color = 0xd1c569;
         }  
-
         else if (type === "5")
         {
             color = 0x57a15c;
         }   
-
         else if (type === "6")
         {
             color = 0x44246e;
@@ -45,20 +42,20 @@ export default class Seeds
         this.circle.type = type;
     };
 
+    //Creates seeds based on type
     static createSeed(garden, type, x, y) 
     {
+        //Assign position by type
         if (type === "1")
         {
             x = 50;
             y = 125;
         }
-
         else if (type === "2")
         {
             x = 50
             y = 175;
         }
-
         else if (type === "3")
         {
             x = 50; 
@@ -79,7 +76,6 @@ export default class Seeds
             x = 125;
             y = 225;
         }
-
         else
         {
             return null;

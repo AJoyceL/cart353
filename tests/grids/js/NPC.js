@@ -1,14 +1,4 @@
 //NPC CLASS
-// IDEA: rather than having a shop for crafted items, NPCs will randomly apear in the garden to buy the player's crops. The player will have to answer the NPC before they leave. If the player doesn't have the required amount of crops, the NPC will leave and the player will lose out on money. The player can also choose to ignore the NPC and continue gardening.
-// The NPC will have a random amount of crops that they want to buy, and a price corresponding to a realtime data. If the player sells the crops, the NPCs will come back. If the player ignores the NPC, they will leave and never come back.
-// The player can negotiate with the NPCs to get a better price, but if the NPC disagrees too much, they will leave and never come back.
-// Will have to see if it's possible
-
-//data api I could use: 
-// https://fakestoreapi.com 
-// https://youtu.be/OrMFLc90TzI?si=idqDT-SCNHke2qvb  
-// https://dev.to/williamsmithh/top-5-free-financial-data-apis-for-building-a-powerful-stock-portfolio-tracker-4dhj
-
 import Button from "./Button.js";
 import CropCount from "./CropCount.js";
 
@@ -25,8 +15,8 @@ export default class NPC
         this.npc.setInteractive();
         this.npc.setDepth(50);
         
-        this.TextBubble();
-        this.PlayerReply();
+        this.TextBubble(); //dialogue bubble
+        this.PlayerReply(); //player response btns
 
         this.haggleCount = 0; //to count haggling attemps
     }
@@ -45,6 +35,7 @@ export default class NPC
         {
             let API;
 
+            //Selects API based on crop amount requested
             if (this.cropAmount >= 1 && this.cropAmount <= 3)
             {
                 API = "https://randomapi.dev/api/products?category=food&minPrice=10&maxPrice=50&currency=CAD&count=100";
@@ -58,8 +49,8 @@ export default class NPC
                 API = "https://randomapi.dev/api/products?category=food&minPrice=100&maxPrice=150&currency=CAD&count=100";
             }
 
-            const response = await fetch(API); // waits to fetch data
-            const data = await response.json(); // waits to convert data
+            const response = await fetch(API); //fetch data
+            const data = await response.json(); //convert data
 
             const randomiseProduct = data.data[Math.floor(Math.random() * data.data.length)]; // randomly selects price
 
@@ -77,19 +68,23 @@ export default class NPC
     
     NPCObject()
     {
-        let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"];
+        let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"]; //name liest
 
-        names = names.filter(name => !this.scene.angryNPCs.includes(name)); //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+        //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+        names = names.filter(name => !this.scene.angryNPCs.includes(name)); //removes npc who left permanently
 
+        //stops calling npcs if everyone left
         if (names.length === 0) 
         {
             return false;
         }
         
-        this.name = names[Math.floor(Math.random() * names.length)];
+        this.name = names[Math.floor(Math.random() * names.length)]; //randomly selects name
 
-        this.noCount = this.scene.npcNoCounts[this.name] || 0;
+        this.noCount = this.scene.npcNoCounts[this.name] || 0; //gets counts of rejection
 
+        //Assigns colours by type.
+        //Will replace with sprites
         if (this.name === "John") {
             // this.img = "npc1";
             this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0xff0000); // Placeholder for John
@@ -127,7 +122,9 @@ export default class NPC
     //CREATE CROP RELATED TEXT
     CropObject()
     {
-        const cropNames = ["Sage", "Thyme", "Mugwort", "Hemlock", "Holy Basil", "Fairy Cups"];
+        const cropNames = ["Sage", "Thyme", "Mugwort", "Hemlock", "Holy Basil", "Fairy Cups"]; //crop list
+
+        //Randomely selects crop type and amount
         this.cropType = Math.floor(Math.random() * 6) +1;
         this.crops = cropNames[this.cropType -1];
         this.cropAmount = Math.floor(Math.random() * 10) + 1;
@@ -136,6 +133,7 @@ export default class NPC
     //INTERACTION
     GetDialogue()
     {
+        //Assign dialogue by npc names
         if (this.name === "John")
         {
             return "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
@@ -175,8 +173,16 @@ export default class NPC
 
         this.price = ""; //temp value while it updates
         
-        //dialogue
+        //Display dialogue
         this.dialogue = this.scene.add.text(this.x + 30, this.y + 250, this.GetDialogue(), { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270}}).setDepth(51);
+
+        //Timer before npc leaves
+        this.timer = this.scene.time.delayedCall(60000, () => {
+            if (this.scene.npcs.includes(this))
+            {
+                this.AngryNPC();
+            }
+        })
 
         this.price = await this.getPrice(); //calls the price API
 
@@ -203,16 +209,18 @@ export default class NPC
     //NPC REACTION
     RemoveNPC()
     {
-        this.npc.destroy();
+        this.npc.destroy(); //removes npc
 
         if (this.dialogue) this.dialogue.destroy();
         if (this.img) this.img.destroy();
 
+        //removes response btn
         this.ReplyBtn.forEach(button => {
             button.rect.destroy();
             button.zone.destroy();
         });
 
+        //removes npc from list
         this.scene.npcs = this.scene.npcs.filter(npc => npc !== this); //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 
         //calls cooldown for btn
@@ -222,13 +230,20 @@ export default class NPC
         {
             npcButton.NPCBtnCooldown();
         }
+
+        if (this.timer)
+        {
+            this.timer.remove();
+        }
     }
     
+    //Called when player sells
     BoughtNPC()
     {
         this.RemoveNPC();
     }
 
+    //Called when npc leaves without buying
     AngryNPC()
     {
         if (!this.scene.angryNPCs.includes(this.name))
