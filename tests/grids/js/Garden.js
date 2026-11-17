@@ -3,6 +3,7 @@ import Shop from "./scene/Shop.js"; //shop scene
 import Wallet from "./Wallet.js"; //wallet class
 import Seed from "./Seed.js"; //seeds class
 import NPC from "./NPC.js"; //npc class
+import CropCount from "./CropCount.js" //crop count class
 
 
 //CLASSES
@@ -107,16 +108,7 @@ function preload()
 
 function init()
 {
-    //initilise text counts
-    this.type1Count = 0;
-    this.type2Count = 0;
-    this.type3Count = 0;
-    this.type4Count = 0;
-    this.type5Count = 0;
-    this.type6Count = 0;
-
     this.magicCount = 0; //magic level
-
 }
 
 
@@ -207,12 +199,12 @@ function create()
 
     //TEXT
     //Crop text
-    this.type1Text = new text(this, 200, 550, "0");
-    this.type2Text = new text(this, 325, 550, "0");
-    this.type3Text = new text(this, 450, 550, "0");
-    this.type4Text = new text(this, 575, 550, "0");
-    this.type5Text = new text(this, 700, 550, "0");
-    this.type6Text = new text(this, 825, 550, "0");
+    this.type1Text = new CropCount(this, 200, 550, "0", 0);
+    this.type2Text = new CropCount(this, 325, 550, "0", 1);
+    this.type3Text = new CropCount(this, 450, 550, "0", 2);
+    this.type4Text = new CropCount(this, 575, 550, "0", 3);
+    this.type5Text = new CropCount(this, 700, 550, "0", 4);
+    this.type6Text = new CropCount(this, 825, 550, "0", 5);
 
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level is invisible
     
@@ -421,37 +413,15 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
 
         //HARVESTING + INCREASE COUNT
-        if (gameObject.type === "1") {
-            gameObject.setPosition(175, 500);
-            scene.type1Count++;
-            scene.type1Text.text.setText(scene.type1Count);
-        }
-        else if (gameObject.type === "2") {
-            gameObject.setPosition(300, 500);
-            scene.type2Count++;
-            scene.type2Text.text.setText(scene.type2Count);
-        }
-        else if (gameObject.type === "3") {
-            gameObject.setPosition(425, 500);
-            scene.type3Count++;
-            scene.type3Text.text.setText(scene.type3Count);
-        }
-        else if (gameObject.type === "4") {
-            gameObject.setPosition(550, 500);
-            scene.type4Count++;
-            scene.type4Text.text.setText(scene.type4Count);
-        }
-        else if (gameObject.type === "5") {
-            gameObject.setPosition(675, 500);
-            scene.type5Count++;
-            scene.type5Text.text.setText(scene.type5Count);
-        }
-        else if (gameObject.type === "6") {
-            gameObject.setPosition(800, 500);
-            scene.type6Count++;
-            scene.type6Text.text.setText(scene.type6Count);
-        }
+        const type = Number(gameObject.type);
 
+        if (type >= 1 && type <= 6)
+        {
+            gameObject.setPosition(175 + (type - 1) * 125, 525); //places crops
+
+            CropCount.add(type - 1, 1);
+            scene[`type${type}Text`].update();
+        }
         console.log("Crop harvested!"); //debug
     }
 
