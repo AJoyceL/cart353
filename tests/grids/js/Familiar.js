@@ -28,12 +28,12 @@ class Familiar {
         //increase familair affection
         this.circle.on("pointerdown", () =>{
             this.increase(1);
-            console.log("affecion", this.type, this.affection);
+            console.log( this.type, "affecion: ", this.affection);
         })
 
         //decrease familiar affection
         this.timer = this.scene.time.addEvent({
-            delay: 5000,
+            delay: 30000,
             callback: () => {
                 this.lose(1);
                 console.log("Losing affection:", this.type, this.affection);
@@ -188,11 +188,13 @@ class Familiar {
         //calculate moveement distance
         const dx = this.targetX - this.circle.x;
         const dy = this.targetY - this.circle.y;
-        const d = Math.sqrt(dx * dx + dy * dy); //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sqrt
+        const d = Math.sqrt(dx * dx + dy * dy); 
 
         // Move towards the target
         if (d > 3) {
-            const step = this.speed * (delta / 1000); //scale emovment by time
+            const startSpeed = this.speed * (this.affection / 10); //starting speed
+            const step = startSpeed * (delta / 1000); //scale movement by time
+            // console.log("Familiar:", this.type, "Affection:", this.affection, "Speed:", step);
 
             //stop at target
             if (step >= d) {
