@@ -7,13 +7,39 @@ class Familiar {
         this.scene = scene;
         this.type = type;
 
+        //social interaction
+
+        if (!this.scene.familiars)
+        {
+            this.scene.familiars = [];
+        }
+        this.scene.familiars.push(this);
+
         this.circle = scene.add.circle(x, y, 25, color);
         this.circle.setDepth(10);
+        this.circle.setInteractive();
 
         this.speed = 60; //movement speed
         this.targetX = x; //destination X
         this.targetY = y; //destination Y
         this.task = null; //task
+        this.affection = 10; //affection
+
+        //increase familair affection
+        this.circle.on("pointerdown", () =>{
+            this.increase(1);
+            console.log("affecion", this.type, this.affection);
+        })
+
+        //decrease familiar affection
+        this.timer = this.scene.time.addEvent({
+            delay: 5000,
+            callback: () => {
+                this.lose(1);
+                console.log("Losing affection:", this.type, this.affection);
+            },
+            loop: true
+        });
 
         //calls behaviour
         //planter
@@ -28,6 +54,23 @@ class Familiar {
         else {
             this.wanderer();
         }
+    }
+
+    //AFFECTION
+    increase(amount)
+    {
+        this.affection = Math.min(10, this.affection + amount);
+    }
+
+    lose(amount)
+    {
+        if (this.affection >= amount)
+        {
+            this.affection -= amount;
+            return true;
+        }
+
+        return false;
     }
 
     destination() {
@@ -61,6 +104,12 @@ class Familiar {
             this.task = null;
             this.wanderer();
         }
+    }
+
+    //Social Interactions
+    socialise()
+    {
+        // will call ineractions
     }
 
     //Waters crops when planted 

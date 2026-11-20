@@ -230,6 +230,8 @@ function create()
     this.watererCreated = false; //track type
 
     this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer")); //draws wandering familiar
+    this.familiars.push (new Familiar(this, 700, 350, 0xcd691e, "waterer")); //draws wandering familiar
+    this.familiars.push (new Familiar(this, 700, 350, 0xdd831e, "planter")); //draws wandering familiar
 
 
     //INVENTORY
