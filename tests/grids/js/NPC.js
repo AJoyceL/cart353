@@ -16,7 +16,6 @@ export default class NPC
         this.npc.setDepth(50);
         
         this.TextBubble(); //dialogue bubble
-        this.PlayerReply(); //player response btns
 
         this.haggleCount = 0; //to count haggling attemps
     }
@@ -71,7 +70,7 @@ export default class NPC
         let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"]; //name liest
 
         //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-        names = names.filter(name => !this.scene.angryNPCs.includes(name)); //removes npc who left permanently
+        names = names.filter(name => this.scene.angryNPCCounts[name] < 3);//removes npc who left permanently
 
         //stops calling npcs if everyone left
         if (names.length === 0) 
@@ -81,7 +80,9 @@ export default class NPC
         
         this.name = names[Math.floor(Math.random() * names.length)]; //randomly selects name
 
-        this.noCount = this.scene.npcNoCounts[this.name] || 0; //gets counts of rejection
+        // this.noCount = this.scene.npcNoCounts[this.name] || 0; //gets counts of rejection
+
+        console.log("Available names:", names);
 
         //Assigns colours by type.
         //Will replace with sprites
@@ -124,9 +125,23 @@ export default class NPC
     {
         const cropNames = ["Sage", "Thyme", "Mugwort", "Hemlock", "Holy Basil", "Fairy Cups"]; //crop list
 
+        //check yescount
+        const yesCount = this.scene.registry.get("yesCount") || 0;
+
+        //unlocks crops
+        let maxCrops;
+        if (yesCount >= 5)
+        {
+            maxCrops = 6;
+        }
+        else
+        {
+            maxCrops = 3;
+        }
+
         //Randomely selects crop type and amount
-        this.cropType = Math.floor(Math.random() * 6) +1;
-        this.crops = cropNames[this.cropType -1];
+        this.cropType = Math.floor(Math.random() * maxCrops) + 1;
+        this.crops = cropNames[this.cropType - 1];
         this.cropAmount = Math.floor(Math.random() * 10) + 1;
     }
 
@@ -175,6 +190,8 @@ export default class NPC
         
         //Display dialogue
         this.dialogue = this.scene.add.text(this.x + 30, this.y + 250, this.GetDialogue(), { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270}}).setDepth(51);
+
+        this.PlayerReply(); //player response btns
 
         //Timer before npc leaves
         this.timer = this.scene.time.delayedCall(60000, () => {
@@ -246,9 +263,16 @@ export default class NPC
     //Called when npc leaves without buying
     AngryNPC()
     {
-        if (!this.scene.angryNPCs.includes(this.name))
+        this.scene.angryNPCCounts[this.name]++;
+
+        console.log(
+            this.name + " angry count: " +
+            this.scene.angryNPCCounts[this.name]
+        );
+
+        if (this.scene.angryNPCCounts[this.name] >= 3)
         {
-            this.scene.angryNPCs.push(this.name);
+            console.log(this.name + " is permanently banned!");
         }
 
         this.RemoveNPC();

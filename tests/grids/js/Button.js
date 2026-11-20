@@ -205,7 +205,13 @@ export default class Button
 
         let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"];
 
-        let availableNPCs = names.filter(name => !this.scene.angryNPCs.includes(name)); // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+let availableNPCs = names.filter(name => {
+    console.log(name, this.scene.angryNPCCounts[name]);
+
+    return this.scene.angryNPCCounts[name] < 3;
+});
+
+        // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 
         if (this.scene.npcs.length === 0 && availableNPCs.length > 0)
         {
@@ -216,6 +222,9 @@ export default class Button
                 new NPC(this.scene, 660, 100)
             );
         }
+
+        console.log("Available NPCs:", availableNPCs);
+        console.log("Active NPCs:", this.scene.npcs);
     }
 
     NPCBtnState()
@@ -253,12 +262,6 @@ export default class Button
             return;
         }
 
-        //counts times pressed
-        this.scene.registry.set(
-            "yesCount",
-            (this.scene.rergistry.get("yesCount") || +1)
-        );
-
         const type = this.npc.cropType - 1;
         const amount = this.npc.cropAmount;
 
@@ -268,6 +271,12 @@ export default class Button
             this.scene.wallet.update();
 
             this.scene[`type${this.npc.cropType}Text`].update();
+
+             //counts times pressed
+            this.scene.registry.set(
+                "yesCount",
+                (this.scene.registry.get("yesCount") || 0) + 1
+            );
 
             this.npc.BoughtNPC();
         }
@@ -281,18 +290,19 @@ export default class Button
 
     NoBtn()
     {
-        let name = this.npc.name;
+        // let name = this.npc.name;
 
-        this.scene.npcNoCounts[name]++;
+        // this.scene.npcNoCounts[name]++;
 
-        if (this.scene.npcNoCounts[name] >= 3)
-        {
-            this.npc.AngryNPC();
-        }
-        else
-        {
-            this.npc.BoughtNPC();
-        }
+        // if (this.scene.npcNoCounts[name] >= 3)
+        // {
+        //     this.npc.AngryNPC();
+        // }
+        // else
+        // {
+        //     this.npc.BoughtNPC();
+        // }
+        this.npc.AngryNPC();
     }
 
     async HaggleBtn()
