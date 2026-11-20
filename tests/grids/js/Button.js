@@ -138,7 +138,7 @@ export default class Button
     //PURCHASE SEEDS
     BuySeed1() 
     {
-        this.BuySeed("1", 5);
+        this.BuySeed("1", 6);
     }
 
     BuySeed2() 
@@ -148,22 +148,22 @@ export default class Button
 
     BuySeed3()
     {
-        this.BuySeed("3", 15);
+        this.BuySeed("3", 12);
     }
     
     BuySeed4() 
     {
-        this.BuySeed("4", 20);
+        this.BuySeed("4", 15);
     }
 
     BuySeed5() 
     {
-        this.BuySeed("5", 28);
+        this.BuySeed("5", 10);
     }
 
     BuySeed6() 
     {
-        this.BuySeed("6", 35);
+        this.BuySeed("6", 20);
     }
 
     BuySeed(type, price)
@@ -252,6 +252,12 @@ export default class Button
         {
             return;
         }
+
+        //counts times pressed
+        this.scene.registry.set(
+            "yesCount",
+            (this.scene.rergistry.get("yesCount") || +1)
+        );
 
         const type = this.npc.cropType - 1;
         const amount = this.npc.cropAmount;

@@ -1,13 +1,8 @@
-//IDEAS:
-// Make familiars interactable with the player: they need occasional attention like petting or clicks or they feel neglected and stop working. If neglected for too long, they leave and dn't come back. If the player gives them affection more often, they'll work faster and harder.
-
 // ref: https://www.youtube.com/watch?v=ow_Lum-Agbs&t=88s
 class Familiar {
     constructor(scene, x, y, color, type) {
         this.scene = scene;
         this.type = type;
-
-        //social interaction
 
         if (!this.scene.familiars)
         {
@@ -87,6 +82,7 @@ class Familiar {
         this.scene.familiars = this.scene.familiars.filter(familiar => familiar !== this);
     }
 
+    //MOVEMENT
     destination() {
         //assigns planter task
         if (this.type !== "planter") {
@@ -118,12 +114,6 @@ class Familiar {
             this.task = null;
             this.wanderer();
         }
-    }
-
-    //Social Interactions
-    socialise()
-    {
-        // will call ineractions
     }
 
     //Waters crops when planted 
