@@ -67,10 +67,24 @@ class Familiar {
         if (this.affection >= amount)
         {
             this.affection -= amount;
+
+            //leaves when affection = 0
+            if (this.affection === 0)
+            {
+                this.leave();
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    leave()
+    {
+        this.timer.remove(); //stops timer
+        this.circle.destroy(); //removes familiar
+        this.scene.familiars = this.scene.familiars.filter(familiar => familiar !== this);
     }
 
     destination() {
@@ -166,6 +180,11 @@ class Familiar {
     }
 
     update(time, delta) {
+        if (!this.circle.active) 
+        {    
+            return;
+        } 
+
         //calculate moveement distance
         const dx = this.targetX - this.circle.x;
         const dy = this.targetY - this.circle.y;
