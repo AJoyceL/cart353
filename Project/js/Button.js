@@ -42,7 +42,6 @@ export default class Button
             this.zone.setDepth(21);
         }
 
-
         //Mouse Event
         this.zone.on("pointerover", () =>{
             this.rect.clear();
@@ -75,6 +74,14 @@ export default class Button
             }
             else if (this.type === "garden") {
                 this.GardenBtn();
+            }
+            else if (this.type === "menu")
+            {
+                this.MenuBtn();
+            }
+            else if (this.type === "start")
+            {
+                this.StartGame();
             }
 
             // SEEDS
@@ -124,6 +131,7 @@ export default class Button
     {
         this.scene.scene.launch("Shop");
         this.scene.scene.pause("Garden"); //pause scene
+        this.scene.scene.bringToTop("Shop");
     }
     GardenBtn()
     {
@@ -133,6 +141,25 @@ export default class Button
         //refresh wallet
         const garden = this.scene.scene.get("Garden");
         garden.wallet.update();
+    }
+    MenuBtn()
+    {
+        this.scene.scene.launch("Menu");
+        this.scene.scene.pause("Garden");
+        this.scene.scene.bringToTop("Menu");
+    }
+    StartGame()
+    {
+        this.scene.scene.stop("Menu");
+
+        if (this.scene.scene.isPaused("Garden"))
+        {
+            this.scene.scene.resume("Garden");
+        }
+        else
+        {
+            this.scene.scene.start("Garden");
+        }
     }
 
     //PURCHASE SEEDS
