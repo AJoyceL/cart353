@@ -25,6 +25,10 @@ export default class Menu extends Phaser.Scene {
             }
         );
         this.title.setOrigin(.5);
+        
+        //Instruction text
+
+
 
         //BUTTONS
         this.StartGame = new Button(this, 400, 500, 150, 50, 0xe9e1f2, "start");
