@@ -1,6 +1,5 @@
 //IMPORTS
 import Wallet from "./Wallet.js";
-import Seed from "./Seed.js";
 import NPC from "./NPC.js"; //npc class
 import CropCount from "./CropCount.js";
 
@@ -83,6 +82,15 @@ export default class Button
             {
                 this.StartGame();
             }
+            else if (this.type === "info")
+            {
+                this.InfoPage();
+            }
+            else if (this.type === "option")
+            {
+                this.OptionWidget();
+            }
+
 
             // SEEDS
             else if (this.type === "seed1") {
@@ -161,6 +169,65 @@ export default class Button
             this.scene.scene.start("Garden");
         }
     }
+    InfoPage()
+    {
+        this.scene.scene.launch("Info");
+        this.scene.scene.pause("Garden");
+        this.scene.scene.bringToTop("Info");
+
+        if (this.scene.scene.isPaused("Garden"))
+        {
+            this.scene.scene.resume("Garden");
+        }
+        else
+        {
+            this.scene.scene.start("Garden");
+        }
+    }
+    OptionWidget()
+    {
+        if (this.widget)
+        {
+            return;
+        }
+
+        this.widget = this.scene.add.rectangle(50, 50, 100, 125, 0xdbd0bd, 1);
+        this.widget.setDepth(100);
+        this.widget.setOrigin(.5);
+
+        //menu
+        this.menuButton = this.scene.add.rectangle(20, 40, 25, 25, 0x6f6678);
+        this.menuButton.setDepth(101);
+        this.menuButton.setInteractive();
+
+        this.menuButton.on("pointerdown", () => {
+            this.MenuBtn();
+        })
+
+        //garden
+        this.infoButton = this.scene.add.rectangle(20, 80, 25, 25, 0x6f6678);
+        this.infoButton.setDepth(101);
+        this.infoButton.setInteractive();
+
+        this.infoButton.on("pointerdown", () => {
+            this.InfoPage();
+        })
+
+        //close option
+        this.closeButton = this.scene.add.rectangle(85, 15, 15, 15, 0x6f6678);
+        this.closeButton.setDepth(101);
+        this.closeButton.setInteractive();
+
+        this.closeButton.on("pointerdown", () => {
+            this.widget.destroy();
+            this.menuButton.destroy();
+            this.infoButton.destroy();
+            this.closeButton.destroy();
+
+            this.widget = null;
+        })
+    }
+
 
     //PURCHASE SEEDS
     BuySeed1() 

@@ -1,6 +1,8 @@
 //IMPORTS
 import Shop from "./scene/Shop.js"; //shop scene
 import Menu from "./scene/Menu.js"; //menu scene
+import Info from "./scene/Info.js"; //menu scene
+
 import Wallet from "./Wallet.js"; //wallet class
 import Seed from "./Seed.js"; //seeds class
 import NPC from "./NPC.js"; //npc class
@@ -95,6 +97,7 @@ const config = {
             update: update, 
         },
         Shop,
+        Info,
     ]
 
 };
@@ -244,7 +247,7 @@ function create()
     //BUTTONS
     this.buttons = [];
     this.buttons.push (new Button(this, -20, 325, 150, 50, 0xe9e1f2, "shop")); // scene button
-    this.buttons.push (new Button(this, 10, 50, 50, 50, 0xe9e1f2, "menu"));
+    this.buttons.push (new Button(this, 10, 50, 50, 50, 0xe9e1f2, "option"));
 
     this.npcButton = new Button(this, 850, 325, 150, 50, 0xe9e1f2, "NPC"); // NPC button
 

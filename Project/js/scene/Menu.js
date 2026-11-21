@@ -28,5 +28,7 @@ export default class Menu extends Phaser.Scene {
 
         //BUTTONS
         this.StartGame = new Button(this, 400, 350, 150, 50, 0xe9e1f2, "start");
+
+        this.Info = new Button(this, 25, 25, 50, 50, 0xe9e1f2, "info");
     }
 }
