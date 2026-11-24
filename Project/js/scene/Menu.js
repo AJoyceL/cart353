@@ -13,9 +13,10 @@ export default class Menu extends Phaser.Scene {
         //Intro page
         this.load.image('Intro', 'Images/Button/Intro.png');
         this.load.image('IntroOn', 'Images/Button/IntroOn.png');
+
         //Play 
-        this.load.image('Play', 'Images/Button/Play.png');
-        this.load.image('PlayOn', 'Images/Button/PlayOn.png');
+        this.load.image('Play2', 'Images/Button/Play2.png');
+        this.load.image('Play2On', 'Images/Button/Play2On.png');
     }    
 
 
@@ -26,6 +27,7 @@ export default class Menu extends Phaser.Scene {
 
         this.title = this.add.text(480, 300, "welcome", 
             { 
+                fontFamily: "Silkscreen",
                 fontSize: "80px", 
                 fill: "#7300ff" 
             }
@@ -33,7 +35,7 @@ export default class Menu extends Phaser.Scene {
         this.title.setOrigin(.5);
 
         //BUTTONS
-        this.StartGame = new Button(this, 480, 375, 150, 50, "start", null, "Play", "PlayOn");
+        this.StartGame = new Button(this, 480, 375, 150, 50, "start", null, "Play2", "Play2On");
 
         this.Info = new Button(this, 80, 50, 100, 50, "info", null, "Intro", "IntroOn");
     }

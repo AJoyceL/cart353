@@ -57,7 +57,7 @@ export default class Shop extends Phaser.Scene {
 
         //SHOP FRAME
         this.shopFrame = this.add.image(480, 300, "ShopFrame");
-        this.shopFrame.setDisplaySize(500, 375);
+        this.shopFrame.setDisplaySize(500, 300);
         this.shopFrame.setDepth(1);
 
         //TEXT
