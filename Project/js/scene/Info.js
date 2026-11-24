@@ -10,7 +10,13 @@ export default class Menu extends Phaser.Scene {
 
     preload()
     {
-        //will add
+        //Play 
+        this.load.image('Play', 'Images/Play.png');
+        this.load.image('PlayOn', 'Images/PlayOn.png');  
+
+        //Menu
+        this.load.image('Menu', 'Images/Menu.png');
+        this.load.image('MenuOn', 'Images/MenuOn.png');  
     }
 
     create() {
@@ -31,8 +37,8 @@ export default class Menu extends Phaser.Scene {
 
 
         //BUTTONS
-        this.StartGame = new Button(this, 400, 500, 150, 50, 0xe9e1f2, "start");
+        this.StartGame = new Button(this, 480, 550, 150, 50, "start", null, "Play", "PlayOn");
 
-        this.Info = new Button(this, 25, 25, 50, 50, 0xe9e1f2, "menu");
+        this.Info = new Button(this, 60, 35, 100, 50, "menu", null, "Menu", "MenuOn");
     }
 }

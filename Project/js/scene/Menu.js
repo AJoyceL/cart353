@@ -10,8 +10,14 @@ export default class Menu extends Phaser.Scene {
 
     preload()
     {
-        //will add
-    }
+        //Intro page
+        this.load.image('Intro', 'Images/Intro.png');
+        this.load.image('IntroOn', 'Images/IntroOn.png');
+        //Play 
+        this.load.image('Play', 'Images/Play.png');
+        this.load.image('PlayOn', 'Images/PlayOn.png');
+    }    
+
 
     create() {
         //BACKGROUND
@@ -27,8 +33,8 @@ export default class Menu extends Phaser.Scene {
         this.title.setOrigin(.5);
 
         //BUTTONS
-        this.StartGame = new Button(this, 400, 350, 150, 50, 0xe9e1f2, "start");
+        this.StartGame = new Button(this, 480, 375, 150, 50, "start", null, "Play", "PlayOn");
 
-        this.Info = new Button(this, 25, 25, 50, 50, 0xe9e1f2, "info");
+        this.Info = new Button(this, 80, 50, 100, 50, "info", null, "Intro", "IntroOn");
     }
 }

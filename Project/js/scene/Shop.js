@@ -8,10 +8,54 @@ export default class Shop extends Phaser.Scene {
         super({ key: "Shop" });
     }
 
+    preload()
+    {
+        //Shop Backgroun
+        this.load.image('ShopBG', 'Images/ShopBG.png');
+
+        //Shop frame
+        this.load.image('ShopFrame', 'Images/ShopFrame.png');
+
+        //Home btn
+        this.load.image('Home', 'Images/Home.png');
+        this.load.image('HomeOn', 'Images/HomeOn.png');
+
+        //Seed Btn
+        //Sage
+        this.load.image('Sage', 'Images/Sage.png');
+        this.load.image('SageOn', 'Images/SageOn.png');
+        
+        //Thyme
+        this.load.image('Thyme', 'Images/Thyme.png');
+        this.load.image('ThymeOn', 'Images/ThymeOn.png');
+
+        //Mugwort
+        this.load.image('Mugwort', 'Images/Mugwort.png');
+        this.load.image('MugwortOn', 'Images/MugwortOn.png');
+
+        //Hemlock
+        this.load.image('Hemlock', 'Images/Hemlock.png');
+        this.load.image('HemlockOn', 'Images/HemlockOn.png');
+
+        //Yarrow
+        this.load.image('Yarrow', 'Images/Yarrow.png');
+        this.load.image('YarrowOn', 'Images/YarrowOn.png');
+
+        //Fairy Cup
+        this.load.image('FairyCup', 'Images/FairyCup.png');
+        this.load.image('FairyCupOn', 'Images/FairyCupOn.png');
+    }
+
     create() {
         //BACKGROUND
-        this.background = this.add.rectangle(0, 0, 960, 600,0x00000, 1);
-        this.background.setOrigin(0, 0);
+        this.shopBG = this.add.image(480, 300, "ShopBG");
+        this.shopBG.setDisplaySize(960, 600);
+        this.shopBG.setDepth(0);
+
+        //SHOP FRAME
+        this.shopFrame = this.add.image(480, 300, "ShopFrame");
+        this.shopFrame.setDisplaySize(500, 300);
+        this.shopFrame.setDepth(1);
 
         //TEXT
         this.add.text(480, 100, "Shop", {
@@ -20,16 +64,8 @@ export default class Shop extends Phaser.Scene {
         }).setOrigin(0.5);
 
         //BUTTONS
-        this.buttons = [];
-
         //garden
-        this.buttons.push(
-            new Button(this, -20,10, 150, 50, 0xe9e1f2, "garden")
-        );
-
-        //SHOP MENU
-        // this.outline = this.add.rectangle(480, 325, 415, 315, 0x574f5c)
-        this.shopMenu = this.add.rectangle(480, 325, 400, 300, 0x7d7482).setDepth(2);
+        this.MenuBtn = new Button(this, 100, 50, 150, 50, "garden", null, "Home", "HomeOn");
 
         //WALLET
         this.wallet = new Wallet(this, 900, 50);
@@ -37,68 +73,26 @@ export default class Shop extends Phaser.Scene {
         //PURCHASE SEEDS
         this.buySeeds = [];
 
-        this.buySeeds.push(new Button(this, 300, 200, 150, 50, 0xe9e1f2, "seed1")); //seed 1
+        this.buySeeds.push(new Button(this, 355, 210, 200, 50, "seed1", null, "Sage", "SageOn")); //seed 1
 
-        this.buySeeds.push(new Button(this, 300, 300, 150, 50, 0xe9e1f2, "seed2")); //seed 2
+        this.buySeeds.push(new Button(this, 355, 300, 200, 50, "seed2", null, "Thyme", "ThymeOn")); //seed 2
 
-        this.buySeeds.push(new Button(this, 300, 400, 150, 50, 0xe9e1f2, "seed3")); //seed 3
+        this.buySeeds.push(new Button(this, 355, 390, 200, 50, "seed3", null, "Mugwort", "MugwortOn")); //seed 3
 
-        this.buySeeds.push(new Button(this, 500, 200, 150, 50, 0xe9e1f2, "seed4"));
+        this.buySeeds.push(new Button(this, 605, 210, 200, 50, "seed4", null, "Hemlock", "HemlockOn"));
 
-        this.buySeeds.push(new Button(this, 500, 300, 150, 50, 0xe9e1f2, "seed5"));
+        this.buySeeds.push(new Button(this, 605, 300, 200, 50, "seed5", null, "Yarrow", "YarrowOn"));
 
-        this.buySeeds.push(new Button(this, 500, 400, 150, 50, 0xe9e1f2, "seed6"));
+        this.buySeeds.push(new Button(this, 605, 390, 200, 50, "seed6", null, "FairyCup", "FairyCupOn"));
 
 
-        //LABELS
-        //Seed 1
-        this.add.text(375, 225, "Seed 1 $6", {
-            fontSize: "18px",
-            color: "#1f1a25"
-        }).setOrigin(0.5).setDepth(22);
+        // if ((this.registry.get("yesCount") || 0) < 5)
+        // {
+        //     for (let i = 3; i < 6; i++)
+        //     {
+        //         this.buySeeds[i].image.setVisible(false);
 
-        //Seed 2
-        this.add.text(375, 325, "Seed 2 $8", {
-            fontSize: "18px",
-            color: "#1f1a25"
-        }).setOrigin(0.5).setDepth(22);
-
-        //Seed3
-        this.add.text(375, 425, "Seed 3 $12", {
-            fontSize: "18px",
-            color: "#1f1a25"
-        }).setOrigin(0.5).setDepth(22);
-
-        //Seed 4
-        this.seed4Label = this.add.text(575, 225, "Seed 4 $15", {
-            fontSize: "18px",
-            color: "#1f1a25"
-        }).setOrigin(0.5).setDepth(22);
-
-        //Seed 5
-        this.seed5Label = this.add.text(575, 325, "Seed 5 $10", {
-            fontSize: "18px",
-            color: "#1f1a25"
-        }).setOrigin(0.5).setDepth(22);
-
-        //Seed 6
-        this.seed6Label = this.add.text(575, 425, "Seed 6 $20", {
-            fontSize: "18px",
-            color: "#1f1a25"
-        }).setOrigin(0.5).setDepth(22);
-
-        if ((this.registry.get("yesCount") || 0) < 5)
-        {
-            for (let i = 3; i < 6; i++)
-            {
-                this.buySeeds[i].rect.setVisible(false);
-                this.buySeeds[i].zone.setVisible(false);
-            }
-
-            this.seed4Label.setVisible(false);
-            this.seed5Label.setVisible(false);
-            this.seed6Label.setVisible(false);
-            
-        }
+        //     }
+        // }
     }
 }

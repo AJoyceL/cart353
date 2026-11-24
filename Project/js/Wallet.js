@@ -6,8 +6,21 @@ export default class Wallet
     constructor(scene, x, y, text) 
     {
         this.scene = scene;
-        this.text = scene.add.text(x, y, text, {fontSize: "32px", fill: "#c9b5e5"});
+
+        //Money background
+        this.walletBG = scene.add.image(x, y, "Money");
+        this.walletBG.setDisplaySize(120, 50);
+        this.walletBG.setDepth(1);
+
+        //Text
+        this.text = scene.add.text(x, y, text, 
+            {
+                fontSize: "32px", 
+                fill: "#c9b5e5"
+            });
         this.text.setOrigin(.5, .5);
+        this.text.setDepth(2);
+
         this.update();
     }
 

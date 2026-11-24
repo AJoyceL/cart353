@@ -6,7 +6,7 @@ import CropCount from "./CropCount.js";
 export default class Button 
 {
     //will have to change for an img or sprite
-    constructor(scene, x, y, w, h, color, type, npc)
+    constructor(scene, x, y, w, h, type, npc, InitImg, HoverImg)
     {
         this.scene = scene;
         this.x = x;
@@ -19,33 +19,27 @@ export default class Button
         this.npcBtnAvailable = true;
         this.npcBtnCooldown = false;
 
-        this.rect = scene.add.graphics();
-        this.rect.fillStyle(color, 1);
-        this.rect.fillRoundedRect(x, y, w, h, 20);
-        this.rect.setDepth(20);
-        
-        //Interactible zone
-        this.zone = scene.add.zone(x + w / 2, y + h / 2, w, h);
-        this.zone.setDepth(21);
-        this.zone.setInteractive();
+        //Assign btn images
+        this.InitImg = InitImg;
+        this.HoverImg = HoverImg;
 
-        //Set Depth og btn
+        this.image = scene.add.image(x, y, this.InitImg);
+        this.image.setDisplaySize(w, h);
+        this.image.setInteractive();
+
+        //Set depth of btns
         if (this.type === "Yes" || this.type === "No" || this.type === "Haggle")
         {
-            this.rect.setDepth(60);
-            this.zone.setDepth(61);
+            this.image.setDepth(50);
         }
         else
         {
-            this.rect.setDepth(20);
-            this.zone.setDepth(21);
+            this.image.setDepth(20);
         }
 
         //Mouse Event
-        this.zone.on("pointerover", () =>{
-            this.rect.clear();
-            this.rect.fillStyle(0x6f6678, 1);
-            this.rect.fillRoundedRect(x, y, w, h, 20);
+        this.image.on("pointerover", () =>{
+            this.image.setTexture(this.HoverImg);
 
             if (this.type === "NPC" && !this.scene.npcBtnAvailable)
             {
@@ -53,20 +47,18 @@ export default class Button
             }
         })
 
-        this.zone.on("pointerout", () => {
+        this.image.on("pointerout", () => {
             if (this.type === "NPC")
             {
                 this.NPCBtnState();
             }
             else
             {
-                this.rect.clear();
-                this.rect.fillStyle(color, 1);
-                this.rect.fillRoundedRect(x, y, w, h, 20);
+                this.image.setTexture(this.InitImg);
             }
         });
 
-        this.zone.on("pointerdown", () => {
+        this.image.on("pointerdown", () => {
             // SCENES
             if (this.type === "shop") {
                 this.ShopBtn();
@@ -141,6 +133,7 @@ export default class Button
         this.scene.scene.pause("Garden"); //pause scene
         this.scene.scene.bringToTop("Shop");
     }
+
     GardenBtn()
     {
         this.scene.scene.resume("Garden");
@@ -150,12 +143,14 @@ export default class Button
         const garden = this.scene.scene.get("Garden");
         garden.wallet.update();
     }
+
     MenuBtn()
     {
         this.scene.scene.launch("Menu");
         this.scene.scene.pause("Garden");
         this.scene.scene.bringToTop("Menu");
     }
+
     StartGame()
     {
         this.scene.scene.stop("Menu");
@@ -169,6 +164,7 @@ export default class Button
             this.scene.scene.start("Garden");
         }
     }
+
     InfoPage()
     {
         this.scene.scene.launch("Info");
@@ -184,6 +180,7 @@ export default class Button
             this.scene.scene.start("Garden");
         }
     }
+
     OptionWidget()
     {
         if (this.widget)
@@ -191,32 +188,58 @@ export default class Button
             return;
         }
 
-        this.widget = this.scene.add.rectangle(50, 50, 100, 125, 0xdbd0bd, 1);
+        this.widget = this.scene.add.image(70, 80, "Option");
+        this.widget.setDisplaySize(125, 150);
         this.widget.setDepth(100);
-        this.widget.setOrigin(.5);
 
         //menu
-        this.menuButton = this.scene.add.rectangle(20, 40, 25, 25, 0x6f6678);
+        this.menuButton = this.scene.add.image(60, 70, "Menu", "MenuOn");
+        this.menuButton.setDisplaySize(70, 35);
         this.menuButton.setDepth(101);
         this.menuButton.setInteractive();
 
+        //animating hover 
+        this.menuButton.on("pointerover", () => {
+            this.menuButton.setTexture("MenuOn");
+        });
+        this.menuButton.on("pointerout", () => {
+            this.menuButton.setTexture("Menu");
+        });
         this.menuButton.on("pointerdown", () => {
             this.MenuBtn();
         })
 
         //garden
-        this.infoButton = this.scene.add.rectangle(20, 80, 25, 25, 0x6f6678);
+        this.infoButton = this.scene.add.image(60, 115, "Intro");
+        this.infoButton.setDisplaySize(70, 35);
         this.infoButton.setDepth(101);
         this.infoButton.setInteractive();
+
+        //animating hover 
+        this.infoButton.on("pointerover", () => {
+            this.infoButton.setTexture("IntroOn");
+        });
+        this.infoButton.on("pointerout", () => {
+            this.infoButton.setTexture("Intro");
+        });
 
         this.infoButton.on("pointerdown", () => {
             this.InfoPage();
         })
 
         //close option
-        this.closeButton = this.scene.add.rectangle(85, 15, 15, 15, 0x6f6678);
+        this.closeButton = this.scene.add.image(110, 35,"Exit", "ExitOn");
+        this.closeButton.setDisplaySize(25, 25);
         this.closeButton.setDepth(101);
         this.closeButton.setInteractive();
+
+        //animating hover 
+        this.closeButton.on("pointerover", () => {
+            this.closeButton.setTexture("ExitOn");
+        });
+        this.closeButton.on("pointerout", () => {
+            this.closeButton.setTexture("Exit");
+        });
 
         this.closeButton.on("pointerdown", () => {
             this.widget.destroy();
@@ -327,11 +350,11 @@ let availableNPCs = names.filter(name => {
 
         if (this.scene.npcBtnAvailable)
         {
-            this.rect.fillStyle(0xe9e1f2, 1);
+            this.image.setTexture(this.InitImg);
         }
         else
         {
-            this.rect.fillStyle(0x6f6678, 1);
+            this.image.setTexture(this.HoverImg);
         }
         this.rect.fillRoundedRect(this.x, this.y, this.w, this.h, 20);
     }

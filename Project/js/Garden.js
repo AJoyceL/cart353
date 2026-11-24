@@ -22,15 +22,6 @@ class Plot //draws garden plot
 
         this.rectangle = scene.add.rectangle(x, y, 100, 100, 0x7d7482); //creates rec
         this.rectangle.setInteractive();
-
-        //MOUSE EVENTS
-        //ref: https://docs.phaser.io/api-documentation/namespace/input-events
-        this.rectangle.on("pointerover", () => {
-            this.rectangle.setFillStyle(0x574f5c); //darken when hovering
-        });
-        this.rectangle.on("pointerout", () => {
-            this.rectangle.setFillStyle(0x7d7482); //return colour
-        });
     };
 
     //check center of plot 
@@ -107,7 +98,44 @@ const game = new Phaser.Game(config); //create Phaser game
 
 function preload()
 {
-    //will add
+    //Background
+    this.load.image('GardenBG', 'Images/GardenBG.png');
+
+    //Garden Plot
+    this.load.image('Garden', 'Images/Garden.png');
+
+    //Inventory
+    this.load.image('Inventory', 'Images/Inventory.png');
+
+    //Shop Btn
+    this.load.image('Shop', 'Images/Shop.png');
+    this.load.image('ShopOn', 'Images/ShopOn.png');
+
+    //NPC Btn
+    this.load.image('CallNPC', 'Images/CallNPC.png');
+    this.load.image('CallNPCOn', 'Images/CallNPCOn.png');
+
+    //Option btn
+    this.load.image('Info', 'Images/Info.png');
+    this.load.image('InfoOn', 'Images/InfoOn.png');
+    this.load.image('Option', 'Images/Option.png');
+    this.load.image('Exit', 'Images/Exit.png');
+    this.load.image('ExitOn', 'Images/ExitOn.png');
+    this.load.image('Intro', 'Images/Intro.png');
+    this.load.image('IntroOn', 'Images/IntroOn.png');
+    this.load.image('Menu', 'Images/Menu.png');
+    this.load.image('MenuOn', 'Images/MenuOn.png');
+
+    //Wallet
+    this.load.image('Money', 'Images/Money.png');
+
+    //Seed/Crop Text
+    this.load.image('TxtSage', 'Images/TxtSage.png');
+    this.load.image('TxtThyme', 'Images/TxtThyme.png');
+    this.load.image('TxtMugwort', 'Images/TxtMugwort.png');
+    this.load.image('TxtHemlock', 'Images/TxtHemlock.png');
+    this.load.image('TxtYarrow', 'Images/TxtYarrow.png');
+    this.load.image('TxtFairyCup', 'Images/TxtFairyCup.png');
 }
 
 
@@ -119,7 +147,15 @@ function init()
 
 function create()
 {
+    //Background
+    this.gardenBG = this.add.image(480, 300, "GardenBG");
+    this.gardenBG.setDisplaySize(960, 600);
+    this.gardenBG.setDepth(0);
+
     //GRID
+    this.garden = this.add.image(480, 200, "Garden");
+    this.garden.setDisplaySize(300, 300);
+    this.garden.setDepth(1);
     this.grid = this.add.grid(480, 200, 300, 300, 100, 100, 0x543f13, 0, 0x574f5c, 1); //draws grid
     this.grid.setDepth(2);
 
@@ -166,37 +202,46 @@ function create()
 
             //crop info
             seed.circle.on("pointerdown", () => {
-                let infoText = "";
+                let infoImg;
 
                 if (this.cropInfoText) {
                     this.cropInfoText.destroy(); //destroy previous text
                 }
+
                 //call crop secific text
                 if (seed.circle.type === "1") {
-                    infoText = "Apple! You bought it for 5$";
+                    infoImg = "TxtSage";
                 } 
                 else if (seed.circle.type === "2") {
-                    infoText = "Orange! You bought it for 8$";
+                    infoImg = "TxtThyme";
                 } 
                 else if (seed.circle.type === "3") {
-                    infoText = "Berry! You bought it for 15$";
+                    infoImg = "TxtMugwort";
                 }
                 else if (seed.circle.type === "4") {
-                    infoText = "Seed 4! You bought it for 20$";
+                    infoImg = "TxtHemlock";
                 }   
                 else if (seed.circle.type === "5") {
-                    infoText = "Seed 5! You bought it for 28$";
+                    infoImg = "TxtYarrow";
                 }
                 else if (seed.circle.type === "6") {
-                    infoText = "Seed 6! You bought it for 35$";
+                    infoImg = "TxtFairyCup";
                 }
-                else{
+                else
+                {
                     return;
                 }
                 
-                this.cropInfoText = this.add.text(25, 425, infoText, { fontSize: "16px", fill: "#1f1a25" });
+                this.cropInfoText = this.add.image(480, 420, infoImg);
                 this.cropInfoText.setDepth(10);
-                this.cropInfoText.setOrigin(0, 0);
+
+                if  (seed.circle.type === "6") {
+                    this.cropInfoText.setDisplaySize(550, 100);
+                }
+                else
+                {
+                    this.cropInfoText.setDisplaySize(500, 100);
+                }
             });
         }
     };
@@ -215,17 +260,10 @@ function create()
     
 
     //WALLET 
-    this.wallet = new Wallet(this, 900, 50);
+    this.wallet = new Wallet(this, 885, 40);
     this.events.on("resume", () => {
         this.wallet.update(); //update wallet when returning to garden
     });
-
-
-    //KEYBOARD INPUT
-    //ref: https://docs.phaser.io/api-documentation/function/input
-    this.cursor = this.input.keyboard.createCursorKeys();
-    this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.input.keyboard.addCapture(Phaser.Input.Keyboard.KeyCodes.SPACE); //prevent default spacebar scrolling
 
 
     //FAMILIARS
@@ -240,16 +278,17 @@ function create()
 
 
     //INVENTORY
-    this.inventory = [];//inventory array
-    this.inventory.push (new Inventory(this, 75, 475, 800, 100)); //draws inventory
+    this.inventory = this.add.image(480, 525, "Inventory");
+    this.inventory.setDisplaySize(800, 100);
+    this.inventory.setDepth(1);
 
 
     //BUTTONS
-    this.buttons = [];
-    this.buttons.push (new Button(this, -20, 325, 150, 50, 0xe9e1f2, "shop")); // scene button
-    this.buttons.push (new Button(this, 10, 50, 50, 50, 0xe9e1f2, "option"));
+    this.shopBtn = new Button(this, 85, 400, 150, 50, "shop", null, "Shop", "ShopOn"); // scene button
 
-    this.npcButton = new Button(this, 850, 325, 150, 50, 0xe9e1f2, "NPC"); // NPC button
+    this.optionBtn = new Button(this, 40, 40, 50, 50, "option", null, "Info", "InfoOn"); // option widget
+
+    this.npcButton = new Button(this, 930, 400, 50, 50, "NPC", null, "CallNPC", "CallNPCOn"); // NPC button
 
     //NPC
     this.npcs = []; //calls npc array
