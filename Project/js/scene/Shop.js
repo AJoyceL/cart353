@@ -11,39 +11,42 @@ export default class Shop extends Phaser.Scene {
     preload()
     {
         //Shop Backgroun
-        this.load.image('ShopBG', 'Images/ShopBG.png');
+        this.load.image('ShopBG', 'Images/Background/ShopBG.png');
+
+        //Seller sprite
+        this.load.image('Seller', 'Images/NPC/Seller.png');
 
         //Shop frame
-        this.load.image('ShopFrame', 'Images/ShopFrame.png');
+        this.load.image('ShopFrame', 'Images/Container/ShopFrame.png');
 
         //Home btn
-        this.load.image('Home', 'Images/Home.png');
-        this.load.image('HomeOn', 'Images/HomeOn.png');
+        this.load.image('Home', 'Images/Button/Home.png');
+        this.load.image('HomeOn', 'Images/Button/HomeOn.png');
 
         //Seed Btn
         //Sage
-        this.load.image('Sage', 'Images/Sage.png');
-        this.load.image('SageOn', 'Images/SageOn.png');
+        this.load.image('Sage', 'Images/Button/Sage.png');
+        this.load.image('SageOn', 'Images/Button/SageOn.png');
         
         //Thyme
-        this.load.image('Thyme', 'Images/Thyme.png');
-        this.load.image('ThymeOn', 'Images/ThymeOn.png');
+        this.load.image('Thyme', 'Images/Button/Thyme.png');
+        this.load.image('ThymeOn', 'Images/Button/ThymeOn.png');
 
         //Mugwort
-        this.load.image('Mugwort', 'Images/Mugwort.png');
-        this.load.image('MugwortOn', 'Images/MugwortOn.png');
+        this.load.image('Mugwort', 'Images/Button/Mugwort.png');
+        this.load.image('MugwortOn', 'Images/Button/MugwortOn.png');
 
         //Hemlock
-        this.load.image('Hemlock', 'Images/Hemlock.png');
-        this.load.image('HemlockOn', 'Images/HemlockOn.png');
+        this.load.image('Hemlock', 'Images/Button/Hemlock.png');
+        this.load.image('HemlockOn', 'Images/Button/HemlockOn.png');
 
         //Yarrow
-        this.load.image('Yarrow', 'Images/Yarrow.png');
-        this.load.image('YarrowOn', 'Images/YarrowOn.png');
+        this.load.image('Yarrow', 'Images/Button/Yarrow.png');
+        this.load.image('YarrowOn', 'Images/Button/YarrowOn.png');
 
         //Fairy Cup
-        this.load.image('FairyCup', 'Images/FairyCup.png');
-        this.load.image('FairyCupOn', 'Images/FairyCupOn.png');
+        this.load.image('FairyCup', 'Images/Button/FairyCup.png');
+        this.load.image('FairyCupOn', 'Images/Button/FairyCupOn.png');
     }
 
     create() {
@@ -54,7 +57,7 @@ export default class Shop extends Phaser.Scene {
 
         //SHOP FRAME
         this.shopFrame = this.add.image(480, 300, "ShopFrame");
-        this.shopFrame.setDisplaySize(500, 300);
+        this.shopFrame.setDisplaySize(500, 375);
         this.shopFrame.setDepth(1);
 
         //TEXT
@@ -86,13 +89,13 @@ export default class Shop extends Phaser.Scene {
         this.buySeeds.push(new Button(this, 605, 390, 200, 50, "seed6", null, "FairyCup", "FairyCupOn"));
 
 
-        // if ((this.registry.get("yesCount") || 0) < 5)
-        // {
-        //     for (let i = 3; i < 6; i++)
-        //     {
-        //         this.buySeeds[i].image.setVisible(false);
+        if ((this.registry.get("yesCount") || 0) < 5)
+        {
+            for (let i = 3; i < 6; i++)
+            {
+                this.buySeeds[i].image.setVisible(false);
 
-        //     }
-        // }
+            }
+        }
     }
 }

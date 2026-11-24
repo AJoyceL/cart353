@@ -11,12 +11,12 @@ export default class Menu extends Phaser.Scene {
     preload()
     {
         //Play 
-        this.load.image('Play', 'Images/Play.png');
-        this.load.image('PlayOn', 'Images/PlayOn.png');  
+        this.load.image('Play', 'Images/Button/Play.png');
+        this.load.image('PlayOn', 'Images/Button/PlayOn.png');  
 
         //Menu
-        this.load.image('Menu', 'Images/Menu.png');
-        this.load.image('MenuOn', 'Images/MenuOn.png');  
+        this.load.image('Menu', 'Images/Button/Menu.png');
+        this.load.image('MenuOn', 'Images/Button/MenuOn.png');  
     }
 
     create() {

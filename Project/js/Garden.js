@@ -99,65 +99,94 @@ const game = new Phaser.Game(config); //create Phaser game
 function preload()
 {
     //BACKGROUND
-    this.load.image('GardenBG', 'Images/GardenBG.png');
+    this.load.image('GardenBG', 'Images/Background/GardenBG.png');
 
     //GARDEN PLOT
-    this.load.image('Garden', 'Images/Garden.png');
+    this.load.image('Garden', 'Images/Container/Garden.png');
 
     //INVENTORY
-    this.load.image('Inventory', 'Images/Inventory.png');
+    this.load.image('Inventory', 'Images/Container/Inventory.png');
 
     //SHOPE
-    this.load.image('Shop', 'Images/Shop.png');
-    this.load.image('ShopOn', 'Images/ShopOn.png');
+    this.load.image('Shop', 'Images/Button/Shop.png');
+    this.load.image('ShopOn', 'Images/Button/ShopOn.png');
 
     //NPC 
     //Npc background
-    
+    this.load.image('npcFrame', 'Images/Container/npcFrame.png');
     //Answer NPC
-    this.load.image('CallNPC', 'Images/CallNPC.png');
-    this.load.image('CallNPCOn', 'Images/CallNPCOn.png');
+    this.load.image('CallNPC', 'Images/Button/CallNPC.png');
+    this.load.image('CallNPCOn', 'Images/Button/CallNPCOn.png');
     //Yes btn
-    this.load.image('Yes', 'Images/Yes.png');
-    this.load.image('YesOn', 'Images/YesOn.png');
+    this.load.image('Yes', 'Images/Button/Yes.png');
+    this.load.image('YesOn', 'Images/Button/YesOn.png');
     //No btn
-    this.load.image('No', 'Images/No.png');
-    this.load.image('NoOn', 'Images/NoOn.png');
+    this.load.image('No', 'Images/Button/No.png');
+    this.load.image('NoOn', 'Images/Button/NoOn.png');
     //Haggle btn
-    this.load.image('Haggle', 'Images/Haggle.png');
-    this.load.image('HaggleOn', 'Images/HaggleOn.png');
+    this.load.image('Haggle', 'Images/Button/Haggle.png');
+    this.load.image('HaggleOn', 'Images/Button/HaggleOn.png');
+    //NPC sprites
+    this.load.image('npc_demon', 'Images/NPC/npc_demon.png');
+    this.load.image('npc_bunny', 'Images/NPC/npc_bunny.png');
+    this.load.image('npc_cat', 'Images/NPC/npc_cat.png');
+    this.load.image('npc_cryptid', 'Images/NPC/npc_cryptid.png');
+    this.load.image('npc_doctor', 'Images/NPC/npc_doctor.png');
+    this.load.image('npc_elk', 'Images/NPC/npc_elk.png');
+    this.load.image('npc_ent', 'Images/NPC/npc_ent.png');
+    this.load.image('npc_golemn', 'Images/NPC/npc_golemn.png');
+    this.load.image('npc_ghost', 'Images/NPC/npc_ghost.png');
+    this.load.image('npc_shroom', 'Images/NPC/npc_shroom.png');
+    this.load.image('npc_slime', 'Images/NPC/npc_slime.png');
+    this.load.image('npc_wizard', 'Images/NPC/npc_wizard.png');
 
 
     //OPTION WIDGET
     //Question mark
-    this.load.image('Info', 'Images/Info.png');
-    this.load.image('InfoOn', 'Images/InfoOn.png');
+    this.load.image('Info', 'Images/Button/Info.png');
+    this.load.image('InfoOn', 'Images/Button/InfoOn.png');
     //Widget
-    this.load.image('Option', 'Images/Option.png');
+    this.load.image('Option', 'Images/Container/Option.png');
     //Exit widget
-    this.load.image('Exit', 'Images/Exit.png');
-    this.load.image('ExitOn', 'Images/ExitOn.png');
+    this.load.image('Exit', 'Images/Button/Exit.png');
+    this.load.image('ExitOn', 'Images/Button/ExitOn.png');
     //Instruction btn
-    this.load.image('Intro', 'Images/Intro.png');
-    this.load.image('IntroOn', 'Images/IntroOn.png');
+    this.load.image('Intro', 'Images/Button/Intro.png');
+    this.load.image('IntroOn', 'Images/Button/IntroOn.png');
     //Menu btn
-    this.load.image('Menu', 'Images/Menu.png');
-    this.load.image('MenuOn', 'Images/MenuOn.png');
+    this.load.image('Menu', 'Images/Button/Menu.png');
+    this.load.image('MenuOn', 'Images/Button/MenuOn.png');
 
     //WALLET
-    this.load.image('Money', 'Images/Money.png');
+    this.load.image('Money', 'Images/Container/Money.png');
 
     //SEEDS & CROPS
     //Seed bank
-    this.load.image('SeedBank', 'Images/SeedBank.png');
+    this.load.image('SeedBank', 'Images/Container/SeedBank.png');
     //Crop information
-    this.load.image('TxtSage', 'Images/TxtSage.png');
-    this.load.image('TxtThyme', 'Images/TxtThyme.png');
-    this.load.image('TxtMugwort', 'Images/TxtMugwort.png');
-    this.load.image('TxtHemlock', 'Images/TxtHemlock.png');
-    this.load.image('TxtYarrow', 'Images/TxtYarrow.png');
-    this.load.image('TxtFairyCup', 'Images/TxtFairyCup.png');
+    this.load.image('TxtSage', 'Images/Crop/TxtSage.png');
+    this.load.image('TxtThyme', 'Images/Crop/TxtThyme.png');
+    this.load.image('TxtMugwort', 'Images/Crop/TxtMugwort.png');
+    this.load.image('TxtHemlock', 'Images/Crop/TxtHemlock.png');
+    this.load.image('TxtYarrow', 'Images/Crop/TxtYarrow.png');
+    this.load.image('TxtFairyCup', 'Images/Crop/TxtFairyCup.png');
     
+    //Familiar
+    //Ferret
+    this.load.image('1_Lmove', 'Images/Familiar/Pet1_Lmove.png');
+    this.load.image('1_Rmove', 'Images/Familiar/Pet1_Rmove.png');
+    this.load.image('1_Lsit', 'Images/Familiar/Pet1_Lsit.png');
+    this.load.image('1_Rsit', 'Images/Familiar/Pet1_Rsit.png');
+    //Bat
+    this.load.image('2_Lmove', 'Images/Familiar/Pet2_Lmove.png');
+    this.load.image('2_Rmove', 'Images/Familiar/Pet2_Rmove.png');
+    this.load.image('2_Lsit', 'Images/Familiar/Pet2_Lsit.png');
+    this.load.image('2_Rsit', 'Images/Familiar/Pet2_Rsit.png');
+    //Dino
+    this.load.image('3_Lmove', 'Images/Familiar/Pet3_Lmove.png');
+    this.load.image('3_Rmove', 'Images/Familiar/Pet3_Rmove.png');
+    this.load.image('3_Lsit', 'Images/Familiar/Pet3_Lsit.png');
+    this.load.image('3_Rsit', 'Images/Familiar/Pet3_Rsit.png');
 }
 
 
@@ -298,9 +327,9 @@ function create()
     this.planterCreated = false; //track type
     this.watererCreated = false; //track type
 
-    this.familiars.push (new Familiar(this, 700, 350, 0xcf598e, "wanderer")); //draws wandering familiar
-    // this.familiars.push (new Familiar(this, 700, 350, 0xcd691e, "waterer")); //draws wandering familiar
-    // this.familiars.push (new Familiar(this, 700, 350, 0xdd831e, "planter")); //draws wandering familiar
+    this.familiars.push (new Familiar(this, 700, 350, "wanderer", 3)); //draws wandering familiar
+    // this.familiars.push (new Familiar(this, 700, 350, "waterer", 1)); //draws wandering familiar
+    // this.familiars.push (new Familiar(this, 700, 350, "planter", 2)); //draws wandering familiar
 
 
     //INVENTORY
@@ -321,12 +350,18 @@ function create()
     this.npcBtnAvailable = true;
     //counts how many times they're rejected
     this.angryNPCCounts = {
-        John: 0,
-        Jane: 0,
-        Bob: 0,
-        Alice: 0,
-        Mike: 0,
-        Emily: 0
+        Bunny: 0,
+        Cat: 0,
+        Cryptid: 0,
+        Demon: 0,
+        Doctor: 0,
+        Elk: 0,
+        Ent: 0,
+        Ghost: 0,
+        Golemn: 0,
+        Shroom: 0,
+        Slime: 0,
+        Wizard: 0
     };
 }
 
@@ -588,12 +623,16 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             growFruit(); //calls grow funtion
 
             //stop planter from picking planted seed
-            if (scene.familiar1 && scene.familiar1.task &&
-                scene.familiar1.task.crop === gameObject) {
-                gameObject.isBeingCarried = false;
-                scene.familiar1.task = null;
-                scene.familiar1.destination();
-            }
+            scene.familiars.forEach(familiar => {
+                if (familiar.type === "planter" &&
+                    familiar.task &&
+                    familiar.task.crop === gameObject) {
+
+                    gameObject.isBeingCarried = false;
+                    familiar.task = null;
+                    familiar.destination();
+                }
+            });
         }    
         
         //interactions

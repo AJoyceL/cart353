@@ -320,7 +320,21 @@ export default class Button
             return;
         }
 
-        let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"];
+        //name list
+        let names = [
+            "Bunny",
+            "Cat",
+            "Cryptid",
+            "Demon",
+            "Doctor",
+            "Elk",
+            "Ent",
+            "Ghost",
+            "Golemn",
+            "Shroom",
+            "Slime",
+            "Wizard"
+        ]; 
 
         let availableNPCs = names.filter(name => {
             console.log(name, this.scene.angryNPCCounts[name]);
@@ -336,7 +350,7 @@ export default class Button
             this.NPCBtnState();
 
             this.scene.npcs.push(
-                new NPC(this.scene, 660, 100)
+                new NPC(this.scene, 685, 85)
             );
         }
 

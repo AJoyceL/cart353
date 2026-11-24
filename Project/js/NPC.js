@@ -4,13 +4,14 @@ import CropCount from "./CropCount.js";
 
 export default class NPC 
 {
-    constructor (scene, x, y)
+    constructor (scene, x, y,)
     {
         this.scene = scene;
         this.x = x;
         this.y = y;
 
-        this.npc = scene.add.rectangle(x, y, 300, 350, 0xdbd0bd);
+        this.npc = scene.add.image(x, y, "npcFrame");
+        this.npc.setDisplaySize(275, 375);
         this.npc.setOrigin(0);
         this.npc.setInteractive();
         this.npc.setDepth(50);
@@ -18,12 +19,6 @@ export default class NPC
         this.TextBubble(); //dialogue bubble
 
         this.haggleCount = 0; //to count haggling attemps
-    }
-
-    //SPRITES
-    preload()
-    {
-        //will add img
     }
 
     //FETCH API DATA
@@ -67,7 +62,21 @@ export default class NPC
     
     NPCObject()
     {
-        let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"]; //name liest
+        //name list
+        let names = [
+            "Bunny",
+            "Cat",
+            "Cryptid",
+            "Demon",
+            "Doctor",
+            "Elk",
+            "Ent",
+            "Ghost",
+            "Golemn",
+            "Shroom",
+            "Slime",
+            "Wizard"
+        ]; 
 
         //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
         names = names.filter(name => this.scene.angryNPCCounts[name] < 3);//removes npc who left permanently
@@ -80,42 +89,31 @@ export default class NPC
         
         this.name = names[Math.floor(Math.random() * names.length)]; //randomly selects name
 
-        // this.noCount = this.scene.npcNoCounts[this.name] || 0; //gets counts of rejection
-
         console.log("Available names:", names);
 
-        //Assigns colours by type.
-        //Will replace with sprites
-        if (this.name === "John") {
-            // this.img = "npc1";
-            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0xff0000); // Placeholder for John
-            this.img.setDepth(55);
-        }
-        else if (this.name === "Jane") {
-            // this.img = "npc2";
-            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0x00ff00); // Placeholder for Jane    
-            this.img.setDepth(55);
-        }
-        else if (this.name === "Bob") {
-            // this.img = "npc3";
-            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0x0000ff); // Placeholder for Bob
-            this.img.setDepth(55);
-        }
-        else if (this.name === "Alice") {
-            // this.img = "npc4";
-            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0xffff00); // Placeholder for Alice
-            this.img.setDepth(55);
-        }
-        else if (this.name === "Mike") {
-            // this.img = "npc5";
-            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0xff00ff); // Placeholder for Mike
-            this.img.setDepth(55);
-        }
-        else if (this.name === "Emily") {
-            // this.img = "npc6";
-            this.img = this.scene.add.rectangle(this.x + 150, this.y + 150, 50, 50, 0x00ffff); // Placeholder for Emily
-            this.img.setDepth(55);
-        }
+        // Assigns NPC sprites
+        const npcSprites = {
+            Bunny: "npc_bunny",
+            Cat: "npc_cat",
+            Cryptid: "npc_cryptid",
+            Demon: "npc_demon",
+            Doctor: "npc_doctor",
+            Elk: "npc_elk",
+            Ent: "npc_ent",
+            Ghost: "npc_ghost",
+            Golemn: "npc_golemn",
+            Shroom: "npc_shroom",
+            Slime: "npc_slime",
+            Wizard: "npc_wizard"
+        };
+
+        this.img = this.scene.add.image(
+            this.x + 137,
+            this.y + 135,
+            npcSprites[this.name]
+        );
+        this.img.setDisplaySize(260, 255);
+        this.img.setDepth(55);
 
         return true;
     }
@@ -148,30 +146,53 @@ export default class NPC
     //INTERACTION
     GetDialogue()
     {
-        //Assign dialogue by npc names
-        if (this.name === "John")
+        if (this.name === "Bunny")
         {
-            return "Hello! I'm " + this.name + ". I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+            return "Hello! Could I have " + this.cropAmount + " " + this.crops + " for " + this.price + "$?";
         }
-        else if (this.name === "Jane")
+        else if (this.name === "Cat")
         {
-            return "Good Morning! I'm " + this.name + ". It's a pleasure to meet you. I would like to buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+            return "My Master wants" + this.cropAmount + " " + this.crops + ". " + this.price + "$ should do.";
         }
-        else if (this.name === "Bob")
+        else if (this.name === "Cryptid")
         {
-            return "G'Day'! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+            return "The forest requires " + this.cropAmount + " " + this.crops + ". I offer " + this.price + "$.";
         }
-        else if (this.name === "Alice")
+        else if (this.name === "Demon")
         {
-            return "G'Day! " + this.name + " here! I'll get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+            return "I demand " + this.cropAmount + " " + this.crops + "! " + this.price + "$. Deal?";
         }
-        else if (this.name === "Mike")
+        else if (this.name === "Doctor")
         {
-            return "Hey! I'm " + this.name + "! Can I get " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+            return "I need " + this.cropAmount + " " + this.crops + " for my remedies. " + this.price + "$.";
         }
-        else if (this.name === "Emily")
+        else if (this.name === "Elk")
         {
-            return "Good Morrow! I am the esteemed " + this.name + ". I would like to purchase " + this.cropAmount + " " + this.crops + " for " + this.price + "$.";
+            return "Greetings. Might I buy " + this.cropAmount + " " + this.crops + " for " + this.price + "$?";
+        }
+        else if (this.name === "Ent")
+        {
+            return "After many seasons, I seek " + this.cropAmount + " " + this.crops + ". " + this.price + "$?";
+        }
+        else if (this.name === "Ghost")
+        {
+            return "Ooooooh... May I have " + this.cropAmount + " " + this.crops + " for " + this.price + "$?";
+        }
+        else if (this.name === "Golemn")
+        {
+            return "I require " + this.cropAmount + " " + this.crops + ". Payment: " + this.price + "$.";
+        }
+        else if (this.name === "Shroom")
+        {
+            return "Hehehe! I'll take " + this.cropAmount + " " + this.crops + " for " + this.price + "$!";
+        }
+        else if (this.name === "Slime")
+        {
+            return "H-hello! Could I please have " + this.cropAmount + " " + this.crops + "? " + this.price + "$!";
+        }
+        else if (this.name === "Wizard")
+        {
+            return "I seek " + this.cropAmount + " " + this.crops + ", young gardener. " + this.price + "$!";
         }
     }
 
@@ -189,7 +210,13 @@ export default class NPC
         this.price = ""; //temp value while it updates
         
         //Display dialogue
-        this.dialogue = this.scene.add.text(this.x + 30, this.y + 250, this.GetDialogue(), { font: "16px", fill: "#000000", align: "center", wordWrap: { width: 270}}).setDepth(51);
+        this.dialogue = this.scene.add.text(this.x + 30, this.y + 280, this.GetDialogue(), 
+        { 
+            font: "16px", 
+            fill: "#000000", 
+            align: "justify", 
+            wordWrap: { width: 250}
+        }).setDepth(51);
 
         this.PlayerReply(); //player response btns
 
@@ -214,11 +241,11 @@ export default class NPC
     //PLAYER REPLY
     PlayerReply()
     {
-        this.yesBtn = new Button(this.scene, this.x + 50, this.y + 330, 50, 25, "Yes", this, "Yes", "YesOn");
+        this.yesBtn = new Button(this.scene, this.x + 40, this.y + 350, 50, 25, "Yes", this, "Yes", "YesOn");
 
-        this.noBtn = new Button(this.scene, this.x + 125, this.y + 330, 50, 25, "No", this, "No", "NoOn");
+        this.noBtn = new Button(this.scene, this.x + 115, this.y + 350, 50, 25, "No", this, "No", "NoOn");
 
-        this.haggleBtn = new Button(this.scene, this.x + 225, this.y + 330, 100, 25, "Haggle", this, "Haggle", "HaggleOn");
+        this.haggleBtn = new Button(this.scene, this.x + 210, this.y + 350, 100, 25, "Haggle", this, "Haggle", "HaggleOn");
     }
 
     //NPC REACTION

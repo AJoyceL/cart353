@@ -1,8 +1,9 @@
 // ref: https://www.youtube.com/watch?v=ow_Lum-Agbs&t=88s
 class Familiar {
-    constructor(scene, x, y, color, type) {
+    constructor(scene, x, y, type, number) {
         this.scene = scene;
         this.type = type;
+        this.number = number;
 
         if (!this.scene.familiars)
         {
@@ -10,10 +11,12 @@ class Familiar {
         }
         this.scene.familiars.push(this);
 
-        this.circle = scene.add.circle(x, y, 25, color);
-        this.circle.setDepth(10);
-        this.circle.setInteractive();
+        this.image = scene.add.image(x, y, this.number + "_Lsit");
+        this.image.setDisplaySize(50, 50);
+        this.image.setDepth(10);
+        this.image.setInteractive();
 
+        this.facing = "L"; //facing left
         this.speed = 60; //movement speed
         this.targetX = x; //destination X
         this.targetY = y; //destination Y
@@ -21,7 +24,7 @@ class Familiar {
         this.affection = 10; //affection
 
         //increase familair affection
-        this.circle.on("pointerdown", () =>{
+        this.image.on("pointerdown", () =>{
             this.increase(1);
             console.log( this.type, "affecion: ", this.affection);
         })
@@ -78,7 +81,7 @@ class Familiar {
     leave()
     {
         this.timer.remove(); //stops timer
-        this.circle.destroy(); //removes familiar
+        this.image.destroy(); //removes familiar
         this.scene.familiars = this.scene.familiars.filter(familiar => familiar !== this);
     }
 
@@ -170,31 +173,46 @@ class Familiar {
     }
 
     update(time, delta) {
-        if (!this.circle.active) 
+        if (!this.image.active) 
         {    
             return;
         } 
 
         //calculate moveement distance
-        const dx = this.targetX - this.circle.x;
-        const dy = this.targetY - this.circle.y;
+        const dx = this.targetX - this.image.x;
+        const dy = this.targetY - this.image.y;
         const d = Math.sqrt(dx * dx + dy * dy); 
 
         // Move towards the target
         if (d > 3) {
+            // Change direction based on movement
+            if (dx < 0)
+            {
+                this.facing = "L";
+            }
+            else if (dx > 0)
+            {
+                this.facing = "R";
+            }
+
+            this.image.setTexture(this.number + "_" + this.facing + "move");
+
             const startSpeed = this.speed * (this.affection / 10); //starting speed
             const step = startSpeed * (delta / 1000); //scale movement by time
-            // console.log("Familiar:", this.type, "Affection:", this.affection, "Speed:", step);
 
             //stop at target
             if (step >= d) {
-                this.circle.setPosition(this.targetX, this.targetY);
+                this.image.setPosition(this.targetX, this.targetY);
             }
             // move towards target
             else {
-                this.circle.x += (dx / d) * step;
-                this.circle.y += (dy / d) * step;
+                this.image.x += (dx / d) * step;
+                this.image.y += (dy / d) * step;
             }
+        }
+        else
+        {
+            this.image.setTexture(this.number + "_" + this.facing + "sit");
         }
 
         //watering familiars
@@ -220,7 +238,7 @@ class Familiar {
 
             //calculates distance
             //ref: https://docs.phaser.io/phaser/concepts/math
-            const d = Phaser.Math.Distance.Between(this.circle.x, this.circle.y, crop.x, crop.y);
+            const d = Phaser.Math.Distance.Between(this.image.x, this.image.y, crop.x, crop.y);
 
             //start watering + harvesting when close
             if (d <= 30) {
@@ -240,7 +258,7 @@ class Familiar {
 
                         //ref: https://docs.phaser.io/api-documentation/class/time-clock
                         this.scene.time.delayedCall(500, () => {
-                            if (this.circle.active) {
+                            if (this.image.active) {
                                 this.wateringCrop();
                             }
                         });
@@ -256,7 +274,7 @@ class Familiar {
                 //delay before search
                 //ref: https://docs.phaser.io/api-documentation/class/time-clock
                 this.scene.time.delayedCall(2200, () => {
-                    if (this.circle.active) {
+                    if (this.image.active) {
                         this.wateringCrop();
                     }
                 });
@@ -279,11 +297,11 @@ class Familiar {
 
         // Carry the seed while moving
         if (this.task.phase === "plot") {
-            this.task.crop.setPosition(this.circle.x + 25, this.circle.y);
+            this.task.crop.setPosition(this.image.x + 25, this.image.y);
 
             //check distance
             //ref: https://docs.phaser.io/phaser/concepts/math
-            const plotD = Phaser.Math.Distance.Between(this.circle.x, this.circle.y, this.targetX, this.targetY);
+            const plotD = Phaser.Math.Distance.Between(this.image.x, this.image.y, this.targetX, this.targetY);
 
             //plant seed
             if (plotD <= 3) {
