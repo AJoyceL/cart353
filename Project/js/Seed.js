@@ -49,32 +49,32 @@ export default class Seeds
         if (type === "1")
         {
             x = 75;
-            y = 125;
+            y = 150;
         }
         else if (type === "2")
         {
             x = 75
-            y = 175;
+            y = 200;
         }
         else if (type === "3")
         {
             x = 75; 
-            y = 225;
+            y = 250;
         }
         else if (type === "4")
         {
             x = 125; 
-            y = 125;
+            y = 150;
         }   
         else if (type === "5")
         {
             x = 125;
-            y = 175;
+            y = 200;
         }   
         else if (type === "6")
         {
             x = 125;
-            y = 225;
+            y = 250;
         }
         else
         {
