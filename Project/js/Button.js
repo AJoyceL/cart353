@@ -30,7 +30,7 @@ export default class Button
         //Set depth of btns
         if (this.type === "Yes" || this.type === "No" || this.type === "Haggle")
         {
-            this.image.setDepth(50);
+            this.image.setDepth(60);
         }
         else
         {
@@ -322,11 +322,11 @@ export default class Button
 
         let names = ["John", "Jane", "Bob", "Alice", "Mike", "Emily"];
 
-let availableNPCs = names.filter(name => {
-    console.log(name, this.scene.angryNPCCounts[name]);
+        let availableNPCs = names.filter(name => {
+            console.log(name, this.scene.angryNPCCounts[name]);
 
-    return this.scene.angryNPCCounts[name] < 3;
-});
+            return this.scene.angryNPCCounts[name] < 3;
+        });
 
         // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 
@@ -346,7 +346,6 @@ let availableNPCs = names.filter(name => {
 
     NPCBtnState()
     {
-        this.rect.clear();
 
         if (this.scene.npcBtnAvailable)
         {
@@ -356,7 +355,6 @@ let availableNPCs = names.filter(name => {
         {
             this.image.setTexture(this.HoverImg);
         }
-        this.rect.fillRoundedRect(this.x, this.y, this.w, this.h, 20);
     }
 
     NPCBtnCooldown()
@@ -388,11 +386,10 @@ let availableNPCs = names.filter(name => {
             this.scene.wallet.update();
 
             this.scene[`type${this.npc.cropType}Text`].update();
-
              //counts times pressed
             this.scene.registry.set(
-                "yesCount",
-                (this.scene.registry.get("yesCount") || 0) + 1
+                    "yesCount",
+                    (this.scene.registry.get("yesCount") || 0) + 1
             );
 
             this.npc.BoughtNPC();
@@ -407,18 +404,6 @@ let availableNPCs = names.filter(name => {
 
     NoBtn()
     {
-        // let name = this.npc.name;
-
-        // this.scene.npcNoCounts[name]++;
-
-        // if (this.scene.npcNoCounts[name] >= 3)
-        // {
-        //     this.npc.AngryNPC();
-        // }
-        // else
-        // {
-        //     this.npc.BoughtNPC();
-        // }
         this.npc.AngryNPC();
     }
 

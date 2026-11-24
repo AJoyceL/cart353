@@ -214,13 +214,11 @@ export default class NPC
     //PLAYER REPLY
     PlayerReply()
     {
-        this.ReplyBtn = [];
+        this.yesBtn = new Button(this.scene, this.x + 50, this.y + 330, 50, 25, "Yes", this, "Yes", "YesOn");
 
-        this.ReplyBtn.push(new Button(this.scene, this.x + 20, this.y + 315, 50, 25, 0xe9e1f2, "Yes", this));
+        this.noBtn = new Button(this.scene, this.x + 125, this.y + 330, 50, 25, "No", this, "No", "NoOn");
 
-        this.ReplyBtn.push(new Button(this.scene, this.x + 100, this.y + 315, 50, 25, 0xe9e1f2, "No", this));
-
-        this.ReplyBtn.push(new Button(this.scene, this.x + 180, this.y + 315, 100, 25, 0xe9e1f2, "Haggle", this));
+        this.haggleBtn = new Button(this.scene, this.x + 225, this.y + 330, 100, 25, "Haggle", this, "Haggle", "HaggleOn");
     }
 
     //NPC REACTION
@@ -233,8 +231,9 @@ export default class NPC
 
         //removes response btn
         this.ReplyBtn.forEach(button => {
-            button.rect.destroy();
-            button.zone.destroy();
+            this.yesBtn.image.destroy();
+            this.noBtn.image.destroy();
+            this.haggleBtn.image.destroy();
         });
 
         //removes npc from list

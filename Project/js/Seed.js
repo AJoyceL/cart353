@@ -48,17 +48,17 @@ export default class Seeds
         //Assign position by type
         if (type === "1")
         {
-            x = 50;
+            x = 75;
             y = 125;
         }
         else if (type === "2")
         {
-            x = 50
+            x = 75
             y = 175;
         }
         else if (type === "3")
         {
-            x = 50; 
+            x = 75; 
             y = 225;
         }
         else if (type === "4")

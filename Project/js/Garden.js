@@ -98,44 +98,66 @@ const game = new Phaser.Game(config); //create Phaser game
 
 function preload()
 {
-    //Background
+    //BACKGROUND
     this.load.image('GardenBG', 'Images/GardenBG.png');
 
-    //Garden Plot
+    //GARDEN PLOT
     this.load.image('Garden', 'Images/Garden.png');
 
-    //Inventory
+    //INVENTORY
     this.load.image('Inventory', 'Images/Inventory.png');
 
-    //Shop Btn
+    //SHOPE
     this.load.image('Shop', 'Images/Shop.png');
     this.load.image('ShopOn', 'Images/ShopOn.png');
 
-    //NPC Btn
+    //NPC 
+    //Npc background
+    
+    //Answer NPC
     this.load.image('CallNPC', 'Images/CallNPC.png');
     this.load.image('CallNPCOn', 'Images/CallNPCOn.png');
+    //Yes btn
+    this.load.image('Yes', 'Images/Yes.png');
+    this.load.image('YesOn', 'Images/YesOn.png');
+    //No btn
+    this.load.image('No', 'Images/No.png');
+    this.load.image('NoOn', 'Images/NoOn.png');
+    //Haggle btn
+    this.load.image('Haggle', 'Images/Haggle.png');
+    this.load.image('HaggleOn', 'Images/HaggleOn.png');
 
-    //Option btn
+
+    //OPTION WIDGET
+    //Question mark
     this.load.image('Info', 'Images/Info.png');
     this.load.image('InfoOn', 'Images/InfoOn.png');
+    //Widget
     this.load.image('Option', 'Images/Option.png');
+    //Exit widget
     this.load.image('Exit', 'Images/Exit.png');
     this.load.image('ExitOn', 'Images/ExitOn.png');
+    //Instruction btn
     this.load.image('Intro', 'Images/Intro.png');
     this.load.image('IntroOn', 'Images/IntroOn.png');
+    //Menu btn
     this.load.image('Menu', 'Images/Menu.png');
     this.load.image('MenuOn', 'Images/MenuOn.png');
 
-    //Wallet
+    //WALLET
     this.load.image('Money', 'Images/Money.png');
 
-    //Seed/Crop Text
+    //SEEDS & CROPS
+    //Seed bank
+    this.load.image('SeedBank', 'Images/SeedBank.png');
+    //Crop information
     this.load.image('TxtSage', 'Images/TxtSage.png');
     this.load.image('TxtThyme', 'Images/TxtThyme.png');
     this.load.image('TxtMugwort', 'Images/TxtMugwort.png');
     this.load.image('TxtHemlock', 'Images/TxtHemlock.png');
     this.load.image('TxtYarrow', 'Images/TxtYarrow.png');
     this.load.image('TxtFairyCup', 'Images/TxtFairyCup.png');
+    
 }
 
 
@@ -245,6 +267,10 @@ function create()
             });
         }
     };
+
+    this.seedBank = this.add.image(100, 200, "SeedBank");
+    this.seedBank.setDisplaySize(150, 200);
+    this.seedBank.setDepth(1);
 
 
     //TEXT
