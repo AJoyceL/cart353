@@ -32,7 +32,7 @@ export default class Menu extends Phaser.Scene {
             { 
                 fontFamily: "Silkscreen",
                 fontSize: "40px", 
-                fill: "#7300ff",
+                fill: "#1A1E29",
                 align: "center",
                 wordWrap: { width: 500}
             }
@@ -40,66 +40,143 @@ export default class Menu extends Phaser.Scene {
         this.title.setOrigin(.5);
         this.title.setDepth(1);
         
-        //Instruction text
         // INTRO TEXT
         let introText = 
-            "Welcome to Blackbriar Grove!\n\n" +
-            "You're a new herbalist, and the residents of Blackbriar Grove are counting on you! " +
+            "You're a herbalist, and the residents of Blackbriar Grove are counting on you! " +
             "Grow magical plants, help your customers, and turn your little garden into a thriving herbal shop.";
 
-        this.intro = this.add.text(480, 100, introText,
+        this.intro = this.add.text(180, 135, introText,
             {
                 fontFamily: "Silkscreen",
                 fontSize: "16px",
-                fill: "#7300ff",
+                fill: "#2E2A3B",
                 align: "center",
-                wordWrap: { width: 600 }
+                wordWrap: { width: 650 }
             }
         );
-        this.intro.setOrigin(0.5);
         this.intro.setDepth(1);
 
 
-        // GOAL TEXT
-        let goalText =
-            "GROW YOUR GARDEN\n" +
-            "- Visit Loopy Rabbit's shop to buy seeds.\n" +
-            "- Plant your seeds and wait for them to grow.\n" +
-            "- Harvest your crops when they're ready!\n\n" +
+        // GROW YOUR GARDEN
+        this.gardenTitle = this.add.text(180, 230, "GROW YOUR GARDEN", 
+        {
+            fontFamily: "Silkscreen",
+            fontSize: "15px",
+            fontStyle: "bold",
+            fill: "#2E2A3B"
+        });
 
-            "MEET YOUR FAMILIARS\n" +
-            "- Build up your garden's magic to unlock helpful familiars.\n" +
-            "- Familiars can help plant seeds and speed up crop growth.\n" +
-            "- But remember to love them or they'll leave you!\n\n" +
-
-            "HELP YOUR CUSTOMERS\n" +
-            "- Customers will visit your shop looking for crops.\n" +
-            "- Listen to their requests and choose how to respond.\n" +
-            "- Sell crops to earn money for more seeds!\n\n" +
-
-            "WATCH YOUR REPUTATION!\n" +
-            "- Avoid disappointing the same customers too many times.\n" +
-            "- Upset them repeatedly, and they may stop visiting for good.\n" +
-            "- Keep customers happy to help everyone in Blackbriar Grove!\n\n" +
-
-            "NOW, GET PLANTING! BLACKBRIAR GROVE IS COUNTING ON YOU!";
-
-        this.goal = this.add.text(480, 340, goalText,
+        this.gardenGoal = this.add.text(180, 250,
+            "- Buy seeds at the shop.\n" +
+            "- Plant and grow your seeds.\n" +
+            "- Harvest your crops!",
             {
                 fontFamily: "Silkscreen",
-                fontSize: "12px",
-                fill: "#7300ff",
+                fontSize: "14px",
+                fill: "#4B3B59",
                 align: "left",
-                wordWrap: { width: 650 },
+                wordWrap: { width: 300 },
                 lineSpacing: 5
             }
         );
-        this.goal.setOrigin(0.5);
-        this.goal.setDepth(1);
 
+        this.gardenTitle.setDepth(1);
+        this.gardenGoal.setDepth(1);
+
+
+        // MEET YOUR FAMILIARS
+        this.familiarTitle = this.add.text(500, 230, "MEET YOUR FAMILIARS", 
+        {
+            fontFamily: "Silkscreen",
+            fontSize: "14px",
+            fontStyle: "bold",
+            fill: "#2E2A3B"
+        });
+
+        this.familiarGoal = this.add.text(500, 250,
+                "- Unlock familiars as your harvest crops.\n" +
+                "- They'll plant seeds and water crops.\n" +
+                "- Pet them so they don't leave!",
+            {
+                fontFamily: "Silkscreen",
+                fontSize: "14px",
+                fill: "#4B3B59",
+                align: "left",
+                wordWrap: { width: 300 },
+                lineSpacing: 5
+            }
+        );
+
+        this.familiarTitle.setDepth(1);
+        this.familiarGoal.setDepth(1);
+
+        // HELP YOUR CUSTOMERS
+        this.customerTitle = this.add.text(180, 385, "HELP YOUR CUSTOMERS", 
+        {
+            fontFamily: "Silkscreen",
+            fontSize: "14px",
+            fontStyle: "bold",
+            fill: "#2E2A3B"
+        });
+
+        this.customerGoal = this.add.text(180, 405,
+                "- Fulfill customer requests.\n" +
+                "- Sell crops to earn money for seeds!",
+            {
+                fontFamily: "Silkscreen",
+                fontSize: "14px",
+                fill: "#4B3B59",
+                align: "left",
+                wordWrap: { width: 300 },
+                lineSpacing: 5
+            }
+        );
+
+        this.customerTitle.setDepth(1);
+        this.customerGoal.setDepth(1);
+
+
+        // WATCH YOUR REPUTATION
+        this.reputationTitle = this.add.text(500, 385, "WATCH YOUR REPUTATION!", 
+        {
+            fontFamily: "Silkscreen",
+            fontSize: "14px",
+            fontStyle: "bold",
+            fill: "#2E2A3B"
+        });
+
+        this.reputationGoal = this.add.text(500, 405,
+                "- Keep customers happy.\n" +
+                "- Disappoint them too often, and they'll stop visiting!",
+            {
+                fontFamily: "Silkscreen",
+                fontSize: "14px",
+                fill: "#4B3B59",
+                align: "left",
+                wordWrap: { width: 300 },
+                lineSpacing: 5
+            }
+        );
+
+        this.reputationTitle.setDepth(1);
+        this.reputationGoal.setDepth(1);
+
+
+        // FINAL MESSAGE
+        this.finalGoal = this.add.text(180, 490,
+            "NOW, GET PLANTING! BLACKBRIAR GROVE IS COUNTING ON YOU!",
+            {
+                fontFamily: "Silkscreen",
+                fontSize: "16px",
+                fill: "#2E2A3B",
+                align: "center",
+                wordWrap: { width: 650 }
+            }
+        );
+        this.finalGoal.setDepth(1);
 
         //BUTTONS
-        this.StartGame = new Button(this, 480, 525, 150, 50, "start", null, "Play", "PlayOn");
+        this.StartGame = new Button(this, 480, 535, 125, 40, "start", null, "Play", "PlayOn");
 
         this.Info = new Button(this, 60, 35, 100, 50, "menu", null, "Menu", "MenuOn");
     }

@@ -8,6 +8,15 @@ import Seed from "./Seed.js"; //seeds class
 import NPC from "./NPC.js"; //npc class
 import CropCount from "./CropCount.js" //crop count class
 
+//PALETTE COLOUR
+// {
+//     #EDE6D8,
+//     #C2B180,
+//     #A89FB5,
+//     #7A6C8C,
+//     #2E2A3B,
+//     #1A1E29
+// }
 
 //CLASSES
 class Plot //draws garden plot
