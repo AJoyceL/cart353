@@ -18,6 +18,7 @@ import CropCount from "./CropCount.js" //crop count class
 //     #1A1E29
 // }
 
+
 //CLASSES
 class Plot //draws garden plot
 {
@@ -110,31 +111,40 @@ function preload()
     //BACKGROUND
     this.load.image('GardenBG', 'Images/Background/GardenBG.png');
 
+
     //GARDEN PLOT
     this.load.image('Garden', 'Images/Container/Garden.png');
 
+
     //INVENTORY
     this.load.image('Inventory', 'Images/Container/Inventory.png');
+
 
     //SHOPE
     this.load.image('Shop', 'Images/Button/Shop.png');
     this.load.image('ShopOn', 'Images/Button/ShopOn.png');
 
+
     //NPC 
     //Npc background
     this.load.image('npcFrame', 'Images/Container/npcFrame.png');
+
     //Answer NPC
     this.load.image('CallNPC', 'Images/Button/CallNPC.png');
     this.load.image('CallNPCOn', 'Images/Button/CallNPCOn.png');
+
     //Yes btn
     this.load.image('Yes', 'Images/Button/Yes.png');
     this.load.image('YesOn', 'Images/Button/YesOn.png');
+
     //No btn
     this.load.image('No', 'Images/Button/No.png');
     this.load.image('NoOn', 'Images/Button/NoOn.png');
+
     //Haggle btn
     this.load.image('Haggle', 'Images/Button/Haggle.png');
     this.load.image('HaggleOn', 'Images/Button/HaggleOn.png');
+
     //NPC sprites
     this.load.image('npc_demon', 'Images/NPC/npc_demon.png');
     this.load.image('npc_bunny', 'Images/NPC/npc_bunny.png');
@@ -154,24 +164,40 @@ function preload()
     //Question mark
     this.load.image('Info', 'Images/Button/Info.png');
     this.load.image('InfoOn', 'Images/Button/InfoOn.png');
+
     //Widget
     this.load.image('Option', 'Images/Container/Option.png');
+
     //Exit widget
     this.load.image('Exit', 'Images/Button/Exit.png');
     this.load.image('ExitOn', 'Images/Button/ExitOn.png');
+
     //Instruction btn
     this.load.image('Intro', 'Images/Button/Intro.png');
     this.load.image('IntroOn', 'Images/Button/IntroOn.png');
+
     //Menu btn
     this.load.image('Menu', 'Images/Button/Menu.png');
     this.load.image('MenuOn', 'Images/Button/MenuOn.png');
 
+
     //WALLET
     this.load.image('Money', 'Images/Container/Money.png');
+
 
     //SEEDS & CROPS
     //Seed bank
     this.load.image('SeedBank', 'Images/Container/SeedBank.png');
+
+    //Seed sprites
+    this.load.image('SeedSage', 'Images/Crop/SeedSage.png');
+    this.load.image('SeedThyme', 'Images/Crop/SeedThyme.png');
+    this.load.image('SeedMugwort', 'Images/Crop/SeedMugwort.png');
+    this.load.image('SeedHemlock', 'Images/Crop/SeedHemlock.png');
+    this.load.image('SeedYarrow', 'Images/Crop/SeedYarrow.png');
+    this.load.image('SeedFairyCup', 'Images/Crop/SeedFairyCup.png');
+
+
     //Crop information
     this.load.image('TxtSage', 'Images/Crop/TxtSage.png');
     this.load.image('TxtThyme', 'Images/Crop/TxtThyme.png');
@@ -186,11 +212,13 @@ function preload()
     this.load.image('1_Rmove', 'Images/Familiar/Pet1_Rmove.png');
     this.load.image('1_Lsit', 'Images/Familiar/Pet1_Lsit.png');
     this.load.image('1_Rsit', 'Images/Familiar/Pet1_Rsit.png');
+
     //Bat
     this.load.image('2_Lmove', 'Images/Familiar/Pet2_Lmove.png');
     this.load.image('2_Rmove', 'Images/Familiar/Pet2_Rmove.png');
     this.load.image('2_Lsit', 'Images/Familiar/Pet2_Lsit.png');
     this.load.image('2_Rsit', 'Images/Familiar/Pet2_Rsit.png');
+
     //Dino
     this.load.image('3_Lmove', 'Images/Familiar/Pet3_Lmove.png');
     this.load.image('3_Rmove', 'Images/Familiar/Pet3_Rmove.png');
@@ -307,7 +335,7 @@ function create()
     };
 
     this.seedBank = this.add.image(100, 200, "SeedBank");
-    this.seedBank.setDisplaySize(150, 200);
+    this.seedBank.setDisplaySize(125, 175);
     this.seedBank.setDepth(1);
 
 

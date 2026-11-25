@@ -213,9 +213,9 @@ export default class NPC
         this.dialogue = this.scene.add.text(this.x + 30, this.y + 280, this.GetDialogue(), 
         { 
             font: "16px", 
-            fill: "#000000", 
+            fill: "#1A1E29", 
             align: "justify", 
-            wordWrap: { width: 250}
+            wordWrap: { width: 230}
         }).setDepth(51);
 
         this.PlayerReply(); //player response btns

@@ -7,36 +7,37 @@ export default class Seeds
     {
         this.scene = scene;
         this.type = type;
-        let color;
+        let image;
 
-        //Assign color by type
+        //Assign image by type
         //Will replace with sprites
         if (type === "1")
         {
-           color = 0x70a9ba;
+           image = "SeedSage";
         }
         else if (type === "2")
         {
-           color = 0x78f6638;
+           image = "SeedThyme";
         }
         else if (type === "3")
         {
-            color = 0x963562;
+            image = "SeedMugwort";
         }
         else if (type === "4")
         {
-            color = 0xd1c569;
+            image = "SeedHemlock";
         }  
         else if (type === "5")
         {
-            color = 0x57a15c;
+            image = "SeedYarrow";
         }   
         else if (type === "6")
         {
-            color = 0x44246e;
+            image = "SeedFairyCup";
         }
 
-        this.circle = scene.add.circle(x, y, 5, color);
+        this.circle = scene.add.image(x, y, image);
+        this.circle.setDisplaySize(20, 20);
         this.circle.setInteractive();
         this.circle.setDepth(5);
         this.circle.type = type;

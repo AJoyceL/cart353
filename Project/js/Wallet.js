@@ -16,7 +16,7 @@ export default class Wallet
         this.text = scene.add.text(x, y, text, 
             {
                 fontSize: "32px", 
-                fill: "#c9b5e5"
+                fill: "#2E2A3B"
             });
         this.text.setOrigin(.5, .5);
         this.text.setDepth(2);
