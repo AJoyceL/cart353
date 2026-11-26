@@ -251,17 +251,18 @@ export default class NPC
     //NPC REACTION
     RemoveNPC()
     {
+        this.scene.npcButton.NPCBtnCooldown();
+        
         this.npc.destroy(); //removes npc
 
         if (this.dialogue) this.dialogue.destroy();
         if (this.img) this.img.destroy();
 
         //removes response btn
-        this.ReplyBtn.forEach(button => {
-            this.yesBtn.image.destroy();
-            this.noBtn.image.destroy();
-            this.haggleBtn.image.destroy();
-        });
+        // Removes response buttons
+        if (this.yesBtn) this.yesBtn.image.destroy();
+        if (this.noBtn) this.noBtn.image.destroy();
+        if (this.haggleBtn) this.haggleBtn.image.destroy();
 
         //removes npc from list
         this.scene.npcs = this.scene.npcs.filter(npc => npc !== this); //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter

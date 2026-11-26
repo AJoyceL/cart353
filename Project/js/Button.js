@@ -373,14 +373,16 @@ export default class Button
 
     NPCBtnCooldown()
     {
-        let randomTime = Math.floor(Math.random() * 10000) + 5000; //time randomiser
+        this.scene.npcBtnAvailable = false;
+        this.image.visible = false;
 
-        //delay time for npc availability
-        // ref: https://docs.phaser.io/phaser/concepts/time
+        let randomTime = Math.floor(Math.random() * 10000) + 5000;
+
         this.scene.time.delayedCall(randomTime, () => {
             this.scene.npcBtnAvailable = true;
+            this.image.visible = true;
             this.NPCBtnState();
-        })
+        });
     }
 
     //REPLY NPC

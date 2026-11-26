@@ -7,6 +7,7 @@ import Wallet from "./Wallet.js"; //wallet class
 import Seed from "./Seed.js"; //seeds class
 import NPC from "./NPC.js"; //npc class
 import CropCount from "./CropCount.js" //crop count class
+import LSystem from "./LSystem.js"; // LSystem class
 
 //PALETTE COLOUR
 // {
@@ -341,12 +342,12 @@ function create()
 
     //TEXT
     //Crop text
-    this.type1Text = new CropCount(this, 200, 550, "0", 0);
-    this.type2Text = new CropCount(this, 325, 550, "0", 1);
-    this.type3Text = new CropCount(this, 450, 550, "0", 2);
-    this.type4Text = new CropCount(this, 575, 550, "0", 3);
-    this.type5Text = new CropCount(this, 700, 550, "0", 4);
-    this.type6Text = new CropCount(this, 825, 550, "0", 5);
+    this.type1Text = new CropCount(this, 160, 530, "0", 0);
+    this.type2Text = new CropCount(this, 260, 530, "0", 1);
+    this.type3Text = new CropCount(this, 380, 530, "0", 2);
+    this.type4Text = new CropCount(this, 510, 530, "0", 3);
+    this.type5Text = new CropCount(this, 640, 530, "0", 4);
+    this.type6Text = new CropCount(this, 780, 530, "0", 5);
 
     this.magicBar = new MagicBar(this, 100, 50, "Magic: 0"); //magic level is invisible
     
@@ -376,10 +377,22 @@ function create()
     //BUTTONS
     this.shopBtn = new Button(this, 85, 400, 150, 50, "shop", null, "Shop", "ShopOn"); // scene button
 
+
     this.optionBtn = new Button(this, 40, 40, 50, 50, "option", null, "Info", "InfoOn"); // option widget
 
-    this.npcButton = new Button(this, 930, 400, 50, 50, "NPC", null, "CallNPC", "CallNPCOn"); // NPC button
 
+    this.npcBtnAvailable = false;
+    this.npcButton = new Button(this, 930, 400, 50, 50, "NPC", null, "CallNPC", "CallNPCOn");
+    this.npcButton.image.visible = false;
+
+    //starts the delay before the btn is visible
+    this.time.delayedCall(5000, () => {
+        this.npcBtnAvailable = true;
+        this.npcButton.image.visible = true;
+        this.npcButton.NPCBtnState();
+    });
+
+    
     //NPC
     this.npcs = []; //calls npc array
     this.npcBtnAvailable = true;
@@ -480,42 +493,64 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
     //FAMILIAR PLANTING FUNCTION
     gameObject.plantInPlot = function(plot) {
-        //stop if plot occupied
         if (planted || plot.occupied) {
             return false;
         }
 
-        gameObject.setPosition(plot.x, plot.y); //move seed to center
+        gameObject.setPosition(plot.x, plot.y);
 
-        //record which plot this crop occupies
         plot.occupied = true;
         plantedPlot = plot;
 
-        //update crop
         planted = true;
         fullyGrown = false;
+        growthStage = 1;
+
         gameObject.isPlanted = true;
         gameObject.isHarvested = false;
         gameObject.isFullyGrown = false;
 
-        //reset harvested crop
-        growthStage = 0;
-        gameObject.setScale(1);
-        growFruit();
+        // Remove seed sprite
+        gameObject.setVisible(false);
+
+        // Create the L-system
+        gameObject.plant = new LSystem(scene, plot.x, plot.y, {
+            len: 4,
+            ang: 25
+        });
+
+        // Connect L-system to crop growth and harvesting
+        gameObject.plant.onFullyGrown = () => {
+            fullyGrown = true;
+            gameObject.isFullyGrown = true;
+        };
+
+        gameObject.plant.onHarvest = harvestCrop;
+
+        // Generate first growth stage
+        gameObject.plant.grow();
 
         return true;
-    }
+    };
 
 
     //FAMILIAR WATERING FUNCTION
     gameObject.waterCrop = function() {
-        //stop if no planted crop
         if (!planted || fullyGrown || familiarWatering) {
             return false;
         }
 
         familiarWatering = true;
-        growFruit(); // calls growth function for familars
+
+        growthStage++;
+        gameObject.plant.grow();
+
+        familiarWatering = false;
+
+        if (growthStage >= 3) {
+            fullyGrown = true;
+            gameObject.isFullyGrown = true;
+        }
 
         return true;
     };
@@ -528,7 +563,10 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             return;
         }
 
-        gameObject.setScale(3); //grow crop
+        gameObject.plant.destroy();
+        gameObject.plant = null;
+
+        gameObject.setVisible(false);
         gameObject.disableInteractive();
 
         //free plot after harvesting
@@ -552,13 +590,13 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         //calls planter familiar
         if (scene.magicCount >= 1 && !scene.planterCreated) {
             scene.planterCreated = true;
-            scene.familiars.push(new Familiar(scene, 700, 50, 0x2c2a59, "planter"));
+            scene.familiars.push(new Familiar(scene, 700, 50, "planter", 1));
         }
 
         //calls waterer familiar
         if (scene.magicCount >= 2 && !scene.watererCreated) {
             scene.watererCreated = true;
-            scene.familiars.push(new Familiar(scene, 700, 50, 0xa1f7e3, "waterer"));
+            scene.familiars.push(new Familiar(scene, 700, 50, "waterer", 2));
         }
 
         //HARVESTING + INCREASE COUNT
@@ -566,17 +604,10 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
         if (type >= 1 && type <= 6)
         {
-            gameObject.setPosition(175 + (type - 1) * 125, 525); //places crops
-
             CropCount.add(type - 1, 1);
             scene[`type${type}Text`].update();
         }
         console.log("Crop harvested!"); //debug
-
-        if (gameObject.plant) {
-            gameObject.plant.destroy();
-            gameObject.plant = null;
-        }
     }
 
 
@@ -656,19 +687,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         }
         else {
             //snap seed to center
-            gameObject.setPosition(plot.x, plot.y);
-
-            //record state
-            plot.occupied = true;
-            plantedPlot = plot;
-            planted = true;
-            fullyGrown = false;
-            gameObject.isPlanted = true;
-
-            //reset size + start animation
-            growthStage = 0;
-            gameObject.setScale(1);
-            growFruit(); //calls grow funtion
+            gameObject.plantInPlot(plot);
 
             //stop planter from picking planted seed
             scene.familiars.forEach(familiar => {

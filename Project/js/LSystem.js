@@ -33,7 +33,7 @@ export default class LSystem {
 
         if (options.maxGen !== undefined)
         {
-            this.maxGen = options.maxgen;
+            this.maxGen = options.maxGen;
         }
         else 
         {
@@ -45,20 +45,39 @@ export default class LSystem {
             this.growthRate = options.growthRate;
         }
         else{
-            this.growthRate = .04;
+            this.growthRate = .0005;
         }
 
         //Current generation
         this.word = "X";
         this.currGen = 0;
-        this.growthPercent = 1;
+        this.growthPercent = 0;
+        this.isGrowing = false;
 
         //Create phaser graphic
         this.graphics = scene.add.graphics();
         this.graphics.setDepth(3);
 
+        this.clickZone = scene.add.zone(x, y - 40, 80, 120);
+        this.clickZone.setInteractive();
+        this.clickZone.setDepth(10);
+
+        this.clickZone.on("pointerdown", () => {
+            if (this.currGen < 3) {
+                this.grow();
+
+                if (this.currGen === 3 && this.onFullyGrown) {
+                    this.onFullyGrown();
+                }
+            }
+            else if (this.onHarvest) {
+                this.onHarvest();
+            }
+        });
+
         //Rules
         this.rules = {
+            //Draws the leaves
             X: [
                 { rule: "(F[+X][-X]FX)", prob: 0.5 },
                 { rule: "(F[-X]FX)", prob: 0.05 },
@@ -69,6 +88,7 @@ export default class LSystem {
                 { rule: "(F[+X][-X]FXB)", prob: 0.1 }
             ],
 
+            //Draws a stem segment forward
             F: [
                 { rule: "F(F)", prob: 0.85 },
                 { rule: "F(FF)", prob: 0.05 },
@@ -86,18 +106,17 @@ export default class LSystem {
 
 
     //GENERATE NEW LSYSTEM
-    generate()
+   generate()
     {
         let next = "";
 
-        //Check character
         for (let i = 0; i < this.word.length; i++)
         {
+            const c = this.word[i];
             const rule = this.rules[c];
 
             if (c in this.rules)
-            {    
-                //Choose random rule
+            {
                 if (Array.isArray(rule))
                 {
                     next += this.chooseOne(rule);
@@ -110,18 +129,18 @@ export default class LSystem {
             else
             {
                 next += c;
-            }    
+            }
         }
 
-        return next;
+        this.word = next;
     }
 
 
     //CHOOSE RANDOM RULE
-    choseOne(ruleSet)
+    chooseOne(ruleSet)
     {
         const n = Math.random();
-        let total= 0;
+        let total = 0;
 
         for (let i = 0; i < ruleSet.length; i++)
         {
@@ -137,47 +156,37 @@ export default class LSystem {
     }
 
 
-    //MOVE TO NEXT GEN
-    nextGen()
+    //GROW 
+    grow()
     {
-        if (this.growthPercent , 1)
-        {
+        if (this.currGen >= 3) {
             return;
         }
 
-        //Retsart plant after reaching max gen
-        if (this.currGen === this.maxGen)
-        {
-            this.currGen = 0;
-            this.word = "X";
-        }
-
-        this.word = this.generate()
+        this.generate();
         this.currGen++;
 
-        //Start growing
         this.growthPercent = 0;
+        this.isGrowing = true;
     }
 
 
     //UPDATE
     update(delta)
     {
-        if (this.growthPercent < 1)
-        {
-            //Gradual increase
-            const mod = this.currGen + this.growthPercent;
-            this.growthPercent += this.growthRate * (delta / 16.67) / mod;
+        if (this.isGrowing) {
+            this.growthPercent += this.growthRate * delta;
 
-            //Prevent from > 100%
-            this.growthPercent = Math.min(this.growthPercent, 1);
+            if (this.growthPercent >= 1) {
+                this.growthPercent = 1;
+                this.isGrowing = false;
 
-            //Redraw
+                if (this.currGen === 3 && this.onFullyGrown) {
+                    this.onFullyGrown();
+                }
+            }
+
             this.draw();
-        }
-        else
-        {
-            this.nextGen();
         }
     }
 
@@ -222,10 +231,10 @@ export default class LSystem {
 
             //only animate charcater inside ()
             let lerpT = 1;
-            
+
             if (lerpOn)
             {
-                lerpT = 1;
+                lerpT = t;
             }
 
             //draw stem + move forward
@@ -300,4 +309,12 @@ export default class LSystem {
             }
         }
     }
+
+    destroy()
+    {
+        this.clickZone.destroy();
+        this.graphics.destroy();
+    }
 }
+
+window.LSystem = LSystem;
