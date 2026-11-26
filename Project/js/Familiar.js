@@ -1,35 +1,39 @@
 // ref: https://www.youtube.com/watch?v=ow_Lum-Agbs&t=88s
+
 class Familiar {
     constructor(scene, x, y, type, number) {
         this.scene = scene;
         this.type = type;
         this.number = number;
 
-        if (!this.scene.familiars)
-        {
+        // Create the familiars array if it does not exist
+        if (!this.scene.familiars) {
             this.scene.familiars = [];
         }
+
         this.scene.familiars.push(this);
 
-        this.image = scene.add.image(x, y, this.number + "_Lsit");
+        // Create a sprite using the familiar's starting texture
+        this.image = scene.add.sprite(x, y, this.number + "_Lsit");
         this.image.setDisplaySize(50, 50);
         this.image.setDepth(10);
         this.image.setInteractive();
 
-        this.facing = "L"; //facing left
-        this.speed = 60; //movement speed
-        this.targetX = x; //destination X
-        this.targetY = y; //destination Y
-        this.task = null; //task
-        this.affection = 10; //affection
+        // Starting movement settings
+        this.facing = "L";
+        this.speed = 60;
+        this.targetX = x;
+        this.targetY = y;
+        this.task = null;
+        this.affection = 10;
 
-        //increase familair affection
-        this.image.on("pointerdown", () =>{
+        // Increase affection when the player clicks the familiar
+        this.image.on("pointerdown", () => {
             this.increase(1);
-            console.log( this.type, "affecion: ", this.affection);
-        })
+            console.log(this.type, "affection:", this.affection);
+        });
 
-        //decrease familiar affection
+        // Decrease affection every 30 seconds
         this.timer = this.scene.time.addEvent({
             delay: 30000,
             callback: () => {
@@ -39,36 +43,31 @@ class Familiar {
             loop: true
         });
 
-        //calls behaviour
-        //planter
-        if (this.type === "planter") { 
+        // Start the familiar's behaviour depending on its type
+        if (this.type === "planter") {
             this.destination();
         }
-        //calls waterer
         else if (this.type === "waterer") {
             this.wateringCrop();
         }
-        //else, always wandering
         else {
             this.wanderer();
         }
     }
 
-    //AFFECTION
-    increase(amount)
-    {
+    // AFFECTION
+
+    // Increase affection, up to a maximum of 10
+    increase(amount) {
         this.affection = Math.min(10, this.affection + amount);
     }
 
-    lose(amount)
-    {
-        if (this.affection >= amount)
-        {
+    // Decrease affection and remove the familiar when it reaches 0
+    lose(amount) {
+        if (this.affection >= amount) {
             this.affection -= amount;
 
-            //leaves when affection = 0
-            if (this.affection === 0)
-            {
+            if (this.affection === 0) {
                 this.leave();
             }
 
@@ -78,185 +77,219 @@ class Familiar {
         return false;
     }
 
-    leave()
-    {
-        this.timer.remove(); //stops timer
-        this.image.destroy(); //removes familiar
-        this.scene.familiars = this.scene.familiars.filter(familiar => familiar !== this);
+    // Remove the familiar from the garden
+    leave() {
+        this.timer.remove();
+        this.image.destroy();
+
+        // Remove this familiar from the array
+        this.scene.familiars = this.scene.familiars.filter(
+            familiar => familiar !== this
+        );
     }
 
-    //MOVEMENT
+    // MOVEMENT
+
+    // Find a seed and an available plot for the planter
     destination() {
-        //assigns planter task
-        if (this.type !== "planter") {
-            return
+        if (this.type !== "planter" || !this.image.active) {
+            return;
         }
 
-        //find seed, carried or harvested
-        //ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
-        const crop = this.scene.crops.find(crop => !crop.isPlanted && !crop.isBeingCarried && !crop.isHarvested);
+        // Find a seed that has not been planted, carried, or harvested
+        const crop = this.scene.crops.find(crop =>
+            crop.active &&
+            !crop.isPlanted &&
+            !crop.isBeingCarried &&
+            !crop.isHarvested
+        );
 
-        const plot = this.scene.plots.find(plot => !plot.occupied); //find first unoccipied plot
+        // Find the first unoccupied plot
+        const plot = this.scene.plots.find(plot => !plot.occupied);
 
         if (crop && plot) {
-            crop.isBeingCarried = true; //crop being carried
+            crop.isBeingCarried = true;
 
-            //task action
+            // Store the current task
             this.task = {
                 crop: crop,
                 plot: plot,
                 phase: "crop"
-            }
+            };
 
-            //set destination
+            // Move towards the seed
             this.targetX = crop.x;
             this.targetY = crop.y;
-        } 
+        }
         else {
-            //wander around when no seeds
+            // Wander around when there are no available seeds or plots
             this.task = null;
             this.wanderer();
         }
     }
 
-    //Waters crops when planted 
+    // Find a planted crop that needs watering
     wateringCrop() {
-        if (this.type !== "waterer") return;
+        if (this.type !== "waterer" || !this.image.active) {
+            return;
+        }
 
-        //find planted crop
-        // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
-        const crop = this.scene.crops.find(crop => crop.active && crop.isPlanted && !crop.isBeingCarried && !crop.isHarvested && !crop.isBeingWatered);
+        const crop = this.scene.crops.find(crop =>
+            crop.active &&
+            crop.isPlanted &&
+            !crop.isBeingCarried &&
+            !crop.isHarvested &&
+            !crop.isBeingWatered
+        );
 
         if (crop) {
-            //task action
+            // Store the watering task
             this.task = {
                 crop: crop,
                 phase: "watering"
             };
 
-            crop.isBeingWatered = true; //mark crop
+            // Mark the crop so another familiar does not select it
+            crop.isBeingWatered = true;
 
-            //set destination
+            // Move towards the crop
             this.targetX = crop.x;
             this.targetY = crop.y;
-        } 
+        }
         else {
-            //wander around when no crops
+            // Wander around when there are no crops to water
             this.task = null;
             this.wanderer();
         }
     }
 
-    //move randomly when no crops
+    // Move to a random location when there are no tasks
     wanderer() {
+        if (!this.image.active) {
+            return;
+        }
+
         this.task = null;
 
-        //random direction
-        //ref: https://docs.phaser.io/phaser/concepts/math
+        // Choose a random destination
         this.targetX = Phaser.Math.Between(50, 910);
         this.targetY = Phaser.Math.Between(50, 350);
 
-        //monvement delay
-        //ref: https://docs.phaser.io/api-documentation/class/time-clock
-        this.scene.time.delayedCall(Phaser.Math.Between(1500, 3000), () => {
-            if (this.type === "planter") {
-                this.destination();
-            }
-            else if (this.type === "waterer") {
-                this.wateringCrop();
-            }
-            else {
-                this.wanderer();
-            }
-        });
+        // Wait before choosing another task
+        this.scene.time.delayedCall(
+            Phaser.Math.Between(1500, 3000),
+            () => {
+                // Stop if the familiar has been removed
+                if (!this.image.active) {
+                    return;
+                }
 
+                // Return to the familiar's normal behaviour
+                if (this.type === "planter") {
+                    this.destination();
+                }
+                else if (this.type === "waterer") {
+                    this.wateringCrop();
+                }
+                else {
+                    this.wanderer();
+                }
+            }
+        );
     }
 
-    update(time, delta) {
-        if (!this.image.active) 
-        {    
-            return;
-        } 
+    // UPDATE MOVEMENT AND TASKS
 
-        //calculate moveement distance
+    update(time, delta) {
+        if (!this.image.active) {
+            return;
+        }
+
+        // Calculate the distance between the sprite and its destination
         const dx = this.targetX - this.image.x;
         const dy = this.targetY - this.image.y;
-        const d = Math.sqrt(dx * dx + dy * dy); 
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Move towards the target
-        if (d > 3) {
-            // Change direction based on movement
-            if (dx < 0)
-            {
+        // Move the sprite if it has not reached its destination
+        if (distance > 3) {
+
+            // Update which direction the familiar is facing
+            if (dx < 0) {
                 this.facing = "L";
             }
-            else if (dx > 0)
-            {
+            else if (dx > 0) {
                 this.facing = "R";
             }
 
+            // Change to the moving sprite texture
             this.image.setTexture(this.number + "_" + this.facing + "move");
 
-            const startSpeed = this.speed * (this.affection / 10); //starting speed
-            const step = startSpeed * (delta / 1000); //scale movement by time
+            // Calculate movement speed based on affection
+            const currentSpeed = this.speed * (this.affection / 10);
+            const step = currentSpeed * (delta / 1000);
 
-            //stop at target
-            if (step >= d) {
+            // Move towards the destination
+            if (step >= distance) {
                 this.image.setPosition(this.targetX, this.targetY);
             }
-            // move towards target
             else {
-                this.image.x += (dx / d) * step;
-                this.image.y += (dy / d) * step;
+                this.image.x += (dx / distance) * step;
+                this.image.y += (dy / distance) * step;
             }
         }
-        else
-        {
+        else {
+            // Change to the sitting sprite when movement stops
             this.image.setTexture(this.number + "_" + this.facing + "sit");
         }
 
-        //watering familiars
+        // WATERING FAMILIARS
+
         if (this.type === "waterer") {
             if (!this.task) {
-                return; //do nothing
-            }    
+                return;
+            }
 
             const crop = this.task.crop;
 
-            //check if crop is active
+            // Check whether the assigned crop is still available
             if (!crop || !crop.active || !crop.isPlanted || crop.isHarvested) {
-                //release crop assignment if it still exists
+
+                // Release the crop if it still exists
                 if (crop && crop.active) {
                     crop.isBeingWatered = false;
                 }
 
-                //search for crop
                 this.task = null;
                 this.wateringCrop();
                 return;
             }
 
-            //calculates distance
-            //ref: https://docs.phaser.io/phaser/concepts/math
-            const d = Phaser.Math.Distance.Between(this.image.x, this.image.y, crop.x, crop.y);
+            // Calculate the distance between the familiar and the crop
+            const cropDistance = Phaser.Math.Distance.Between(
+                this.image.x,
+                this.image.y,
+                crop.x,
+                crop.y
+            );
 
-            //start watering + harvesting when close
-            if (d <= 30) {
+            // Water or harvest the crop when close enough
+            if (cropDistance <= 30) {
+
                 if (crop.isFullyGrown) {
-                    crop.harvestCrop(); //harvest crop
+                    crop.harvestCrop();
                     console.log("Waterer harvested a crop!");
-                } 
+                }
                 else {
-                    const watered = crop.waterCrop(); //calls crop growth 
+                    const watered = crop.waterCrop();
 
                     if (watered) {
                         console.log("Waterer watered a crop!");
-                    } 
+                    }
                     else {
-                        crop.isBeingWatered = false; //release crop
-                        this.task = null; //restart task
+                        // Release the crop if it cannot be watered
+                        crop.isBeingWatered = false;
+                        this.task = null;
 
-                        //ref: https://docs.phaser.io/api-documentation/class/time-clock
                         this.scene.time.delayedCall(500, () => {
                             if (this.image.active) {
                                 this.wateringCrop();
@@ -267,12 +300,11 @@ class Familiar {
                     }
                 }
 
-                //release crop
+                // Release the crop after completing the task
                 crop.isBeingWatered = false;
                 this.task = null;
 
-                //delay before search
-                //ref: https://docs.phaser.io/api-documentation/class/time-clock
+                // Wait before looking for another crop
                 this.scene.time.delayedCall(2200, () => {
                     if (this.image.active) {
                         this.wateringCrop();
@@ -280,46 +312,56 @@ class Familiar {
                 });
             }
 
-            return; // stops watere from running planter
+            return;
         }
 
-        //planting familiars
+        // PLANTING FAMILIARS
+
+        // Only planter familiars can plant seeds
         if (this.type !== "planter" || !this.task) {
             return;
         }
 
-        //change task when reached seed
-        if (this.task.phase === "crop" && d <= 3) {
+        // Check if the familiar has reached its assigned seed
+        if (this.task.phase === "crop" && distance <= 3) {
             this.task.phase = "plot";
+
+            // Change destination to the assigned plot
             this.targetX = this.task.plot.x;
             this.targetY = this.task.plot.y;
         }
 
-        // Carry the seed while moving
+        // Carry the seed while moving towards the plot
         if (this.task.phase === "plot") {
+
             this.task.crop.setPosition(this.image.x + 25, this.image.y);
 
-            //check distance
-            //ref: https://docs.phaser.io/phaser/concepts/math
-            const plotD = Phaser.Math.Distance.Between(this.image.x, this.image.y, this.targetX, this.targetY);
+            // Calculate distance to the plot
+            const plotDistance = Phaser.Math.Distance.Between(
+                this.image.x,
+                this.image.y,
+                this.targetX,
+                this.targetY
+            );
 
-            //plant seed
-            if (plotD <= 3) {
+            // Plant the seed when the familiar reaches the plot
+            if (plotDistance <= 3) {
                 const crop = this.task.crop;
                 const plot = this.task.plot;
 
-                crop.isBeingCarried = false; //not carried
+                crop.isBeingCarried = false;
 
-                //debug
+                // Plant the crop in the assigned plot
                 if (crop.plantInPlot(plot)) {
                     console.log("Familiar planted a crop!");
-                } 
+                }
                 else {
                     console.log("Could not plant crop.");
                 }
 
-                this.task = null; //clear task when complete
-                this.destination(); //look for crop
+                // Clear the task and look for another seed
+                this.task = null;
+                this.destination();
             }
         }
     }

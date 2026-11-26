@@ -423,6 +423,14 @@ function update(time, delta)
             familiar.update(time, delta);
         });
     }
+
+
+    //CROP LSYSTEM UPDATE
+    this.crops.forEach(crop => {
+        if (crop.plant) {
+            crop.plant.update(delta);
+        }
+    });
 }
 
 
@@ -564,6 +572,11 @@ function makeDraggable(gameObject, scene, enableLogs = false)
             scene[`type${type}Text`].update();
         }
         console.log("Crop harvested!"); //debug
+
+        if (gameObject.plant) {
+            gameObject.plant.destroy();
+            gameObject.plant = null;
+        }
     }
 
 
