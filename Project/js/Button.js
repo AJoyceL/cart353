@@ -171,14 +171,14 @@ export default class Button
         this.scene.scene.pause("Garden");
         this.scene.scene.bringToTop("Info");
 
-        if (this.scene.scene.isPaused("Garden"))
-        {
-            this.scene.scene.resume("Garden");
-        }
-        else
-        {
-            this.scene.scene.start("Garden");
-        }
+        // if (this.scene.scene.isPaused("Garden"))
+        // {
+        //     this.scene.scene.resume("Garden");
+        // }
+        // else
+        // {
+        //     this.scene.scene.start("Garden");
+        // }
     }
 
     OptionWidget()

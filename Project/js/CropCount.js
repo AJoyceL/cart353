@@ -19,7 +19,7 @@ export default class CropCount
 
         this.text = scene.add.text(x, y, text, {
             fontSize: "20px",
-            fill: "#18082d",
+            fill: "#2E2A3B",
             align: "center",
             lineSpacing: "5"
         });

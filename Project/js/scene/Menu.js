@@ -25,7 +25,7 @@ export default class Menu extends Phaser.Scene {
         this.background = this.add.rectangle(0, 0, 960, 600, 0x00000, 1);
         this.background.setOrigin(0, 0);
 
-        this.title = this.add.text(480, 300, "welcome", 
+        this.title = this.add.text(480, 275, "welcome", 
             { 
                 fontFamily: "Silkscreen",
                 fontSize: "80px", 
