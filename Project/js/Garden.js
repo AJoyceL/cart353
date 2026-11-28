@@ -516,7 +516,8 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         // Create the L-system
         gameObject.plant = new LSystem(scene, plot.x, plot.y, {
             len: 4,
-            ang: 25
+            ang: 25,
+            type: Number(gameObject.type)
         });
 
         // Connect L-system to crop growth and harvesting
@@ -547,7 +548,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
 
         familiarWatering = false;
 
-        if (growthStage >= 3) {
+        if (growthStage >= 5) {
             fullyGrown = true;
             gameObject.isFullyGrown = true;
         }
@@ -588,13 +589,13 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         scene.magicBar.text.setText("Magic: " + scene.magicCount);
 
         //calls planter familiar
-        if (scene.magicCount >= 1 && !scene.planterCreated) {
+        if (scene.magicCount >= 10 && !scene.planterCreated) {
             scene.planterCreated = true;
             scene.familiars.push(new Familiar(scene, 700, 50, "planter", 1));
         }
 
         //calls waterer familiar
-        if (scene.magicCount >= 2 && !scene.watererCreated) {
+        if (scene.magicCount >= 20 && !scene.watererCreated) {
             scene.watererCreated = true;
             scene.familiars.push(new Familiar(scene, 700, 50, "waterer", 2));
         }

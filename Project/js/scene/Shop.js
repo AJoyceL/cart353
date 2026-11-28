@@ -89,13 +89,13 @@ export default class Shop extends Phaser.Scene {
         this.buySeeds.push(new Button(this, 605, 390, 200, 50, "seed6", null, "FairyCup", "FairyCupOn"));
 
 
-        if ((this.registry.get("yesCount") || 0) < 5)
-        {
-            for (let i = 3; i < 6; i++)
-            {
-                this.buySeeds[i].image.setVisible(false);
+        // if ((this.registry.get("yesCount") || 0) < 5)
+        // {
+        //     for (let i = 3; i < 6; i++)
+        //     {
+        //         this.buySeeds[i].image.setVisible(false);
 
-            }
-        }
+        //     }
+        // }
     }
 }

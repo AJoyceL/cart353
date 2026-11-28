@@ -3,6 +3,8 @@
 // https://www.youtube.com/watch?v=TOPxa1xIG5Q 
 // https://www.youtube.com/watch?v=3Mu0--aGfqg
 // https://www.youtube.com/watch?v=1hcCpLQwI-c
+
+// https://www.houdinikitchen.net/wp-content/uploads/2019/12/L-systems.pdf
 export default class LSystem {
     constructor(scene, x, y, options = {})
     {
@@ -19,7 +21,7 @@ export default class LSystem {
         }
         else 
         {
-            this.len = 4;
+            this.len = 2;
         }
 
         if (options.ang !== undefined)
@@ -37,7 +39,7 @@ export default class LSystem {
         }
         else 
         {
-            this.maxGen = 6;
+            this.maxGen = 4;
         }
 
         if (options.growthRate !== undefined)
@@ -63,12 +65,8 @@ export default class LSystem {
         this.clickZone.setDepth(10);
 
         this.clickZone.on("pointerdown", () => {
-            if (this.currGen < 3) {
+            if (this.currGen < this.maxGen && !this.isGrowing) {
                 this.grow();
-
-                if (this.currGen === 3 && this.onFullyGrown) {
-                    this.onFullyGrown();
-                }
             }
             else if (this.onHarvest) {
                 this.onHarvest();
@@ -76,28 +74,72 @@ export default class LSystem {
         });
 
         //Rules
+        this.type = options.type || 1;
+
+        const cropRules =
+        {
+            //Sage
+            1: {
+                ang: 25,
+                rules: {
+                    X: "F[+X][-X]FX", //Branches
+                    F: "FF", //Stem
+                }
+            },
+
+            //Thyme
+            2: {
+                ang: 25,
+                rules: {
+                    X: "F[+X][-X]F[+X][-X]FX",
+                    F: "FF"
+                }
+            },
+
+            //Mugwort
+            3: {
+                ang: 20,
+                rules: {
+                    X: "F[+X]F[-X]F[+X][-X]FX",
+                    F: "FF"
+                }
+            },
+
+            //Hemlock
+            4: {
+                ang: 30,
+                rules: {
+                    X: "F[-X]F[-X][+X]XC",
+                    F: "FF"
+                }
+            },
+
+            //Yarrow
+            5: {
+                ang: 30,
+                rules: {
+                    X: "F[+X]F[[-X][+X]]FC",
+                    F: "FF"
+                }
+            }, 
+
+            //Fairy cup
+            6: {
+                ang: 30,
+                rules: {
+                    X: "F[+FC][-FC]F[++FC][-FC]+F[+FC][-FC]F",
+                    F: "FF"
+                }
+            }
+        };
+
+        const selectCrop = cropRules[this.type] || cropRules[1];
+
+        this.ang = selectCrop.ang;
+
         this.rules = {
-            //Draws the leaves
-            X: [
-                { rule: "(F[+X][-X]FX)", prob: 0.5 },
-                { rule: "(F[-X]FX)", prob: 0.05 },
-                { rule: "(F[+X]FX)", prob: 0.05 },
-                { rule: "(F[++X][-X]FX)", prob: 0.1 },
-                { rule: "(F[+X][--X]FX)", prob: 0.1 },
-                { rule: "(F[+X][-X]FXA)", prob: 0.1 },
-                { rule: "(F[+X][-X]FXB)", prob: 0.1 }
-            ],
-
-            //Draws a stem segment forward
-            F: [
-                { rule: "F(F)", prob: 0.85 },
-                { rule: "F(FF)", prob: 0.05 },
-                { rule: "F", prob: 0.1 }
-            ],
-
-            // Remove parentheses during generation
-            "(": "",
-            ")": ""
+            X: selectCrop.rules.X,
+            F: selectCrop.rules.F
         };
         
         //Draws
@@ -159,7 +201,7 @@ export default class LSystem {
     //GROW 
     grow()
     {
-        if (this.currGen >= 3) {
+        if (this.currGen >= this.maxGen) {
             return;
         }
 
@@ -181,7 +223,7 @@ export default class LSystem {
                 this.growthPercent = 1;
                 this.isGrowing = false;
 
-                if (this.currGen === 3 && this.onFullyGrown) {
+                if (this.currGen === this.maxGen && this.onFullyGrown) {
                     this.onFullyGrown();
                 }
             }
@@ -245,7 +287,7 @@ export default class LSystem {
                 const newX = x + Math.cos(radians) * this.len * lerpT;
                 const newY = y + Math.sin(radians) * this.len * lerpT;
 
-                this.graphics.lineStyle(2, 0x1A1E29, 1);
+                this.graphics.lineStyle(2, 0x586661, 1);
                 this.graphics.lineBetween(x, y, newX, newY);
 
                 x = newX;
@@ -284,27 +326,14 @@ export default class LSystem {
                 }
             }
 
-            // Draw a pink leaf
-            else if (c === "A") {
-                this.graphics.fillStyle(0x70A96B, 1);
+            // Draw small flowers
+            else if (c === "C") {
+                this.graphics.fillStyle(0xe3e1dc, 1);
 
-                this.graphics.fillEllipse(
+                this.graphics.fillCircle(
                     x,
                     y,
-                    this.len * 3 * lerpT,
-                    this.len * 1.5 * lerpT
-                );
-            }
-
-            // Draw an orange leaf
-            else if (c === "B") {
-                this.graphics.fillStyle(0x9EA93F, 1);
-
-                this.graphics.fillEllipse(
-                    x,
-                    y,
-                    this.len * 3 * lerpT,
-                    this.len * 1.5 * lerpT
+                    this.len * 0.7 * lerpT
                 );
             }
         }
