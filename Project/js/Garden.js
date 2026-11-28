@@ -640,7 +640,7 @@ function makeDraggable(gameObject, scene, enableLogs = false)
         scene.tweens.add({
             targets: gameObject,
             scale: gameObject.scale + 1.5,
-            duration: 1500, //time is 5000
+            duration: 5000, //time is 5000
             ease: "Sine.easeInOut",
 
             //run when complete
